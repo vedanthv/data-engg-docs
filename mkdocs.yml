@@ -1,0 +1,4 @@
+site_name: Vedanth's Data Engineering Docs
+
+theme:
+  name: material
