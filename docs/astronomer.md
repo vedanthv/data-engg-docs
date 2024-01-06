@@ -1,6 +1,6 @@
-# Airflow for Data Orchestration
+# Astronomer Managed Cloud
 
-Airflow is a data orchestration tool that allows us to create data pipelines using python and integrate a variety of operators like Databricks, Snowflake and dbt.
+Airflow Astronomer is a data orchestration tool that allows us to create data pipelines using python and integrate a variety of operators like Databricks, Snowflake and dbt.
 
 Here are some notes I took while taking up a fantastic set of courses by Astronomer, a managed cloud service for Airflow.
 

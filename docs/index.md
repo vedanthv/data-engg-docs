@@ -14,4 +14,5 @@ Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/vedanthba
 
 | **Tool / Technology** | **Usage** | **Notes** |
 | :---:   | :---: | :---: |
-| Apache Airflow and Astronomer | Data Orchestration | [Airflow End To End](https://github.com/vedanthv/data-engg/blob/main/airflow/airflow.md)|
+| Airflow Astronomer | Data Orchestration | [Astronomer](https://vedanthv.github.io/data-engg-docs/astronomer/)|
+| Azure Databricks | Data Processing | [Databricks](https://vedanthv.github.io/data-engg-docs/databricks/)|
