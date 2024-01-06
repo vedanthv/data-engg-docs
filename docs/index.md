@@ -1,17 +1,17 @@
-# Welcome to MkDocs
+# Vedanth's Data Engineering
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+## Introduction
 
-## Commands
+Hello World! My name is Vedanth V Baliga, I'm a Data Engineering Intern @ [StoneX](https://www.stonex.com/). 
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+This is a complete documentation of Data Engineering Tools that I'm learning from courses and on the job. 
 
-## Project layout
+Here is a list of tools and tech that I have worked with so far, check it out if you want to start learning for scratch or use the code templates for your projects!
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/vedanthbaliga/)
+
+### Tools and Tech Stack
+
+| **Tool / Technology** | **Usage** | **Notes** |
+| :---:   | :---: | :---: |
+| Apache Airflow and Astronomer | Data Orchestration | [Airflow End To End](https://github.com/vedanthv/data-engg/blob/main/airflow/airflow.md)|
