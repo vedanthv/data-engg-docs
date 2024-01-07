@@ -1,7 +1,3 @@
-# Vedanth's Data Engineering Docs
-
-## Introduction
-
 Hello World! My name is Vedanth V Baliga, I'm a Data Engineering Intern @ [StoneX](https://www.stonex.com/). 
 
 This is a complete documentation of Data Engineering Tools that I'm learning from courses and on the job. 

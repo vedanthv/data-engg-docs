@@ -1,4 +1,4 @@
-# Astronomer Managed Cloud
+# Airflow with Astronomer Managed Cloud
 
 Airflow Astronomer is a data orchestration tool that allows us to create data pipelines using python and integrate a variety of operators like Databricks, Snowflake and dbt.
 
@@ -759,3 +759,123 @@ report = BashOperator(
 
 Using Jinja Templating gives one advantage, we dont need to create a connection to access a variable everytime, its a one time thing. 
 
+## Module 9 : Debugging DAGs
+
+### Basic Checks
+
+- Ensure that all your DAG files are located in the dags folder.
+
+- The .airflowignore file does not have the name of your DAG file as Airflow ignores any files present on it.
+
+- At the code level, ensure that each DAG:
+    - Has a unique dag_id. if two dags have the same id, Airflow randomly parses one of them.
+    - Contains either the word airflow or dag. The scheduler only scans files that meet this requirement.
+    - If you are using Airflow decorator to instantiate your dag with the @dag decorator, make sure  the decorated function is invoked at the end.
+
+### Debugging Airflow Settings
+
+![Alt text](image-4.png)
+
+We can change the scheduler settings but its not recommended since it may overload the scheduler.
+
+### Module Error Checks
+
+Basically this error means the dag does not exist in the metadata database.
+
+To check the dags in your metadata database here is the command.
+
+```bash
+airflow dags list
+```
+Just try restarting the scheduler and then check again.
+
+If it does not work then check logs of the scheduler.
+
+```bash
+astro dev logs -s
+```
+
+To check if you have any kind of import errors in any of the DAGs use:
+
+```bash
+astro dev run dags list-import-errors
+```
+
+### Scheduler Error Checks
+
+If you have installed some new Provider like Databricks, its important to configure it properly in the yml and .env files, otherwise scheduler crashes and UI is not visible.
+
+### Module Management Errors
+
+Let's consider the following code example
+
+![Alt text](image-5.png)
+
+Here we can see that we are importing task1 from pandas that is a file in the same directory but we still get the error.
+
+![Alt text](image-6.png)
+
+The import is happening from a python package not the file in our directory. 
+
+**How to check if library exists in the airflow envt?**
+
+```bash
+astro dev bash
+
+pip freeze | grep pandas
+```
+
+So dont name the file as the name of any existing package.
+
+### More Common Issues
+
+- Refraining from immediately triggering DAGs after making changes to them or any other files in the DAG folder is advisable, as the scheduler may still need to parse the DAG.
+
+- Confirm that you have unpaused your DAGs to enable them to execute according to their schedule.
+
+- Ensure that the start_date of your DAG is set to a date in the past else if you trigger the DAG manually you will see a successful DAG run but no successful tasks.
+
+- Ensure the end_date of your DAG is set to the future else you won’t see any tasks executed like above.
+
+Often if you expect many instances of your DAG or tasks to be running simultaneously, make sure you verify these core airflow settings usually found in airflow.cfg file.
+
+```max_active_runs_per_dag``` (The maximum number of active DAG runs per DAG). Default → 16.
+
+```max_active_tasks_per_dag``` (The maximum number of task instances allowed to run concurrently in each DAG). Default → 16.
+
+```parallelism``` (This defines the maximum number of task instances that can run concurrently per scheduler in Airflow, regardless of the worker count). Default → 32.
+
+### Improper Behaviour Of DAGs
+
+Let's say we have a DAG that uses the Postgres Operator to create a new table(task 1) and also insert data into it(task 2). 
+
+We can see an error : 
+![Alt text](image-7.png)
+
+The connection is not successful because the security admins restrict the database access based on the IP Addresses. This means the firewall allows conn to db based on the ip address.
+
+### Default Postgres Connection Id
+
+The default postgres connection id is ```postgres_default```
+
+So when we are going to use some other connection id like ```pg_default``` make sure that its specified during the connection, otherwise a connection would be established with the default one but the tables we need may not exist there.
+
+We need to make sure that connection can be made from external system where airflow has been installed.
+
+### How to Avoid Dependency Conflicts?
+
+- One option is the KubernetesPodOperator, which is suitable for users who operate Airflow on Kubernetes and require greater control over the resources and infrastructure used to run the task, in addition to package management. However, there are some drawbacks, such as a more complicated setup and increased task latency.
+
+- The ExternalPythonOperator is another choice that enables you to execute certain tasks with a different set of Python libraries than others and the primary Airflow environment. This may be a virtual environment or any pre-installed Python installation that is accessible in the Airflow task's execution environment.
+
+- Another option is the PythonVirtualenvOperator, which functions similarly as the ExternalPythonOperator . However, it generates and deletes a new virtual environment for each task. This operator is ideal if you don't want to retain your virtual environment. The disadvantage of this operator is that it takes more time to generate the environment each time the task is executed, resulting in higher task latency.
+
+### ⚠️ Quiz Questions
+
+**Q1. The DAG does not come on UI? Why?**
+
+![Alt text](image-8.png)
+
+![Alt text](image-9.png)
+
+![Alt text](image-10.png)
