@@ -1,4 +1,4 @@
-# Vedanth's Data Engineering
+# Vedanth's Data Engineering Docs
 
 ## Introduction
 

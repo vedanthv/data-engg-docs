@@ -1,4 +1,4 @@
-site_name: Vedanth's Data Engineering
+site_name: Vedanth's Data Engineering Docs
 site_url: https://vedanthv.github.io/data-engg-docs/
 theme:
   name: material
@@ -48,4 +48,3 @@ markdown_extensions:
 copyright: |
   &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
 
-  

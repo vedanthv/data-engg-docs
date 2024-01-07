@@ -631,4 +631,131 @@ with DAG(
 
 ## Module 8 : Variables in Airflow
 
+### Introduction
+
+Suppose there is an API and many endpoints/tasks like create, read and delete.
+
+We will need to hardcode the information about the API in every task we do. 
+
+If the API changes, then we may need to hardcode and modify the info for every single task.
+
+We can solve this problem with variables. We can put all the info the API needs.
+
+If something changes, just change the variables, no need to change for every DAG.
+
+![Alt text](image.png)
+
+The variable has three properties: key, value and description. All of them have to be JSON serializable.
+
+### Creating a Variable
+
+Go to Admin >> Variables
+
+#### Method 1 : Using the UI
+![Alt text](image-1.png)
+
+
+All the variables are stored in the meta database.
+The variables created this way using the UI is not very secure.
+
+##### Hiding the Values
+If we use a key name like api_key the value is automatically hidden.
+![Alt text](image-2.png)
+
+Variable keywords automatically hiding values
+
+```
+access_token
+api_key
+apikey
+authorization
+passphrase
+passwd
+password
+private_key
+secret
+token
+keyfile_dict
+service_account
+```
+
+#### Method 2 : Using Environment Variables
+
+In the ```.env``` file add the following line to create an environment variable.
+
+```AIRFLOW_ML_MODEL_PARAMS:'{"param":[100,200,300]}'```
+
+We can't see them on the Airflow UI.
+
+**Benefits:**
+
+- The variables are hidden on airflow UI.
+
+- Since the variables are in .env they are not stored in the meta database, hence there is no need to create a connection to fetch these values.
+
+- Easier to version the variables.
+
+### ⚠️ Access Variables From DAGS
+
+We can use the variables in the DAG to perform operations also. The variable can be a single value or a list as seen below. 
+
+```py
+from airflow.operators.python import PythonOperator
+from airflow.models import Variable
+
+from datetime import datetime
+
+def _ml_task(ml_parameter):
+    print(ml_parameter)
+
+with DAG('ml_dag',start_time = datetime(2022,1,1),
+          schedule_interval = '@daily',catchup = False) as dag:
+
+          for ml_parameter in Variable.get('ml_model_parameters',deserialize_json = True)['params']:
+            PythonOperator(
+                task_id = f'ml_task_{ml_parameter}',
+                python_callable = _ml_task,
+                op_kwargs = {
+                    'ml_parameter':ml_parameter
+                }
+            )
+
+```
+
+#### DAG Graph
+
+![Alt text](image-3.png)
+
+### ⚠️ Jinja Templating to Access Variables
+
+``` py
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
+from airflow.models import Variable
+from datetime import datetime
+
+
+def _ml_task(ml_parameter):
+   print(ml_parameter)
+
+with DAG('ml_dag', start_date=datetime(2022, 1, 1),
+   schedule_interval='@daily', catchup=False) as dag:
+   ml_tasks = []
+   for ml_parameter in Variable.get('ml_model_parameters', deserialize_json=True)["param"]:
+       ml_tasks.append(PythonOperator(
+           task_id=f'ml_task_{ml_parameter}',
+           python_callable=_ml_task,
+           op_kwargs={
+               'ml_parameter': ml_parameter
+           }
+       ))
+
+report = BashOperator(
+   task_id='report',
+   bash_command='echo "report_{{ var.value.ml_report_name }}"'
+)
+```
+
+Using Jinja Templating gives one advantage, we dont need to create a connection to access a variable everytime, its a one time thing. 
 
