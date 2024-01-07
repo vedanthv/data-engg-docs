@@ -27,6 +27,13 @@ theme:
       primary: teal
       accent: lime
 
+nav:
+  - About : index.md
+  - Airflow : Core-Airflow.md
+  - Astronomer For Airflow : astronomer.md
+  - Azure Databricks : databricks.md
+  - PySpark : PySpark.md
+
 
 markdown_extensions:
   - pymdownx.highlight:
