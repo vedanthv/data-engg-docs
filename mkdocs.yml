@@ -33,6 +33,7 @@ nav:
   - Astronomer For Airflow : astronomer.md
   - Azure Databricks : databricks.md
   - PySpark : PySpark.md
+  - Microsoft Azure : Azure.md
 
 
 markdown_extensions:
