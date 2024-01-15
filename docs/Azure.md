@@ -1,4 +1,6 @@
-# Microsoft Azure
+# Microsoft Azure - DP 203
+
+DP 203 Study Guide - [PDF](https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4MbYT?WT.mc_id=Azure_BoM-wwl)
 
 ## Intro to DE with Azure
 
@@ -201,4 +203,430 @@ Here is the [link](https://microsoftlearning.github.io/dp-203-azure-data-enginee
 
 ### Achievement
 ![Alt text](image-26.png)
+
+## Azure Databricks Module
+
+### What is Databricks?
+
+Azure Databricks is a fully managed, cloud-based data analytics platform, which empowers developers to accelerate AI and innovation by simplifying the process of building enterprise-grade data applications. Built as a joint effort by Microsoft and the team that started Apache Spark, Azure Databricks provides data science, engineering, and analytical teams with a single platform for big data processing and machine learning.
+
+By combining the power of Databricks, an end-to-end, managed Apache Spark platform optimized for the cloud, with the enterprise scale and security of Microsoft's Azure platform, Azure Databricks makes it simple to run large-scale Spark workloads.
+
+### Databricks Workload Types
+
+Azure Databricks is a comprehensive platform that offers many data processing capabilities. While you can use the service to support any workload that requires scalable data processing, Azure Databricks is optimized for three specific types of data workload and associated user personas:
+
+- Data Science and Engineering
+- Machine Learning
+- SQL
+
+### Key Concepts
+
+* Apache Spark clusters - Spark is a distributed data processing solution that makes use of clusters to scale processing across multiple compute nodes. Each Spark cluster has a driver node to coordinate processing jobs, and one or more worker nodes on which the processing occurs. This distributed model enables each node to operate on a subset of the job in parallel; reducing the overall time for the job to complete.
+
+* Databricks File System - Databricks File System (DBFS) - While each cluster node has its own local file system (on which operating system and other node-specific files are stored), the nodes in a cluster have access to a shared, distributed file system in which they can access and operate on data files. The Databricks File System (DBFS) enables you to mount cloud storage and use it to work with and persist file-based data.
+
+* Hive Metastore - Hive is an open source technology used to define a relational abstraction layer of tables over file-based data. The tables can then be queried using SQL syntax. The table definitions and details of the file system locations on which they're based is stored in the metastore for a Spark cluster.
+
+* Delta Lake builds on the relational table schema abstraction over files in the data lake to add support for SQL semantics commonly found in relational database systems. Capabilities provided by Delta Lake include transaction logging, data type constraints, and the ability to incorporate streaming data into a relational table.
+
+* SQL Warehouses are relational compute resources with endpoints that enable client applications to connect to an Azure Databricks workspace and use SQL to work with data in tables. The results of SQL queries can be used to create data visualizations and dashboards to support business analytics and decision making. 
+
+### Quiz
+![Alt text](image-27.png)
+
+### Achievement 
+![](image-28.png)
+
+### Using Spark in Databricks
+
+* Describe key elements of the Apache Spark architecture.
+* Create and configure a Spark cluster.
+* Describe use cases for Spark.
+* Use Spark to process and analyze data stored in files.
+* Use Spark to visualize data.
+
+### High Level Overview
+
+- From a high level, the Azure Databricks service launches and manages Apache Spark clusters within your Azure subscription. Apache Spark clusters are groups of computers that are treated as a single computer and handle the execution of commands issued from notebooks. 
+
+- Clusters enable processing of data to be parallelized across many computers to improve scale and performance. They consist of a Spark driver and worker nodes. The driver node sends work to the worker nodes and instructs them to pull data from a specified data source.
+
+- In Databricks, the notebook interface is typically the driver program. This driver program contains the main loop for the program and creates distributed datasets on the cluster, then applies operations to those datasets. Driver programs access Apache Spark through a SparkSession object regardless of deployment location.
+
+![Alt text](image-29.png)
+
+### How does spark execute jobs?
+
+- Work submitted to the cluster is split into as many independent jobs as needed. This is how work is distributed across the Cluster's nodes. Jobs are further subdivided into tasks. The input to a job is partitioned into one or more partitions. These partitions are the unit of work for each slot.
+
+- The secret to Spark's high performance is parallelism. Scaling vertically (by adding resources to a single computer) is limited to a finite amount of RAM, Threads and CPU speeds; but clusters scale horizontally, adding new nodes to the cluster as needed.
+
+#### Parallelism in Spark
+
+- The first level of parallelization is the executor - a Java virtual machine (JVM) running on a worker node, typically, one instance per node.
+
+- The second level of parallelization is the slot - the number of which is determined by the number of cores and CPUs of each node.
+
+- Each executor has multiple slots to which parallelized tasks can be assigned.
+
+- The JVM is naturally multi-threaded, but a single JVM, such as the one coordinating the work on the driver, has a finite upper limit. By splitting the work into tasks, the driver can assign units of work to *slots in the executors on worker nodes for parallel execution.
+
+- Additionally, the driver determines how to partition the data so that it can be distributed for parallel processing. So, the driver assigns a partition of data to each task so that each task knows which piece of data it is to process. Once started, each task will fetch the partition of data assigned to it.
+
+#### Jobs and Stages
+
+Depending on the work being performed, multiple parallelized jobs may be required. Each job is broken down into stages. A useful analogy is to imagine that the job is to build a house:
+
+- The first stage would be to lay the foundation.
+- The second stage would be to erect the walls.
+- The third stage would be to add the roof.
+
+Attempting to do any of these steps out of order just doesn't make sense, and may in fact be impossible. Similarly, Spark breaks each job into stages to ensure everything is done in the right order.
+
+### Azure Cluster Architecture
+
+![Alt text](image-30.png)
+
+When you create an Azure Databricks workspace, a Databricks appliance is deployed as an Azure resource in your subscription. 
+
+When you create a cluster in the workspace, you specify the types and sizes of the virtual machines (VMs) to use for both the driver and worker nodes, and some other configuration options, but Azure Databricks manages all other aspects of the cluster.
+
+The Databricks appliance is deployed into Azure as a managed resource group within your subscription. This resource group contains the driver and worker VMs for your clusters, along with other required resources, including a virtual network, a security group, and a storage account. 
+
+All metadata for your cluster, such as scheduled jobs, is stored in an Azure Database with geo-replication for fault tolerance.
+
+![Alt text](image-31.png)
+
+### PySpark Code Snippets
+
+#### Loading Data into Dataframe
+
+```py
+df = spark.read.load('/data/products.csv',
+    format='csv',
+    header=True
+)
+display(df.limit(10))
+```
+
+#### Specifying a Database Schema
+
+```py
+from pyspark.sql.types import *
+from pyspark.sql.functions import *
+
+productSchema = StructType([
+    StructField("ProductID", IntegerType()),
+    StructField("ProductName", StringType()),
+    StructField("Category", StringType()),
+    StructField("ListPrice", FloatType())
+    ])
+
+df = spark.read.load('/data/product-data.csv',
+    format='csv',
+    schema=productSchema,
+    header=False)
+display(df.limit(10))
+```
+
+#### Filter and Group Columns
+
+```py
+pricelist_df = df.select("ProductID", "ListPrice")
+```
+
+#### Chaining Operations
+
+```py
+bikes_df = df.select("ProductName", "ListPrice").where((df["Category"]=="Mountain Bikes") | (df["Category"]=="Road Bikes"))
+display(bikes_df)
+```
+
+#### Group By + Aggregation
+
+```py
+counts_df = df.select("ProductID", "Category").groupBy("Category").count()
+display(counts_df)
+```
+
+#### SQL - Create db objects in catalog
+
+The Spark catalog is a metastore for relational data objects such as views and tables. The Spark runtime can use the catalog to seamlessly integrate code written in any Spark-supported language with SQL expressions that may be more natural to some data analysts or developers.
+
+```py
+df.createOrReplaceTempView("products")
+```
+
+#### External Tables
+![Alt text](image-32.png)
+
+#### Spark API to Access Data
+
+```py
+bikes_df = spark.sql("SELECT ProductID, ProductName, ListPrice \
+                      FROM products \
+                      WHERE Category IN ('Mountain Bikes', 'Road Bikes')")
+display(bikes_df)
+```
+
+#### Use SQL Code Directly
+
+```sql
+%sql
+
+SELECT Category, COUNT(ProductID) AS ProductCount
+FROM products
+GROUP BY Category
+ORDER BY Category
+```
+
+### Visualizing Data
+
+```py
+from matplotlib import pyplot as plt
+
+# Get the data as a Pandas dataframe
+data = spark.sql("SELECT Category, COUNT(ProductID) AS ProductCount \
+                  FROM products \
+                  GROUP BY Category \
+                  ORDER BY Category").toPandas()
+
+# Clear the plot area
+plt.clf()
+
+# Create a Figure
+fig = plt.figure(figsize=(12,8))
+
+# Create a bar plot of product counts by category
+plt.bar(x=data['Category'], height=data['ProductCount'], color='orange')
+
+# Customize the chart
+plt.title('Product Counts by Category')
+plt.xlabel('Category')
+plt.ylabel('Products')
+plt.grid(color='#95a5a6', linestyle='--', linewidth=2, axis='y', alpha=0.7)
+plt.xticks(rotation=70)
+
+# Show the plot area
+plt.show()
+```
+
+![Alt text](image-33.png)
+
+### Exercise : Exploring Spark
+
+Here is the [link](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/366532548944596) for the Databricks workspace that has an introduction to spark.
+
+### Achievement
+
+![Alt text](image-34.png)
+
+### Using Delta Lake in Azure Databricks
+
+Linux foundation Delta Lake is an open-source storage layer for Spark that enables relational database capabilities for batch and streaming data. By using Delta Lake, you can implement a data lakehouse architecture in Spark to support SQL_based data manipulation semantics with support for transactions and schema enforcement.
+
+#### Benefits of Delta Lake
+
+**Relational tables that support querying and data modification** - With Delta Lake, you can store data in tables that support CRUD (create, read, update, and delete) operations. In other words, you can select, insert, update, and delete rows of data in the same way you would in a relational database system.
+
+**Support for ACID transactions** - Relational databases are designed to support transactional data modifications that provide atomicity (transactions complete as a single unit of work), consistency (transactions leave the database in a consistent state), isolation (in-process transactions can't interfere with one another), and durability (when a transaction completes, the changes it made are persisted). Delta Lake brings this same transactional support to Spark by implementing a transaction log and enforcing serializable isolation for concurrent operations.
+
+**Data versioning and time travel** -  Because all transactions are logged in the transaction log, you can track multiple versions of each table row, and even use the time travel feature to retrieve a previous version of a row in a query.
+
+**Support for batch and streaming data** - While most relational databases include tables that store static data, Spark includes native support for streaming data through the Spark Structured Streaming API. Delta Lake tables can be used as both sinks (destinations) and sources for streaming data.
+
+**Standard formats and interoperability** - The underlying data for Delta Lake tables is stored in Parquet format, which is commonly used in data lake ingestion pipelines.
+
+### Creating Delta Lake Tables
+
+#### Create Delta Lake Table From A Dataframe
+
+```py
+# Load a file into a dataframe
+df = spark.read.load('/data/mydata.csv', format='csv', header=True)
+
+# Save the dataframe as a delta table
+delta_table_path = "/delta/mydata"
+df.write.format("delta").save(delta_table_path)
+```
+
+### Making Conditional Updates
+
+While you can make data modifications in a dataframe and then replace a Delta Lake table by overwriting it, a more common pattern in a database is to insert, update or delete rows in an existing table as discrete transactional operations. To make such modifications to a Delta Lake table, you can use the DeltaTable object in the Delta Lake API, which supports update, delete, and merge operations.
+
+```py
+from delta.tables import *
+from pyspark.sql.functions import *
+
+# Create a deltaTable object
+deltaTable = DeltaTable.forPath(spark, delta_table_path)
+
+# Update the table (reduce price of accessories by 10%)
+deltaTable.update(
+    condition = "Category == 'Accessories'",
+    set = { "Price": "Price * 0.9" })
+```
+
+The updates ae stored in the transaction log.
+
+### Query a Previous Version of the table
+
+Delta Lake tables support versioning through the transaction log. The transaction log records modifications made to the table, noting the timestamp and version number for each transaction. You can use this logged version data to view previous versions of the table - a feature known as time travel.
+
+```py
+df = spark.read.format("delta").option("timestampAsOf", '2022-01-01').load(delta_table_path)
+```
+
+### Catalog Tables
+
+#### External vs Managed Tables
+
+- A managed table is defined without a specified location, and the data files are stored within the storage used by the metastore. Dropping the table not only removes its metadata from the catalog, but also deletes the folder in which its data files are stored.
+
+- An external table is defined for a custom file location, where the data for the table is stored. The metadata for the table is defined in the Spark catalog. Dropping the table deletes the metadata from the catalog, but doesn't affect the data files.
+
+#### Creating Catalog Table From Dataframe
+
+```py
+# Save a dataframe as a managed table
+df.write.format("delta").saveAsTable("MyManagedTable")
+
+## specify a path option to save as an external table
+df.write.format("delta").option("path", "/mydata").saveAsTable("MyExternalTable")
+```
+
+#### Creating Table with SQL
+
+```py
+spark.sql("CREATE TABLE MyExternalTable USING DELTA LOCATION '/mydata'")
+```
+
+#### Defining the Table Schema
+
+```sql
+%sql
+
+CREATE TABLE ManagedSalesOrders
+(
+    Orderid INT NOT NULL,
+    OrderDate TIMESTAMP NOT NULL,
+    CustomerName STRING,
+    SalesTotal FLOAT NOT NULL
+)
+USING DELTA
+```
+
+#### How to use catalog tables?
+
+Catalog Tables can be used like the normal relational tables.
+
+```sql
+%sql
+
+SELECT orderid, salestotal
+FROM ManagedSalesOrders
+```
+
+### Spark Structured Streaming
+
+A typical stream processing solution involves constantly reading a stream of data from a source, optionally processing it to select specific fields, aggregate and group values, or otherwise manipulate the data, and writing the results to a sink.
+
+Spark includes native support for streaming data through Spark Structured Streaming, an API that is based on a boundless dataframe in which streaming data is captured for processing. A Spark Structured Streaming dataframe can read data from many different kinds of streaming source, including network ports, real time message brokering services such as Azure Event Hubs or Kafka.
+
+#### Using Delta Lake as a Streaming Source
+
+```py
+from pyspark.sql.types import *
+from pyspark.sql.functions import *
+
+# Load a streaming dataframe from the Delta Table
+stream_df = spark.readStream.format("delta") \
+    .option("ignoreChanges", "true") \
+    .load("/delta/internetorders")
+
+# Now you can process the streaming data in the dataframe
+# for example, show it:
+stream_df.show()
+```
+
+By default, when delta lake table is used as a streaming source, only append operations are allowed. 
+
+#### Using Delta Table as streaming sink
+
+```py
+
+from pyspark.sql.types import *
+from pyspark.sql.functions import *
+
+# Create a stream that reads JSON data from a folder
+streamFolder = '/streamingdata/'
+jsonSchema = StructType([
+    StructField("device", StringType(), False),
+    StructField("status", StringType(), False)
+])
+stream_df = spark.readStream.schema(jsonSchema).option("maxFilesPerTrigger", 1).json(inputPath)
+
+# Write the stream to a delta table
+table_path = '/delta/devicetable'
+checkpoint_path = '/delta/checkpoint'
+delta_stream = stream_df.writeStream.format("delta").option("checkpointLocation", checkpoint_path).start(table_path)
+
+```
+
+### Where are External and Managed Tables Stored?
+
+- External tables that are defined by the path to the parquet files containing the table data.
+- Managed tables, that are defined in the Hive metastore for the Spark cluster.
+
+### Exercise : Delta Tables
+
+Here is the [link](https://microsoftlearning.github.io/mslearn-databricks/Instructions/Exercises/03-Delta-lake-in-Azure-Databricks.html#create-a-notebook-and-ingest-data) to the exercise 
+
+**Didnt Understand : Streaming Data and Delta Tables**
+
+### Quiz
+![Alt text](image-35.png)
+
+### Achievement
+![Alt text](image-36.png)
+
+### SQL Warehouse in Databricks
+
+#### Configurations in SQL Warehouses
+![Alt text](image-37.png)
+
+#### Creating tables and databases
+
+All SQL Warehouses contain a default database schema named default. You can use create tables in this schema in order to analyze data. However, if you need to work with multiple tables in a relational schema, or you have multiple analytical workloads where you want to manage the data (and access to it) separately, you can create custom database schema. To create a database, use the SQL editor to run a ```CREATE DATABASE``` or ```CREATE SCHEMA``` SQL statement.
+
+```sql
+CREATE SCHEMA salesdata;
+```
+
+```sql
+CREATE TABLE salesdata.salesorders
+(
+    orderid INT,
+    orderdate DATE,
+    customerid INT,
+    ordertotal DECIMAL
+)
+USING DELTA
+LOCATION '/data/sales/';
+```
+
+### Exercise
+
+![Alt text](image-40.png)
+
+Check out the complete exercise [here](https://microsoftlearning.github.io/mslearn-databricks/Instructions/Exercises/04-Azure-Databricks-SQL.html)
+
+### Achievement
+![Alt text](image-39.png)
+
+### Running Azure Databricks Notebooks in Azure Data Factory
+
+![Alt text](image-41.png)
+
 
