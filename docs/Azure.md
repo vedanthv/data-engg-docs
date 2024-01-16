@@ -629,4 +629,52 @@ Check out the complete exercise [here](https://microsoftlearning.github.io/mslea
 
 ![Alt text](image-41.png)
 
+dapi2cb79aec4d38d78911008d521a5ecac3
+
+1. Search for Data Factory and Create a new instance.
+
+2. Click on 'Launch Studio'
+
+3. Go to Databricks > Notebook
+
+4. Under Azure Databricks > Create Linked Service > Enter all the parameters
+
+#### Parameters from the Pipeline to Notebook
+
+You can use parameters to pass variable values to a notebook from the pipeline. Parameterization enables greater flexibility than using hard-coded values in the notebook code.
+
+
+##### Below code passes the value data to the folder variable
+
+```py
+dbutils.widgets.text("folder", "data")
+```
+
+##### Get the value for the parameter
+```py
+folder = dbutils.widgets.get("folder")
+```
+
+##### Passing output values in a notebook
+
+```py
+path = "dbfs:/{0}/products.csv".format(folder)
+dbutils.notebook.exit(path)
+```
+
+### Exercise
+
+Here is the [link](https://microsoftlearning.github.io/mslearn-databricks/Instructions/Exercises/05-Azure-Databricks-Data-Factory.html) to the exercise.
+
+
+I'm getting this error about not enough nodes to run the pipeline
+
+```ADD_NODES_FAILED```
+![Alt text](image-42.png)
+
+The pipeline is running from the ADF Studio
+![Alt text](image-43.png)
+
+### Achievement
+![Alt text](image-44.png)
 
