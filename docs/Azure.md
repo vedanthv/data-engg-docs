@@ -194,6 +194,8 @@ The Azure Synapse SQL system uses a distributed query processing model to parall
 
 You can use the built-in serverless pool for cost-effective analysis and processing of file data in the data lake, and use dedicated SQL pools to create relational data warehouses for enterprise data modeling and reporting.
 
+![Alt text](image-45.png)
+
 ### Exploring Synapse Analytics
 
 Here is the [link](https://microsoftlearning.github.io/dp-203-azure-data-engineer/Instructions/Labs/01-Explore-Azure-Synapse.html) to experiment with Synapse Analytics.
