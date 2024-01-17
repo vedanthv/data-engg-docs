@@ -93,3 +93,34 @@ Some supported operations include:
 
 #### Transform Data With Spark
 
+##### Data Objects in the Lakehouse
+![Alt text](image-60.png)
+
+- Catalog - Grouping of Databases
+- Schema - Grouping of Objects in catalog
+- Every schema has a table that is managed or external
+
+##### Managed vs External Storage
+![Alt text](image-61.png)
+
+- View is a saved query against one or more databass. Can be temporary or global. Temp Views are scoped only to the current spark session
+
+- CTE's only alias the results of the query while that query is being planned or executed
+
+#### Providing Options When Dealing with External Data Sources
+
+**Creating a table using SQL DDL and Providing Options**
+
+```sql
+CREATE TABLE IF NOT EXISTS sales_csv
+    (order_id LONG,email STRING,timestamp LONG,total_item_quantity INTEGER,items STRING)
+USING CSV
+OPTIONS (
+    header = 'true'
+    delimiter = "|"
+)
+LOCATION "${paths.dba_sales.csv}"
+```
+
+**Limits of Tables With External Data Sources**
+
