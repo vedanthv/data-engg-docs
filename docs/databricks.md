@@ -196,6 +196,9 @@ We can use external tools like Apache Airflow to manage the workflows or even us
 
 One example of delta live tables pipeline is using Twitter Stream API to retrieve live tweets to S3, then use delta live tables to ingest, clean and transform tweets and finally do sentiment analysis.
 
+## Credential
+
+![Alt text](image-63.png)
 
 ## Databricks Academy : Data Engineer Learning Plan
 
