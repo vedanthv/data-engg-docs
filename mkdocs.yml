@@ -29,12 +29,10 @@ theme:
 
 nav:
   - About : index.md
-  - Airflow : Core-Airflow.md
-  - Astronomer For Airflow : astronomer.md
+  - Astronomer and Airflow : astronomer.md
   - Azure Databricks : databricks.md
   - PySpark : PySpark.md
   - Microsoft Azure - DP 203 : Azure.md
-
 
 markdown_extensions:
   - pymdownx.highlight:
