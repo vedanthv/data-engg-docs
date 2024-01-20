@@ -165,7 +165,8 @@ The metadata information about the data objects and the ACLs are stored in contr
 
 The Databricks Lakehouse platform provides us with managed data ingestion, schema detection, enforcement and evaluation along with declarative and auto scaling data flow with a native orchestrator.
 
- #### Capabilities of DE in Lake House
+#### Capabilities of DE in Lake House
+
 - easy data ingestion
 - auto etl pipelines
 - data quality checks
@@ -1117,8 +1118,6 @@ While different organizations may have varying policies for how data is initiall
 
 This pattern ensures that even if data doesn't match expectations with regards to data types or column names, no data will be dropped, meaning that programmatic or manual intervention can still salvage data in a partially corrupted or invalid state.
 
-### Setting Up Delta Tables
-
 #### CTAS Statements
 
 Used to populate the delta tables using data from an input query
@@ -1620,3 +1619,205 @@ By vacuuming the files, we are permanantly deleting the versions of the files an
 
 After deletion, only the delta file with log of transactions remains.
 
+### Data Pipelines with Delta Live Tables
+
+#### The Medallion Architecture
+![Alt text](image-102.png)
+
+##### The Bronze Layer
+![Alt text](image-103.png)
+
+##### The Silver Layer
+![Alt text](image-104.png)
+
+##### The Gold Layer
+![Alt text](image-105.png)
+
+#### The Multi Hop Architecture
+![Alt text](image-106.png)
+
+#### How DLT Solves Problems
+
+Usually the bronze, silver and gold layers will not be in a linear dependency format.
+![Alt text](image-107.png)
+
+#### What exactly is a live table?
+![Alt text](image-108.png)
+
+**Streaming Live Tables**
+![Alt text](image-109.png)
+
+#### Steps to Create a DLT Pipeline
+![Alt text](image-110.png)
+
+#### Development Vs Production pipelines
+![Alt text](image-111.png)
+
+We use job clusters in prod pipelines.
+
+Hence if the pipeline in the prod needs to be run multiple times, then the cluster object has to be created multiple times.
+
+But in the case of dev pipeines, we can keep the clusters running for faster debugging.
+
+#### Dependencies in the Pipeline
+![Alt text](image-112.png)
+
+All the tables in the pipeline have the same LIVE schema, so we need to mention the keyword ```LIVE.events```
+
+This feature allows us to migrate the pipelines between databases in the environment.
+
+When we are moving from dev to prod, then just change the schema from dev to prod and we can migrate very quickly.
+
+#### Data Quality with Expectations
+![Alt text](image-113.png)
+
+
+#### Why Event Logs are Important
+![Alt text](image-114.png)
+
+#### Spark Structured Streaming [Ingest From Cloud]
+![Alt text](image-115.png)
+
+#### Streaming from an existing table
+![Alt text](image-116.png)
+Usally the table that we are streaming from has data coming in from Kafka/Kinesis.
+
+#### Parameters in DLT
+![Alt text](image-117.png)
+
+#### Change Data Capture
+![Alt text](image-118.png)
+Here the source is ```city_updates``` and it must be a stream.
+
+We need unique key like id that can idenitify the data that can be included in teh updates
+A sequence no is required to apply changes in the current order.
+
+**Example**
+![Alt text](image-119.png)
+Initially cities table is empty, here we can see that berkley was misspelled in the first entry of city_updates table, so when we fix it by keeping the same id and different timestamp its updated in the cities table also.
+
+#### What does DLT automate?
+![Alt text](image-120.png)
+
+### Creating Pipelines
+
+1. Setup the parameters like in the [Delta Live Tables UI Notebook]().
+
+2. Then click '+' -> New DLT Pipeline.
+
+3. Create the pipeline using the steps mentioned [here](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282683/command/2951115793282684)
+
+4. This is the final pipeline config [link](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#joblist/pipelines/create)
+
+5. This is the final dashboard
+![Alt text](image-121.png)
+
+In prod mode we delete the cluster resources after the pipeline completes.
+
+I cannot run the pipelines due to restrictions in student account.
+![Alt text](image-122.png)
+
+Here is the snapshot of the running pipeline from the course.
+![Alt text](image-123.png)
+
+### Fundamental DLT SQL Syntax
+
+This notebook demonstrates using Delta Live Tables (DLT) to process raw data from JSON files landing in cloud object storage through a series of tables to drive analytic workloads in the lakehouse. Here we demonstrate a medallion architecture, where data is incrementally transformed and enriched as it flows through a pipeline. This notebook focuses on the SQL syntax of DLT rather than this architecture, but a brief overview of the design:
+
+* The bronze table contains raw records loaded from JSON enriched with data describing how records were ingested
+* The silver table validates and enriches the fields of interest
+* The gold table contains aggregate data to drive business insights and dashboarding
+
+DLT syntax is not intended for interactive execution in a notebook. This notebook will need to be scheduled as part of a DLT pipeline for proper execution. 
+
+If you do execute a DLT notebook cell interactively, you should see a message that your statement is syntactically valid. Note that while some syntax checks are performed before returning this message, it is not a guarantee that your query will perform as desired. We'll discuss developing and troubleshooting DLT code later in the course.
+
+Delta Live Tables adapts standard SQL queries to combine DDL (data definition language) and DML (data manipulation language) into a unified declarative syntax.
+
+#### Table as Query Results
+
+There are two distinct types of persistent tables that can be created with DLT:
+* **Live tables** are materialized views for the lakehouse; they will return the current results of any query with each refresh
+* **Streaming live tables** are designed for incremental, near-real time data processing
+
+Note that both of these objects are persisted as tables stored with the Delta Lake protocol (providing ACID transactions, versioning, and many other benefits). We'll talk more about the differences between live tables and streaming live tables later in the notebook.
+
+#### Auto Loader
+
+Databricks has developed the [Auto Loader](https://docs.databricks.com/ingestion/auto-loader/index.html) functionality to provide optimized execution for incrementally loading data from cloud object storage into Delta Lake. Using Auto Loader with DLT is simple: just configure a source data directory, provide a few configuration settings, and write a query against your source data. 
+
+Auto Loader will automatically detect new data files as they land in the source cloud object storage location, incrementally processing new records without the need to perform expensive scans and recomputing results for infinitely growing datasets.
+
+The **`cloud_files()`** method enables Auto Loader to be used natively with SQL. This method takes the following positional parameters:
+
+* The source location, which should be cloud-based object storage
+* The source data format, which is JSON in this case
+* An arbitrarily sized comma-separated list of optional reader options. In this case, we set **`cloudFiles.inferColumnTypes`** to **`true`**
+
+In the query below, in addition to the fields contained in the source, Spark SQL functions for the **`current_timestamp()`** and **`input_file_name()`** as used to capture information about when the record was ingested and the specific file source for each record.
+
+```sql
+CREATE OR REFRESH STREAMING LIVE TABLE orders_bronze
+AS SELECT current_timestamp() processing_time, input_file_name() source_file, *
+FROM cloud_files("${source}/orders", "json", map("cloudFiles.inferColumnTypes", "true"))
+```
+
+### Validating and Enriching the Data
+
+The select statement contains the core logic of your query. In this example, we:
+* Cast the field **`order_timestamp`** to the timestamp type
+* Select all of the remaining fields (except a list of 3 we're not interested in, including the original **`order_timestamp`**)
+
+Note that the **`FROM`** clause has two constructs that you may not be familiar with:
+* The **`LIVE`** keyword is used in place of the schema name to refer to the target schema configured for the current DLT pipeline
+* The **`STREAM`** method allows users to declare a streaming data source for SQL queries
+
+Note that if no target schema is declared during pipeline configuration, your tables won't be published (that is, they won't be registered to the metastore and made available for queries elsewhere). 
+
+The target schema can be easily changed when moving between different execution environments, meaning the same code can easily be deployed against regional workloads or promoted from a dev to prod environment without needing to hard-code schema names.
+
+```sql
+CREATE OR REFRESH STREAMING LIVE TABLE orders_silver
+(CONSTRAINT valid_date EXPECT (order_timestamp > "2021-01-01") ON VIOLATION FAIL UPDATE)
+COMMENT "Append only orders with valid timestamps"
+TBLPROPERTIES ("quality" = "silver")
+AS SELECT timestamp(order_timestamp) AS order_timestamp, * EXCEPT (order_timestamp, source_file, _rescued_data)
+FROM STREAM(LIVE.orders_bronze)
+```
+
+Here, in the end of the statement, we have ```LIVE.orders_bronze```. We have to specify ```LIVE.``` because it refers to the target schema that we defined before in the configuration settings.
+
+The table ```order_silver``` is a STREAMING table becuase it takes in data from another streaming table ```orders_bronze```
+
+If the expectation fails, then we can have two main choices ```UPDATE``` will drop all the rows that were part of the insertion even if only one row fails the constraint.
+
+If we use ```ROW``` then it drops only the row that failed the update
+
+### Live Tables vs. Streaming Live Tables ⚠️
+
+Below are some of the differences between these types of tables.
+
+Live Tables
+
+* Always "correct", meaning their contents will match their definition after any update.
+* Return same results as if table had just been defined for first time on all data.
+* Should not be modified by operations external to the DLT Pipeline (you'll either get undefined answers or your change will just be undone).
+
+Streaming Live Tables
+
+* Only supports reading from "append-only" streaming sources.
+* Only reads each input batch once, no matter what (even if joined dimensions change, or if the query definition changes, etc).
+* Can perform operations on the table outside the managed DLT Pipeline (append data, perform GDPR, etc).
+
+A live table or view always reflects the results of the query that defines it, including when the query defining the table or view is updated, or an input data source is updated. Like a traditional materialized view, a live table or view may be entirely computed when possible to optimize computation resources and time.
+
+A streaming live table or view processes data that has been added only since the last pipeline update. Streaming tables and views are stateful; if the defining query changes, new data will be processed based on the new query and existing data is not recomputed.
+
+### Creating The Gold Layer
+
+```sql
+CREATE OR REFRESH LIVE TABLE orders_by_date
+AS SELECT date(order_timestamp) AS order_date, count(*) AS total_daily_orders
+FROM LIVE.orders_silver
+GROUP BY date(order_timestamp)
+```
