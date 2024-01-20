@@ -196,6 +196,32 @@ We can use external tools like Apache Airflow to manage the workflows or even us
 
 One example of delta live tables pipeline is using Twitter Stream API to retrieve live tweets to S3, then use delta live tables to ingest, clean and transform tweets and finally do sentiment analysis.
 
+### Data Streaming Workloads
+
+- Every organization generates large amounts of real time data. This data includes transaction records, third party news, weather, market data and real time feeds, web clicks, social posts, emails and instant messages.
+
+- Some applications of real time data are Fraud Detection, Personalized Offers, Smart Pricing, Smart Devices and Predictive maintainence.
+
+Databricks supports real time analytics, real time ML and real time applications.
+
+Specific use cases include Retail, Industrial Automation, Healthcare and Financial Instituitions.
+
+### ML Workloads
+
+Problems
+
+- Multiple Tools Available
+- Hard to track experiments
+- Reproducing Results is hard
+- ML Models are hard to deploy
+
+Solutions
+
+- Built in ML Frameworks and model explainability
+- Support for Distributed Training
+- AutoML and Hyperparameter Tuning
+- Support for hardware accelerators
+
 ## Credential
 
 ![Alt text](image-63.png)
@@ -272,6 +298,7 @@ Specifies overall security model of the cluster.
 ![Alt text](image-55.png)
 
 - On shared security mode multiple users can be granted access.
+- On single user security mode, each user will have their own cluster.
 
 ##### Why Use Databricks Notebooks?
 ![Alt text](image-56.png)
@@ -305,9 +332,91 @@ Some supported operations include:
 
 - View is a saved query against one or more databass. Can be temporary or global. Temp Views are scoped only to the current spark session
 
-- CTE's only alias the results of the query while that query is being planned or executed
+- CTE's only alias the results of the query while that query is being planned or executed.
+
+#### Extracting Data Directly from Files with Spark SQL
+
+![Alt text](image-64.png)
+
+**Details in the JSON Clickstream File**
+
+```sql
+SELECT * FROM json.`${DA.paths.kafka_events}/001.json`
+```
+![Alt text](image-65.png)
+
+**Querying a Directory of Files**
+
+```sql
+SELECT * FROM json.`${DA.paths.kafka_events}`
+```
+![Alt text](image-66.png)
+
+**Create a View for the Files**
+
+```sql
+CREATE OR REPLACE VIEW event_view
+AS SELECT * FROM json.`${DA.paths.kafka_events}`
+```
+
+**Create Temporary References**
+
+```sql
+CREATE OR REPLACE TEMP VIEW events_temp_view
+AS SELECT * FROM json.`${DA.paths.kafka_events}`
+```
+
+**Common table expressions**
+
+These only exist while running the cell. CTEs only alias the results of the query while the cell is being planned and executed.
+
+```sql
+WITH cte_json
+AS (SELECT * FROM json.`${DA.paths.kafka_events}`)
+SELECT * FROM cte_json
+```
+
+```sql
+SELECT COUNT(*) FROM cte_json
+```
+
+The Temp Viws are scoped only to the current spark session. 
+
+#### Working with Binary Files
+
+Extract the Raw Bytes and Metadata of a File
+
+Some workflows may require working with entire files, such as when dealing with images or unstructured data. Using **`binaryFile`** to query a directory will provide file metadata alongside the binary representation of the file contents.
+
+Specifically, the fields created will indicate the **`path`**, **`modificationTime`**, **`length`**, and **`content`**.
+
+```sql
+SELECT * FROM binaryFile.`${DA.paths.kafka_events}`
+```
 
 #### Providing Options When Dealing with External Data Sources
+
+**Directly Querying the csv file**
+
+```sql
+SELECT * FROM csv.`${DA.paths.sales_csv}`
+```
+
+The data is not formatted properly.
+![Alt text](image-67.png)
+
+**Registering Tables on External Data with Read Options**
+
+While Spark will extract some self-describing data sources efficiently using default settings, many formats will require declaration of schema or other options.
+
+While there are many <a href="https://docs.databricks.com/spark/latest/spark-sql/language-manual/sql-ref-syntax-ddl-create-table-using.html" target="_blank">additional configurations</a> you can set while creating tables against external sources, the syntax below demonstrates the essentials required to extract data from most formats.
+
+<strong><code>
+CREATE TABLE table_identifier (col_name1 col_type1, ...)<br/>
+USING data_source<br/>
+OPTIONS (key1 = val1, key2 = val2, ...)<br/>
+LOCATION = path<br/>
+</code></strong>
 
 **Creating a table using SQL DDL and Providing Options**
 
@@ -322,14 +431,50 @@ OPTIONS (
 LOCATION "${paths.dba_sales.csv}"
 ```
 
+No data will be moved while creating out tables. the data is just called from the files.
+
+**NOTE**: When working with CSVs as a data source, it's important to ensure that column order does not change if additional data files will be added to the source directory. Because the data format does not have strong schema enforcement, Spark will load columns and apply column names and data types in the order specified during table declaration.
+
+**Checking the Description of the Table**
+
+```sql
+DESCRIBE EXTENDED sales_csv
+```
+
 #### Limits of Tables with External Data Sources
 
 - When we are using external data sources other than Delta Lake and Data Lakehouse we can't expect the performance to be good always.
+
 - Delta Lake will always guarantee that we get the most recent data from the storage.
-- When we add data to a table/csv that is already in the database, use the ```REFRESH TABLE table_name``` command to update the cache and make sure that the most recent data is in the data storage.
-- Note that refreshing the table will invalidate out cache so it needs to be rescanned again. 
+
+**Example**
+
+Here is an example where external file data is being updated in out sales_csv table.
+
+```python
+%python
+(spark.read
+      .option("header", "true")
+      .option("delimiter", "|")
+      .csv(DA.paths.sales_csv)
+      .write.mode("append")
+      .format("csv")
+      .save(DA.paths.sales_csv, header="true"))
+```
+
+The count method on this will not reflect the newly added rows in the dataset.
+
+At the time we previously queried this data source, Spark automatically cached the underlying data in local storage. This ensures that on subsequent queries, Spark will provide the optimal performance by just querying this local cache.
+
+Our external data source is not configured to tell Spark that it should refresh this data. 
+
+We **can** manually refresh the cache of our data by running the **`REFRESH TABLE`** command.
+
+Note that refreshing the table will invalidate out cache so it needs to be rescanned again. 
 
 #### Using JDBC to extract data from SQL Databases
+
+SQL databases are an extremely common data source, and Databricks has a standard JDBC driver for connecting with many flavors of SQL.
 
 ```sql
 DROP TABLE IF EXISTS users_jdbc
@@ -343,6 +488,9 @@ OPTIONS (
 ```	
 
 **Checking if there are any files in the JDBC**
+
+Table Description
+![Alt text](image-68.png)
 
 ```sql
 %python
@@ -358,25 +506,83 @@ print(f"Found {len(files)} files"
 #### How does Spark Interact with External Databases
 
 - Move the entire database to Databricks and then execute logic on the currently active cluster.
+
 - Pushing the query to an external database and only transfer results back to Databricks.
 
 ### Cleaning Data using Spark
+
+Data
+![Alt text](image-69.png)
+
+**Check the table counts**
 
 ```sql
 SELECT count(*), count(user_id),count(user_first_timestamp)
 FROM users_dirty
 ```
+![Alt text](image-70.png)
+
 We can observe that some data is missing.
 
 ```sql
 SELECT COUNT(*) FROM users_dirty 
 WHERE email IS NULL
 ```
+848 records are missing.
+
+Using Python the same might be done 
+
+```python
+from pyspark.sql.functions import col
+usersDF = spark.read.table("users_dirty")
+
+usersDF.where(col("email").isNull()).count()
+```
+
 #### Deduplicating the Rows Based on Specific Columns
 
-- Use max to keep the values of ```email``` and updated in the result of ```group_by```
-- Capture non null emails when there are multiple records.
-- We know that for each user there will be a unique tuple of ```email```, ```timestamp``` and other columns.
+The code below uses **`GROUP BY`** to remove duplicate records based on **`user_id`** and **`user_first_touch_timestamp`** column values. (Recall that these fields are both generated when a given user is first encountered, thus forming unique tuples.)
+
+Here, we are using the aggregate function **`max`** as a hack to:
+
+- Keep values from the **`email`** and **`updated`** columns in the result of our group by
+
+- Capture non-null emails when multiple records are present
+
+**Steps to Deduplicate**
+
+1. Fetch All the Records [986 records]
+
+```sql
+CREATE OR REPLACE TEMP VIEW deduped_users AS 
+SELECT user_id, user_first_touch_timestamp, max(email) AS email, max(updated) AS updated
+FROM users_dirty
+```
+
+2. Filter records where user_id is not null [983 records]
+
+```sql
+CREATE OR REPLACE TEMP VIEW deduped_users AS 
+SELECT user_id, user_first_touch_timestamp, email AS email, updated AS updated
+FROM users_dirty
+WHERE user_id IS NOT NULL;
+
+SELECT * FROM deduped_users
+```
+
+3. Group by ```user_id``` and ```user_first_timestamp```
+
+```sql
+CREATE OR REPLACE TEMP VIEW deduped_users AS 
+SELECT user_id, user_first_touch_timestamp, first(email) AS email, first(updated) AS updated
+FROM users_dirty
+WHERE user_id IS NOT NULL
+GROUP BY user_id, user_first_touch_timestamp;
+
+SELECT * FROM deduped_users
+```
+
+We can use max also since we dont care which value is grouped by for email and updated
 
 ```sql
 CREATE OR REPLACE TEMP VIEW deduplicated AS
@@ -386,7 +592,24 @@ WHERE user_id IS NOT NULL
 GROUP BY user_id,user_first_touch_timestamp;
 ``` 
 
-#### Validating Duplicates
+In either case we get 917 records.
+
+**Check for distinct ```user_id``` and ```user_first_touch_timestamp``` rows**
+
+```sql
+SELECT COUNT(DISTINCT(user_id, user_first_touch_timestamp))
+FROM users_dirty
+WHERE user_id IS NOT NULL
+```
+We get 917 rows.
+
+### Validating Duplicates
+
+Based on our manual review above, we've visually confirmed that our counts are as expected.
+ 
+We can also programmatically perform validation using simple filters and **`WHERE`** clauses.
+
+Validate that the **`user_id`** for each row is unique.
 
 ```sql
 SELECT max(row_count) <= 1 AS no_of_duplicate_ids FROM(
@@ -395,8 +618,10 @@ SELECT max(row_count) <= 1 AS no_of_duplicate_ids FROM(
 	GROUP BY user_id
 )
 ```
+- true -> if no duplicate ids
+- false -> if dup ids are there
 
-Checking if each user has at most one email id
+**Checking if each user has at most one email id**
 
 ```sql
 SELECT max(row_count) <= 1 no_of_duplicate_email FROM (
@@ -407,11 +632,21 @@ SELECT max(row_count) <= 1 no_of_duplicate_email FROM (
 )
 ```
 
-**TASK**
+In Python the same thing is done via:
+
+```python
+display(dedupedDF
+    .where(col("email").isNotNull())
+    .groupby("email")
+    .agg(count("user_id").alias("user_id_count"))
+    .select((max("user_id_count") <= 1).alias("at_most_one_id")))
+```
+
+#### Working with RegEx
 
 - Correctly scale and cast the ```user_first_touch_timestamp```
 - Extract the calendar date and time in a human readable format
-- Use ```regexp_extract``` to fetch the email domains
+- Use ```regexp_extract``` to fetch the email domains. [Docs](https://spark.apache.org/docs/3.1.2/api/python/reference/api/pyspark.sql.functions.regexp_extract.html)
 
 ```sql
 SELECT *,
@@ -427,7 +662,22 @@ FROM (
 
 [Why divide by 1e6 to convert timestamp to a date?](https://stackoverflow.com/questions/65124408/pyspark-convert-bigint-to-timestamp-with-microseconds#:~:text=Divide%20your%20timestamp%20by%201e6,units%20of%20second%2C%20not%20microsecond.)
 
-#### Complex Transformations on JSON data
+Final Result - Check the [code block](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282457/command/2951115793282483)
+
+In Python
+
+```python
+from pyspark.sql.functions import date_format, regexp_extract
+
+display(dedupedDF
+    .withColumn("first_touch", (col("user_first_touch_timestamp") / 1e6).cast("timestamp"))
+    .withColumn("first_touch_date", date_format("first_touch", "MMM d, yyyy"))
+    .withColumn("first_touch_time", date_format("first_touch", "HH:mm:ss"))
+    .withColumn("email_domain", regexp_extract("email", "(?<=@).+", 0))
+)
+```
+
+### Complex Transformations on JSON data
 
 ```python
 from pyspark.sql.functions import col
@@ -439,9 +689,25 @@ events_trigger_df = (spark
 )
 display(events_trigger_df)
 ```
+![Alt text](image-72.png)
 The value column in the events data is nested.
 
+#### Working With Nested Data
+
+**Table**
+![Alt text](image-73.png)
+
+The code cell below queries the converted strings to view an example JSON object without null fields (we'll need this for the next section).
+
+**NOTE:** Spark SQL has built-in functionality to directly interact with nested data stored as JSON strings or struct types.
+- Use **`:`** syntax in queries to access subfields in JSON strings
+- Use **`.`** syntax in queries to access subfields in struct types
+
 **Task: Check where the event name is finalized**
+
+```sql
+SELECT * FROM events_strings WHERE value:event_name = "finalize" ORDER BY key LIMIT 1
+```
 
 ```python
 display(events_string_df
@@ -454,18 +720,22 @@ display(events_string_df
 **Extracting the schema of the JSON**
 
 ```sql
-SELECT schema_of_json("some_json") AS schema
+SELECT schema_of_json('{"device":"Linux","ecommerce":{"purchase_revenue_in_usd":1075.5,"total_item_quantity":1,"unique_items":1},"event_name":"finalize","event_previous_timestamp":1593879231210816,"event_timestamp":1593879335779563,"geo":{"city":"Houston","state":"TX"},"items":[{"coupon":"NEWBED10","item_id":"M_STAN_K","item_name":"Standard King Mattress","item_revenue_in_usd":1075.5,"price_in_usd":1195.0,"quantity":1}],"traffic_source":"email","user_first_touch_timestamp":1593454417513109,"user_id":"UA000000106116176"}') AS schema
 ```
+![Alt text](image-74.png)
 
 **Task: Convert the JSON data to table/view**
 
 ```sql
 CREATE OR REPLACE TEMP VIEW parsed_events AS SELECT json.* FROM
 (
-	SELECT from_json(value, '<the schema>') AS json
+	SELECT from_json(value, '<the schemaabove>') AS json
 	FROM event_strings
 ) 
 ```
+
+**Output** : Check the output of the code [here](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282381/command/2951115793282395)
+
 ```sql
 SELECT * FROM parsed_events;
 ```
@@ -486,7 +756,12 @@ Docs for [from_json](https://spark.apache.org/docs/3.1.1/api/python/reference/ap
 
 #### Array Manipulation Functions
 
-- ```explodes()``` separates the elements of the array into different rows and creates a new row for each element.
+- **`explode()`** separates the elements of an array into multiple rows; this creates a new row for each element.
+
+- **`size()`** provides a count for the number of elements in an array for each row.
+
+The code below explodes the **`items`** field (an array of structs) into multiple rows and shows events containing arrays with 3 or more items.
+
 ```sql
 CREATE OR REPLACE TEMP VIEW exploded_events AS
 SELECT *, explode(items) AS item
@@ -497,6 +772,19 @@ FROM parsed_events
 SELECT * FROM exploded_events WHERE SIZE(items) > 2
 ```
 Each element of the items column which is in json format is now in a separate row.
+![Alt text](image-75.png)
+
+In Python,
+
+```python
+from pyspark.sql.functions import explode, size
+
+exploded_eventsDF = (parsed_eventsDF
+    .withColumn("item", explode("items"))
+)
+
+display(exploded_eventsDF.where(size("items") > 2))
+```
 
 #### Complex Array Manipulation Functions
 
@@ -508,6 +796,47 @@ Each element of the items column which is in json format is now in a separate ro
 
 **Task: Pull out cart history details from the events table**
 
+Step 1 : Collect all event names from the table for each user id
+
+```sql
+SELECT user_id, collect_set(event_name) AS event_history
+FROM exploded_events
+GROUP BY user_id
+```
+![Alt text](image-76.png)
+
+Step 2 : Explode event_hiistory
+
+```sql
+SELECT user_id, explode(collect_set(event_name)) AS event_history
+FROM exploded_events
+GROUP BY user_id
+```
+![Alt text](image-77.png)
+
+Step 3 : Collect all item ids by fetching them from the items json column
+
+```sql
+SELECT user_id,
+  collect_set(event_name) AS event_history,
+  collect_set(items.item_id) AS cart_history
+FROM exploded_events
+GROUP BY user_id
+```
+![Alt text](image-78.png)
+
+Step 4 : Flatten the above cart_history results
+
+```sql
+SELECT user_id,
+  collect_set(event_name) AS event_history,
+  flatten(collect_set(items.item_id)) AS cart_history
+FROM exploded_events
+GROUP BY user_id
+```
+![Alt text](image-79.png)
+
+
 ```SQL
 SELECT user_id,
 	   collect_set(event_name) AS event_history,
@@ -516,44 +845,57 @@ FROM exploded_events
 GROUP BY user_id
 ```
 
-#### SQL UDF Functions
+### SQL UDF Functions
 
-Here is a Jupyter [notebook](https://www.databricks.com/wp-content/uploads/notebooks/sql-user-defined-functions.html) with all the common SQL UDF Functions.
+User Defined Functions (UDFs) in Spark SQL allow you to register custom SQL logic as functions in a database, making these methods reusable anywhere SQL can be run on Databricks. These functions are registered natively in SQL and maintain all of the optimizations of Spark when applying custom logic to large datasets.
 
-**Sample Scripts**
+At minimum, creating a SQL UDF requires a function name, optional parameters, the type to be returned, and some custom logic.
 
-1. Simple Concat Function 
+Below, a simple function named **`sale_announcement`** takes an **`item_name`** and **`item_price`** as parameters. It returns a string that announces a sale for an item at 80% of its original price.
+
 ```sql
 CREATE OR REPLACE FUNCTION sales_announcement(item_name STRING,item_price INT)
 RETURN STRING
 RETURN concat("The ",item_name,"is on sale for $",round(item_price*0.8,0))
 ```
-SQL UDF's are part of the metastore.
 
-The ```DESCRIBE FUNCTION EXTENDED <table_name>``` gives basic info about expected inputs and basic information.
+This function is applied to all the columns at once.
 
-```BODY``` field has the function description of the SQL logic used in the function itself.
+Here is a Jupyter [notebook](https://www.databricks.com/wp-content/uploads/notebooks/sql-user-defined-functions.html) with all the common SQL UDF Functions.
 
-2. Case When Function
+- Persist between execution environments (which can include notebooks, DBSQL queries, and jobs).
+- Exist as objects in the metastore and are governed by the same Table ACLs as databases, tables, or views.
+- To **create** a SQL UDF, you need **`USE CATALOG`** on the catalog, and **`USE SCHEMA`** and **`CREATE FUNCTION`** on the schema.
+- To **use** a SQL UDF, you need **`USE CATALOG`** on the catalog, **`USE SCHEMA`** on the schema, and **`EXECUTE`** on the function.
+
+We can use **`DESCRIBE FUNCTION`** to see where a function was registered and basic information about expected inputs and what is returned (and even more information with **`DESCRIBE FUNCTION EXTENDED`**).
+
+#### Case When Statements in SQL UDF
 
 ```sql
-  SELECT *, yrs_to_mat,
-     CASE 
-          WHEN X < 3 THEN "under3"
-          WHEN X => 3 AND < 5 THEN "3to5"
-          WHEN X => 5 AND < 10 THEN "5to10"
-          WHEN X => 10 AND < 15 THEN "10to15"
-          WHEN X => 15 THEN "over15"
-          ELSE null END AS maturity_bucket
-    FROM matyrs;
+CREATE OR REPLACE FUNCTION item_preference(name STRING, price INT)
+RETURNS STRING
+RETURN CASE 
+  WHEN name = "Standard Queen Mattress" THEN "This is my default mattress"
+  WHEN name = "Premium Queen Mattress" THEN "This is my favorite mattress"
+  WHEN price > 100 THEN concat("I'd wait until the ", name, " is on sale for $", round(price * 0.8, 0))
+  ELSE concat("I don't need a ", name)
+END;
+
+SELECT *, item_preference(name, price) FROM item_lookup
 ```
-#### Python UDFs
 
-- The custom transformation operation cannot be 	optimized by a Catalyst Analyzer.
+### Python UDFs
 
-- The function is serialized and sent to the executors.
+### User-Defined Function (UDF)
+A custom column transformation function
 
-- Row data is deserialized from Spark's native format to pass to the UDF, and the results are serialized back to the Spark native format.
+- Can’t be optimized by Catalyst Optimizer
+
+- Function is serialized and sent to executors
+- Row data is deserialized from Spark's native binary format to pass to the UDF, and the results are serialized back into Spark's native format
+
+- For Python UDFs, additional interprocess communication overhead between the executor and a Python interpreter running on each worker node
 
 **Define a Function**
 
@@ -591,6 +933,8 @@ SELECT sql_udf(email) AS first_letter FROM sales
 
 **Using Decorator Syntax**
 
+Alternatively, you can define and register a UDF using <a href="https://realpython.com/primer-on-python-decorators/" target="_blank">Python decorator syntax</a>. The **`@udf`** decorator parameter is the Column datatype the function returns.
+
 ```python
 @udf("string")
 def first_letter_udf(str):
@@ -599,7 +943,19 @@ return email[0]
 
 #### Normal Python UDFs vs Pandas UDFs
 
+Pandas UDFs are available in Python to improve the efficiency of UDFs. Pandas UDFs utilize Apache Arrow to speed up computation.
+
+* <a href="https://databricks.com/blog/2017/10/30/introducing-vectorized-udfs-for-pyspark.html" target="_blank">Blog post</a>
+* <a href="https://spark.apache.org/docs/latest/api/python/user_guide/sql/arrow_pandas.html?highlight=arrow" target="_blank">Documentation</a>
+
+<img src="https://databricks.com/wp-content/uploads/2017/10/image1-4.png" alt="Benchmark" width ="500" height="1500">
+
+The user-defined functions are executed using: 
+* <a href="https://arrow.apache.org/" target="_blank">Apache Arrow</a>, an in-memory columnar data format that is used in Spark to efficiently transfer data between JVM and Python processes with near-zero (de)serialization cost
+* Pandas inside the function, to work with Pandas instances and APIs
+
 Normal Python UDF
+
 ```python
 from pyspark.sql.functions import udf
 
@@ -623,13 +979,44 @@ df.withColumn('v2', pandas_plus_one(df.v))
 
 In the row-at-a-time version, the user-defined function takes a double "v" and returns the result of "v + 1" as a double. In the Pandas version, the user-defined function takes a  `pandas.Series`  "v" and returns the result of "v + 1" as a  `pandas.Series`. Because "v + 1" is vectorized on  `pandas.Series`, the Pandas version is much faster than the row-at-a-time version.
 
+**Pandas Vectorized UDF**
+
+```sql
+import pandas as pd
+from pyspark.sql.functions import pandas_udf
+
+# We have a string input/output
+@pandas_udf("string")
+def vectorized_udf(email: pd.Series) -> pd.Series:
+    return email.str[0]
+```
+
+**Registering UDF for usage in SQL Namespace**
+
+```sql
+spark.udf.register("sql_vectorized_udf", vectorized_udf)
+```
+
+**Using UDF in SQL Statement**
+
+```sql
+SELECT sql_vectorized_udf(email) AS firstLetter FROM sales
+```
+
 ### Managing Data with Delta Lake 
 
 Delta Lake enables building a data lakehouse on top of the existing cloud storage. Its not a database service or data warehouse.
-
 It's built for scalable metadata handling.
-
 Delta Lake brings ACID transaction guarantees to object storage.
+
+![Alt text](image-80.png)
+
+![Alt text](image-81.png)
+
+![Alt text](image-82.png)
+
+What is ACID?
+![Alt text](image-83.png)
 
 #### Problems Solved by ACID
 
@@ -638,32 +1025,54 @@ Delta Lake brings ACID transaction guarantees to object storage.
 - Jobs fail mid way
 - Costly to keep historical data versions.
 
-#### Schemas and Tables
+Its the default format to create tables in Databricks
 
-Two ways to create schemas:
+### Schemas and Tables
 
-1. One with no location provided
-2. One with location specified.
+Creating Schema in the default directory ```dbfs:/user/hive/warehouse```
 
 ```sql
-CREATE SCHEMA IF NOT EXISTS ${da.schema_name}_default_location
+CREATE SCHEMA IF NOT EXISTS ${da.schema_name}_default_location;
 ```
 
+Creating Schema in a custom location 
+
 ```sql
-CREATE SCHEMA IF NOT EXISTS ${da.schema_name}_custom_location LOCATION 
-'${da.paths.working_dir}/${da.schema_name}_custom_location_db'
+CREATE SCHEMA IF NOT EXISTS ${da.schema_name}_custom_location LOCATION '${da.paths.working_dir}/${da.schema_name}_custom_location.db'
 ```
 
-The description of both the schemas will have the database name, catalog name, location and owner.
+#### Creating Managed Tables
 
-What happens if we drop the table?
+We dont need to mention the location of the tables.
 
 ```sql
-DROP TABLE managed_table_default_location
-``` 
-The data and log files are deleted. Only the schema directory remains.
+USE ${da.schema_name}_default_location;
 
-#### Creating External Tables
+CREATE OR REPLACE TABLE managed_table (width INT, length INT, height INT);
+INSERT INTO managed_table 
+VALUES (3, 2, 1);
+SELECT * FROM managed_table;
+```
+
+To find the location of the managed table we can use the ```DESCRIBE DETAIL managed_table``` command. Output is ```dbfs:/user/hive/warehouse/vedanthvbaliga_gnc9_da_delp_default_location.db/managed_table```
+
+The default format of the table is delta.
+
+If we drop the managed table, only the schema will be there, the table and data will be deleted.
+
+Checking if the schema still exists
+
+```python
+
+schema_default_location = spark.sql(f"DESCRIBE SCHEMA {DA.schema_name}_default_location").collect()[3].database_description_value
+print(schema_default_location)
+dbutils.fs.ls(schema_default_location)
+
+```
+
+Output : dbfs:/user/hive/warehouse/vedanthvbaliga_gnc9_da_delp_default_location.db
+
+#### ⚠️ Creating External Tables
 
 ```sql
 USE ${da.schema_name}_default_location;
@@ -680,11 +1089,534 @@ CREATE OR REPLACE EXTERNAL TABLE external_table LOCATION '${da.path.working_dir}
 
 SELECT * FROM external_table
 ```
+![Alt text](image-84.png)
 
 Dropping the external table deletes the table definition but the data is still there.
 
-To drop external table schema use : 
+```python
+tbl_path = f"{DA.paths.working_dir}/external_table"
+files = dbutils.fs.ls(tbl_path)
+display(files)
+```
+
+![Alt text](image-85.png)
+
+To drop external table schema use :
 
 ```sql
 DROP SCHEMA {da.schema_name}_custom_location CASCADE;
 ```
+
+If the schema is managed by the workspace-level Hive metastore, dropping a schema using CASCADE recursively deletes all files in the specified location, regardless of the table type (managed or external).
+
+### Setting Up Delta Tables
+
+After extracting data from external data sources, load data into the Lakehouse to ensure that all of the benefits of the Databricks platform can be fully leveraged.
+
+While different organizations may have varying policies for how data is initially loaded into Databricks, we typically recommend that early tables represent a mostly raw version of the data, and that validation and enrichment occur in later stages. 
+
+This pattern ensures that even if data doesn't match expectations with regards to data types or column names, no data will be dropped, meaning that programmatic or manual intervention can still salvage data in a partially corrupted or invalid state.
+
+### Setting Up Delta Tables
+
+#### CTAS Statements
+
+Used to populate the delta tables using data from an input query
+
+```sql
+CREATE OR REPLACE TABLE sales AS
+SELECT * FROM parquet.`${DA.paths.datasets}/ecommerce/raw/sales-historical`;
+
+DESCRIBE EXTENDED sales;
+```
+
+**Note**
+
+CTAS statements automatically infer schema information from query results and do **not** support manual schema declaration. 
+
+This means that CTAS statements are useful for external data ingestion from sources with well-defined schema, such as Parquet files and tables.
+
+CTAS statements also do not support specifying additional file options.
+
+#### Ingesting csv with CTAS
+
+```sql
+CREATE OR REPLACE TABLE sales_unparsed AS
+SELECT * FROM csv.`${da.paths.datasets}/ecommerce/raw/sales-csv`;
+
+SELECT * FROM sales_unparsed;
+```
+
+Output is as follows:
+![Alt text](image-86.png)
+
+To fix this we use a reference to the files that allows us to specify the options.
+
+We will specify options to a temp view and then use this as a source for a CTAS statement to register the Delta Table
+
+```sql
+CREATE OR REPLACE TEMP VIEW sales_tmp_vw
+  (order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
+USING CSV
+OPTIONS (
+  path = "${da.paths.datasets}/ecommerce/raw/sales-csv",
+  header = "true",
+  delimiter = "|"
+);
+
+CREATE TABLE sales_delta AS
+  SELECT * FROM sales_tmp_vw;
+  
+SELECT * FROM sales_delta
+```
+
+![Alt text](image-87.png)
+
+#### Filtering and Renaming columns from existing tables
+
+```sql
+CREATE OR REPLACE TABLE purchases AS
+SELECT order_id AS id, transaction_timestamp, purchase_revenue_in_usd AS price
+FROM sales;
+
+SELECT * FROM purchases
+```
+
+### Declare Schema with Generated Columns
+
+![Alt text](image-88.png)
+As noted previously, CTAS statements do not support schema declaration. We note above that the timestamp column appears to be some variant of a Unix timestamp, which may not be the most useful for our analysts to derive insights. This is a situation where generated columns would be beneficial.
+
+Generated columns are a special type of column whose values are automatically generated based on a user-specified function over other columns in the Delta table.
+
+```sql
+CREATE OR REPLACE TABLE purchase_dates (
+  id STRING, 
+  transaction_timestamp STRING, 
+  price STRING,
+  date DATE GENERATED ALWAYS AS (
+    cast(cast(transaction_timestamp/1e6 AS TIMESTAMP) AS DATE))
+    COMMENT "generated based on `transactions_timestamp` column")
+```
+
+#### Mergin Data
+
+Check how many records are in purchase_dates?
+
+```sql
+SELECT * FROM purchase_dates;
+```
+There are no records in the table.
+
+Check how many records are in purchases?
+
+```sql
+SELECT COUNT(*) FROM purchases;
+```
+There are 10,510 records.
+
+```sql
+SET spark.databricks.delta.schema.autoMerge.enabled=true; 
+
+MERGE INTO purchase_dates a
+USING purchases b
+ON a.id = b.id
+WHEN NOT MATCHED THEN
+  INSERT *
+```
+
+The SET command ensures that autoMerge is enabled we dont need to ```REFRESH``` after merging into the purchase_dates table.
+
+It's important to note that if a field that would otherwise be generated is included in an insert to a table, this insert will fail if the value provided does not exactly match the value that would be derived by the logic used to define the generated column.
+
+### Adding Constraints
+
+**CHECK** constraint
+
+```sql
+ALTER TABLE purchase_dates ADD CONSTRAINT valid_date CHECK (date > '2020-01-01');
+```
+![Alt text](image-89.png)
+
+### Additional Options and Metadata
+
+Our **`SELECT`** clause leverages two built-in Spark SQL commands useful for file ingestion:
+* **`current_timestamp()`** records the timestamp when the logic is executed
+* **`input_file_name()`** records the source data file for each record in the table
+
+We also include logic to create a new date column derived from timestamp data in the source.
+
+The **`CREATE TABLE`** clause contains several options:
+* A **`COMMENT`** is added to allow for easier discovery of table contents
+* A **`LOCATION`** is specified, which will result in an external (rather than managed) table
+* The table is **`PARTITIONED BY`** a date column; this means that the data from each data will exist within its own directory in the target storage location.
+
+```sql
+CREATE OR REPLACE TABLE users_pii
+COMMENT "Contains PII"
+LOCATION "${da.paths.working_dir}/tmp/users_pii"
+PARTITIONED BY (first_touch_date)
+AS
+  SELECT *, 
+    cast(cast(user_first_touch_timestamp/1e6 AS TIMESTAMP) AS DATE) first_touch_date, 
+    current_timestamp() updated,
+    input_file_name() source_file
+  FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-historical/`;
+  
+SELECT * FROM users_pii;
+```
+
+![Alt text](image-90.png)
+
+**Listing all the files**
+
+```python
+files = dbutils.fs.ls(f"{DA.paths.working_dir}/tmp/users_pii")
+display(files)
+```
+
+![Alt text](image-91.png)
+
+### Cloning Delta Lake Tables
+Delta Lake has two options for efficiently copying Delta Lake tables.
+
+**`DEEP CLONE`** fully copies data and metadata from a source table to a target. This copy occurs incrementally, so executing this command again can sync changes from the source to the target location.
+
+```sql
+CREATE OR REPLACE TABLE purchases_clone
+DEEP CLONE purchases
+```
+
+If you wish to create a copy of a table quickly to test out applying changes without the risk of modifying the current table, **`SHALLOW CLONE`** can be a good option. Shallow clones just copy the Delta transaction logs, meaning that the data doesn't move.
+
+```sql
+CREATE OR REPLACE TABLE purchases_shallow_clone
+SHALLOW CLONE purchases
+```
+
+### Loading Data Into Tables
+
+#### Complete Overwrites
+
+We can use overwrites to atomically replace all of the data in a table. There are multiple benefits to overwriting tables instead of deleting and recreating tables:
+
+- Overwriting a table is much faster because it doesn’t need to list the directory recursively or delete any files.
+
+- The old version of the table still exists; can easily retrieve the old data using Time Travel.
+
+- It’s an atomic operation. Concurrent queries can still read the table while you are deleting the table.
+
+- Due to ACID transaction guarantees, if overwriting the table fails, the table will be in its previous state.
+
+Spark SQL provides two easy methods to accomplish complete overwrites.
+
+```sql
+CREATE OR REPLACE TABLE events AS
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/events-historical`
+```
+
+**Reviewing the Table History**
+
+```sql
+DESCRIBE HISTORY events
+```
+![Alt text](image-92.png)
+
+#### Insert Overwrite
+
+**`INSERT OVERWRITE`** provides a nearly identical outcome as above: data in the target table will be replaced by data from the query. 
+
+- Can only overwrite an existing table, not create a new one like our CRAS statement.
+
+- Can overwrite only with new records that match the current table schema -- and thus can be a "safer" technique for overwriting an existing table without disrupting downstream consumers.
+
+- Can overwrite individual partitions.
+
+Metrics that are defined during Insert Overwrite on running ```DESCRIBE HISTORY SALES``` is different.
+
+Whereas a CRAS statement will allow us to completely redefine the contents of our target table, **`INSERT OVERWRITE`** will fail if we try to change our schema (unless we provide optional settings). 
+
+Uncomment and run the cell below to generate an expected error message.
+
+This gives an error
+
+```sql
+INSERT OVERWRITE sales
+SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical`
+```
+
+#### Appending Data
+
+We can use **`INSERT INTO`** to atomically append new rows to an existing Delta table. This allows for incremental updates to existing tables, which is much more efficient than overwriting each time.
+
+Append new sale records to the **`sales`** table using **`INSERT INTO`**
+
+Note that **`INSERT INTO`** does not have any built-in guarantees to prevent inserting the same records multiple times. Re-executing the above cell would write the same records to the target table, resulting in duplicate records.
+
+#### Merging Updates
+
+<strong><code>
+MERGE INTO target a<br/>
+USING source b<br/>
+ON {merge_condition}<br/>
+WHEN MATCHED THEN {matched_action}<br/>
+WHEN NOT MATCHED THEN {not_matched_action}<br/>
+</code></strong>
+
+We will use the **`MERGE`** operation to update historic users data with updated emails and new users.
+
+Step 1 : Check ```users_30m``` parquet
+
+```sql
+
+SELECT * FROM PARQUET.`${da.paths.datasets}/ecommerce/raw/users-30m
+
+```
+
+![Alt text](image-93.png)
+
+Step 2 : Create view ```users_update``` and add data from ```users_30m``` dataset
+
+```sql
+CREATE OR REPLACE TEMP VIEW users_update AS 
+SELECT *, current_timestamp() AS updated 
+FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-30m`
+```
+
+Step 3 : Check ```users``` and ```users_updated``` dataset
+
+```sql
+SELECT * FROM users;
+```
+![Alt text](image-94.png)
+
+```sql
+SELECT * FROM users_update;
+```
+![Alt text](image-95.png)
+
+Step 4 : If the email in ```users``` is null and in ```users_update``` is not null then set email in users to ```users.email``` and ```users.updated``` to ```users_updated.updated``` , else insert whatever record is in users_update.
+
+```sql
+MERGE INTO users a
+USING users_update b
+ON a.user_id = b.user_id
+WHEN MATCHED AND a.email IS NULL AND b.email IS NOT NULL THEN
+  UPDATE SET email = b.email, updated = b.updated
+WHEN NOT MATCHED THEN INSERT *
+```
+
+![Alt text](image-96.png)
+
+#### Insert-Only Merge For Data Deduplication ⚠️
+
+A common ETL use case is to collect logs or other every-appending datasets into a Delta table through a series of append operations. 
+
+Many source systems can generate duplicate records. With merge, you can avoid inserting the duplicate records by performing an insert-only merge.
+
+This optimized command uses the same **`MERGE`** syntax but only provided a **`WHEN NOT MATCHED`** clause.
+
+Below, we use this to confirm that records with the same **`user_id`** and **`event_timestamp`** aren't already in the **`events`** table.
+
+```sql
+MERGE INTO events a
+USING events_update b
+ON a.user_id = b.user_id AND a.event_timestamp = b.event_timestamp
+WHEN NOT MATCHED AND b.traffic_source = 'email' THEN 
+  INSERT *
+```
+
+**Logs Example**
+
+```sql
+MERGE INTO logs
+USING newDedupedLogs
+ON logs.uniqueId = newDedupedLogs.uniqueId
+WHEN NOT MATCHED
+  THEN INSERT *
+```
+
+The dataset containing the new logs needs to be deduplicated within itself. By the SQL semantics of merge, it matches and deduplicates the new data with the existing data in the table, but if there is duplicate data within the new dataset, it is inserted. Hence, deduplicate the new data before merging into the table.
+
+If you know that you may get duplicate records only for a few days, you can optimize your query further by partitioning the table by date, and then specifying the date range of the target table.
+
+```sql
+MERGE INTO logs
+USING newDedupedLogs
+ON logs.uniqueId = newDedupedLogs.uniqueId AND logs.date > current_date() - INTERVAL 7 DAYS
+WHEN NOT MATCHED AND newDedupedLogs.date > current_date() - INTERVAL 7 DAYS
+  THEN INSERT *
+```
+
+### Incremental Loading
+
+**`COPY INTO`** provides SQL engineers an idempotent option to incrementally ingest data from external systems.
+
+Note that this operation does have some expectations:
+- Data schema should be consistent
+- Duplicate records should try to be excluded or handled downstream
+
+This operation is potentially much cheaper than full table scans for data that grows predictably.
+
+```sql
+COPY INTO sales
+FROM "${da.paths.datasets}/ecommerce/raw/sales-30m"
+FILEFORMAT = PARQUET
+```
+
+### Versioning, Optimizing and Vacuuming
+
+Create an example table with operations
+
+```sql
+CREATE TABLE students
+  (id INT, name STRING, value DOUBLE);
+  
+INSERT INTO students VALUES (1, "Yve", 1.0);
+INSERT INTO students VALUES (2, "Omar", 2.5);
+INSERT INTO students VALUES (3, "Elia", 3.3);
+
+INSERT INTO students
+VALUES 
+  (4, "Ted", 4.7),
+  (5, "Tiffany", 5.5),
+  (6, "Vini", 6.3);
+  
+UPDATE students 
+SET value = value + 1
+WHERE name LIKE "T%";
+
+DELETE FROM students 
+WHERE value > 6;
+
+CREATE OR REPLACE TEMP VIEW updates(id, name, value, type) AS VALUES
+  (2, "Omar", 15.2, "update"),
+  (3, "", null, "delete"),
+  (7, "Blue", 7.7, "insert"),
+  (11, "Diya", 8.8, "update");
+  
+MERGE INTO students b
+USING updates u
+ON b.id=u.id
+WHEN MATCHED AND u.type = "update"
+  THEN UPDATE SET *
+WHEN MATCHED AND u.type = "delete"
+  THEN DELETE
+WHEN NOT MATCHED AND u.type = "insert"
+  THEN INSERT *;
+```
+
+This table gets stored in ```dbfs:/user/hive/warehouse/students```
+
+The table is not a relational entity but a set of files stored in the cloud object storage.
+
+```python
+display(dbutils.fs.ls(f"{DA.paths.user_db}/students"))
+```
+![Alt text](image-97.png)
+
+There is a directory called ```_delta_log``` where transactions on the Delta Lake Tables are stored
+
+```python
+display(dbutils.fs.ls(f"{DA.paths.user_db}/students/_delta_log"))
+```
+There are a total of 8 transaction logs in json format
+![Alt text](image-98.png)
+
+For large datasets we would have more parquet files. We can see that there are 4 files currently in students.
+![Alt text](image-99.png)
+
+So what are the other files present for?
+
+Rather than overwriting or immediately deleting files containing changed data, Delta Lake uses the transaction log to indicate whether or not files are valid in a current version of the table.
+
+Here, we'll look at the transaction log corresponding the **`MERGE`** statement above, where records were inserted, updated, and deleted.
+
+```python
+display(spark.sql(f"SELECT * FROM json.`{DA.paths.user_db}/students/_delta_log/00000000000000000007.json`"))
+```
+
+![Alt text](image-100.png)
+
+The **`add`** column contains a list of all the new files written to our table; the **`remove`** column indicates those files that no longer should be included in our table.
+
+When we query a Delta Lake table, the query engine uses the transaction logs to resolve all the files that are valid in the current version, and ignores all other data files.
+
+### Optimizing and Indexing
+
+When we use large datasets, we may run into problems of a large number of files.
+
+Here since we did many operations that only changed/modified a small number of rows, there were more number of files.
+
+Files will be combined toward an optimal size (scaled based on the size of the table) by using the **`OPTIMIZE`** command.
+
+**`OPTIMIZE`** will replace existing data files by combining records and rewriting the results.
+
+When executing **`OPTIMIZE`**, users can optionally specify one or several fields for **`ZORDER`** indexing. While the specific math of Z-order is unimportant, it speeds up data retrieval when filtering on provided fields by colocating data with similar values within data files.
+
+```sql
+OPTIMIZE students
+ZORDER BY id
+```
+
+By looking at the output we can motice that 1 file was added and 4 were removed. 
+![Alt text](image-101.png)
+
+As expected, **`OPTIMIZE`** created another version of our table, meaning that version 8 is our most current version.
+
+Remember all of those extra data files that had been marked as removed in our transaction log? These provide us with the ability to query previous versions of our table.
+
+These time travel queries can be performed by specifying either the integer version or a timestamp.
+
+**NOTE**: In most cases, you'll use a timestamp to recreate data at a time of interest. For our demo we'll use version, as this is deterministic (whereas you may be running this demo at any time in the future).
+
+**Going back to a previous state**
+
+```sql
+SELECT * 
+FROM students VERSION AS OF 3
+```
+
+What's important to note about time travel is that we're not recreating a previous state of the table by undoing transactions against our current version; rather, we're just querying all those data files that were indicated as valid as of the specified version.
+
+### Rollback to Previous Version
+
+Suppose we are typing a query to manually delete some records from the table and by mistake delete the entire table. We can rollback to the previous version by rolling back the commit.
+
+```sql
+RESTORE TABLE students TO VERSION AS OF 8 
+```
+
+### Cleaning Up Stale Files and Vacuum
+
+Databricks will automatically clean up stale log files (> 30 days by default) in Delta Lake tables.
+Each time a checkpoint is written, Databricks automatically cleans up log entries older than this retention interval.
+
+While Delta Lake versioning and time travel are great for querying recent versions and rolling back queries, keeping the data files for all versions of large production tables around indefinitely is very expensive (and can lead to compliance issues if PII is present).
+
+If you wish to manually purge old data files, this can be performed with the **`VACUUM`** operation.
+
+Uncomment the following cell and execute it with a retention of **`0 HOURS`** to keep only the current version:
+
+By default, **`VACUUM`** will prevent you from deleting files less than 7 days old, just to ensure that no long-running operations are still referencing any of the files to be deleted. If you run **`VACUUM`** on a Delta table, you lose the ability time travel back to a version older than the specified data retention period.  In our demos, you may see Databricks executing code that specifies a retention of **`0 HOURS`**. This is simply to demonstrate the feature and is not typically done in production.  
+
+In the following cell, we:
+1. Turn off a check to prevent premature deletion of data files
+2. Make sure that logging of **`VACUUM`** commands is enabled
+3. Use the **`DRY RUN`** version of vacuum to print out all records to be deleted
+
+To disable the retention duration of 0 safety mechanism just enable these parameters to false and true.
+
+```sql
+SET spark.databricks.delta.retentionDurationCheck.enabled = false;
+SET spark.databricks.delta.vacuum.logging.enabled = true;
+```
+
+```sql
+VACUUM students RETAIN 0 HOURS DRY RUN
+```
+
+By vacuuming the files, we are permanantly deleting the versions of the files and we cannot get it back.
+
+After deletion, only the delta file with log of transactions remains.
+
