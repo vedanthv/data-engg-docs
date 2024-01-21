@@ -1821,3 +1821,454 @@ AS SELECT date(order_timestamp) AS order_date, count(*) AS total_daily_orders
 FROM LIVE.orders_silver
 GROUP BY date(order_timestamp)
 ```
+
+### Orders Pipeline in Python
+
+#### Importing the libraries
+
+```sql
+import dlt
+import pyspark.sql.functions as F
+
+source = spark.conf.get("source")
+```
+
+#### Creating the Bronze Table
+
+Delta Live Tables introduces a number of new Python functions that extend familiar PySpark APIs.
+
+At the heart of this design, the decorator **`@dlt.table`** is added to any Python function that returns a Spark DataFrame. (**NOTE**: This includes Koalas DataFrames, but these won't be covered in this course.)
+
+If you're used to working with Spark and/or Structured Streaming, you'll recognize the majority of the syntax used in DLT. The big difference is that you'll never see any methods or options for DataFrame writers, as this logic is handled by DLT.
+
+As such, the basic form of a DLT table definition will look like:
+
+**`@dlt.table`**<br/>
+**`def <function-name>():`**<br/>
+**`    return (<query>)`**</br>
+
+```python
+@dlt.table
+def orders_bronze():
+    return (
+        spark.readStream
+            .format("cloudFiles")
+            .option("cloudFiles.format", "json")
+            .option("cloudFiles.inferColumnTypes", True)
+            .load(f"{source}/orders")
+            .select(
+                F.current_timestamp().alias("processing_time"), 
+                F.input_file_name().alias("source_file"), 
+                "*"
+            )
+    )
+```
+
+#### Creating the Silver Table
+
+```python
+@dlt.table(
+    comment = "Append only orders with valid timestamps",
+    table_properties = {"quality": "silver"})
+@dlt.expect_or_fail("valid_date", F.col("order_timestamp") > "2021-01-01")
+def orders_silver():
+    return (
+        dlt.read_stream("orders_bronze")
+            .select(
+                "processing_time",
+                "customer_id",
+                "notifications",
+                "order_id",
+                F.col("order_timestamp").cast("timestamp").alias("order_timestamp")
+            )
+    )
+```
+
+#### Defining the Gold Table
+
+```python
+@dlt.table
+def orders_by_date():
+    return (
+        dlt.read("orders_silver")
+            .groupBy(F.col("order_timestamp").cast("date").alias("order_date"))
+            .agg(F.count("*").alias("total_daily_orders"))
+    )
+```
+
+### Customers Pipeline
+
+### Objectives
+
+* Raw records represent change data capture (CDC) information about customers 
+* The bronze table again uses Auto Loader to ingest JSON data from cloud object storage
+* A table is defined to enforce constraints before passing records to the silver layer
+* **`APPLY CHANGES INTO`** is used to automatically process CDC data into the silver layer as a Type 1 <a href="https://en.wikipedia.org/wiki/Slowly_changing_dimension" target="_blank">slowly changing dimension (SCD) table<a/>
+* A gold table is defined to calculate an aggregate from the current version of this Type 1 table
+* A view is defined that joins with tables defined in another notebook
+
+#### What are Slowly Changing Dimensions?
+
+A slowly changing dimension (SCD) in data management and data warehousing is a dimension which contains relatively static data which can change slowly but unpredictably, rather than according to a regular schedule. Some examples of typical slowly changing dimensions are entities such as names of geographical locations, customers, or products.
+
+#### Type 1 SCD
+![Alt text](image-124.png)
+
+#### Ingest Data with Auto Loader
+
+```sql
+CREATE OR REFRESH STREAMING LIVE TABLE customers_bronze
+COMMENT "Raw data from customers CDC feed"
+AS SELECT current_timestamp() processing_time, input_file_name() source_file, *
+FROM cloud_files("${source}/customers", "json")
+```
+
+#### Quality Checks
+
+The query below demonstrates:
+* The 3 options for behavior when constraints are violated
+* A query with multiple constraints
+* Multiple conditions provided to one constraint
+* Using a built-in SQL function in a constraint
+
+About the data source:
+* Data is a CDC feed that contains **`INSERT`**, **`UPDATE`**, and **`DELETE`** operations. 
+* Update and insert operations should contain valid entries for all fields.
+* Delete operations should contain **`NULL`** values for all fields other than the timestamp, **`customer_id`**, and operation fields.
+
+In order to ensure only good data makes it into our silver table, we'll write a series of quality enforcement rules that ignore the expected null values in delete operations.
+
+```sql
+CREATE STREAMING LIVE TABLE customers_bronze_clean
+(CONSTRAINT valid_id EXPECT (customer_id IS NOT NULL) ON VIOLATION FAIL UPDATE,
+CONSTRAINT valid_operation EXPECT (operation IS NOT NULL) ON VIOLATION DROP ROW,
+CONSTRAINT valid_name EXPECT (name IS NOT NULL or operation = "DELETE"),
+CONSTRAINT valid_address EXPECT (
+  (address IS NOT NULL and 
+  city IS NOT NULL and 
+  state IS NOT NULL and 
+  zip_code IS NOT NULL) or
+  operation = "DELETE"),
+CONSTRAINT valid_email EXPECT (
+  rlike(email, '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$') or 
+  operation = "DELETE") ON VIOLATION DROP ROW)
+AS SELECT *
+  FROM STREAM(LIVE.customers_bronze)
+```
+
+#### Requirements that ```APPLY CHANGES INTO``` Provides
+
+* Performs incremental/streaming ingestion of CDC data.
+
+* Provides simple syntax to specify one or many fields as the primary key for a table.
+
+* Default assumption is that rows will contain inserts and updates.
+
+* Can optionally apply deletes.
+
+* Automatically orders late-arriving records using user-provided sequencing key.
+
+* Uses a simple syntax for specifying columns to ignore with the **`EXCEPT`** keyword.
+
+* Will default to applying changes as Type 1 SCD.
+
+
+#### Processing CDC Data From ```bronze_cleaned``` to ```customers_silver``` table
+
+* Creates the **`customers_silver`** table; **`APPLY CHANGES INTO`** requires the target table to be declared in a separate statement.
+
+* Identifies the **`customers_silver`** table as the target into which the changes will be applied.
+
+* Specifies the table **`customers_bronze_clean`** as the streaming source.
+
+* Identifies the **`customer_id`** as the primary key.
+
+* Specifies that records where the **`operation`** field is **`DELETE`** should be applied as deletes.
+
+* Specifies the **`timestamp`** field for ordering how operations should be applied.
+
+* Indicates that all fields should be added to the target table except **`operation`**, **`source_file`**, and **`_rescued_data`**.
+
+```sql
+CREATE OR REFRESH STREAMING LIVE TABLE customers_silver;
+
+APPLY CHANGES INTO LIVE.customers_silver` `
+  FROM STREAM(LIVE.customers_bronze_clean)
+  KEYS (customer_id)
+  APPLY AS DELETE WHEN operation = "DELETE"
+  SEQUENCE BY timestamp
+  COLUMNS * EXCEPT (operation, source_file, _rescued_data)
+```
+
+### Querying Tables with Applied Changes
+
+#### Why Downstream Table Can't Perform Streaming Operations?
+
+While the target of our operation in the previous cell was defined as a streaming live table, data is being updated and deleted in this table (and so breaks the append-only requirements for streaming live table sources). As such, downstream operations cannot perform streaming queries against this table. 
+
+This pattern ensures that if any updates arrive out of order, downstream results can be properly recomputed to reflect updates. It also ensures that when records are deleted from a source table, these values are no longer reflected in tables later in the pipeline.
+
+```sql
+CREATE LIVE TABLE customer_counts_state
+  COMMENT "Total active customers per state"
+AS SELECT state, count(*) as customer_count, current_timestamp() updated_at
+  FROM LIVE.customers_silver
+  GROUP BY state
+```
+
+### Views in DLT
+
+The query below defines a DLT view by replacing **`TABLE`** with the **`VIEW`** keyword.
+
+Views in DLT differ from persisted tables, and can optionally be defined as **`STREAMING`**.
+
+Views have the same update guarantees as live tables, but the results of queries are not stored to disk.
+
+Unlike views used elsewhere in Databricks, DLT views are not persisted to the metastore, meaning that they can only be referenced from within the DLT pipeline they are a part of. (This is similar scoping to temporary views in most SQL systems.)
+
+Views can still be used to enforce data quality, and metrics for views will be collected and reported as they would be for tables.
+
+### Joining and Referencing Tables
+
+In the query below, we create a new view by joining the silver tables from our **`orders`** and **`customers`** datasets. Note that this view is not defined as streaming; as such, we will always capture the current valid **`email`** for each customer, and will automatically drop records for customers after they've been deleted from the **`customers_silver`** table.
+
+### Final Pipeline
+![Alt text](image-125.png)
+
+### Python vs SQL
+![Alt text](image-126.png)
+
+### Pipeline Results and Internals of DLT
+
+#### Checking List of All Tables
+
+```sql
+USE ${DA.schema_name};
+
+SHOW TABLES;
+```
+![Alt text](image-127.png)
+
+
+#### Querying Orders Bronze Table
+```sql
+SELECT * FROM orders_bronze
+```
+![Alt text](image-128.png)
+Recall that **`orders_bronze`** was defined as a streaming live table in DLT, but our results here are static.
+
+Because DLT uses Delta Lake to store all tables, each time a query is executed, we will always return the most recent version of the table. But queries outside of DLT will return snapshot results from DLT tables, regardless of how they were defined.
+
+#### Querying ```customers_silver``` table
+```sql
+SELECT * FROM customers_silver
+```
+
+![Alt text](image-129.png)
+
+This table dowes not have the additional fields like ```__TimeStamp```, ```__deleteVersion``` and ```__updateVersion```.
+
+The customers_silver table is actually a view oof another hidden table called ```__apply_changes_storage_customer_silver```.
+
+This is seen when we run the describe command.
+
+```sql
+DESCRIBE EXTENDED customers_silver
+```
+
+Its being read from the ```__apply_changes_storage_customer_silver``` table
+![Alt text](image-130.png)
+
+#### Checking the ```__apply_changes_storage_customer_silver``` table records
+
+```sql
+SELECT * FROM __apply_changes_storage_customers_silver
+```
+![Alt text](image-131.png)
+
+### What is in the storage location?
+
+```python
+files = dbutils.fs.ls(DA.paths.storage_location)
+display(files)
+```
+![Alt text](image-132.png)
+
+The **autoloader** and **checkpoint** directories contain data used to manage incremental data processing with Structured Streaming.
+
+The **system** directory captures events associated with the pipeline.
+
+#### Event Logs
+
+```python
+files = dbutils.fs.ls(f"{DA.paths.storage_location}/system/events")
+display(files)
+```
+
+![Alt text](image-133.png)
+
+Querying the Event Logs gives us lot of information
+
+```python
+display(spark.sql(f"SELECT * FROM delta.`{DA.paths.storage_location}/system/events`"))
+```
+![Alt text](image-134.png)
+
+![Alt text](image-135.png)
+
+### Pipeline Event Logs Deep Dive
+
+#### Query the Event Log
+
+```python
+event_log_path = f"{DA.paths.storage_location}/system/events"
+
+event_log = spark.read.format('delta').load(event_log_path)
+event_log.createOrReplaceTempView("event_log_raw")
+
+display(event_log)
+```
+
+The dataset includes an id for each transaction performed. 
+
+#### Check the Latest Update Id
+
+```python
+latest_update_id = spark.sql("""
+    SELECT origin.update_id
+    FROM event_log_raw
+    WHERE event_type = 'create_update'
+    ORDER BY timestamp DESC LIMIT 1""").first().update_id
+
+print(f"Latest Update ID: {latest_update_id}")
+
+# Push back into the spark config so that we can use it in a later query.
+spark.conf.set('latest_update.id', latest_update_id)
+```
+
+#### Perform Audit Logging
+
+Events related to running pipelines and editing configurations are captured as **`user_action`**.
+
+Yours should be the only **`user_name`** for the pipeline you configured during this lesson.
+
+```sql
+SELECT timestamp, details:user_action:action, details:user_action:user_name
+FROM event_log_raw 
+WHERE event_type = 'user_action'
+```
+
+![Alt text](image-136.png)
+
+#### Examining Data Lineage
+
+```sql
+SELECT details:flow_definition.output_dataset, details:flow_definition.input_datasets 
+FROM event_log_raw 
+WHERE event_type = 'flow_definition' AND 
+      origin.update_id = '${latest_update.id}'
+```
+
+DLT provides built-in lineage information for how data flows through your table.
+
+While the query below only indicates the direct predecessors for each table, this information can easily be combined to trace data in any table back to the point it entered the lakehouse.
+
+![Alt text](image-137.png)
+
+![ ](image-138.png)
+
+#### Checking Data Quality Metrics ⚠️
+
+If you define expectations on datasets in your pipeline, the data quality metrics are stored in the details:flow_progress.data_quality.expectations object. Events containing information about data quality have the event type flow_progress. The following example queries the data quality metrics for the last pipeline update:
+
+```SQL
+SELECT row_expectations.dataset as dataset,
+       row_expectations.name as expectation,
+       SUM(row_expectations.passed_records) as passing_records,
+       SUM(row_expectations.failed_records) as failing_records
+FROM
+  (SELECT explode(
+            from_json(details :flow_progress :data_quality :expectations,
+                      "array<struct<name: string, dataset: string, passed_records: int, failed_records: int>>")
+          ) row_expectations
+   FROM event_log_raw
+   WHERE event_type = 'flow_progress' AND 
+         origin.update_id = '${latest_update.id}'
+  )
+GROUP BY row_expectations.dataset, row_expectations.name
+```
+
+![Alt text](image-139.png)
+
+### Databricks Workflows
+![Alt text](image-140.png)
+
+#### Workflows vs DLT Pipelines
+
+Workflows orchestrate all types of tasks(any kind of sql,spark and ml models)
+
+DLT is used to create streaming data pipelines using Python/SQL. It has quality controls and monitoring.
+
+These two can be integrated. DLT pipeline can be executed as a task in a workflow.
+
+![](image-141.png)
+
+#### Differences
+![Alt text](image-142.png)
+
+#### Use Cases
+![Alt text](image-143.png)
+
+#### Features of Workflows
+![Alt text](image-144.png)
+![Alt text](image-145.png)
+
+#### How to Leverage Workflows?
+![Alt text](image-146.png)
+
+#### Common Workflow Patterns
+![Alt text](image-147.png)
+
+The Fan-Out Pattern can be used when we have a single API from which data comes in but there are various data stores that the data must be stored in different shapes.
+
+#### Example Pipeline
+![Alt text](image-148.png)
+
+### Workflow Job Components
+![Alt text](image-149.png)
+
+Shared Job Clusters provide flexibility by providing the ability to use same job cluster for more than one task. 
+
+### Defining Tasks
+![Alt text](image-150.png)
+
+### Scheduling and Alerts
+![Alt text](image-151.png)
+
+### Access Controls
+![Alt text](image-152.png)
+
+### Job Rrun History
+![Alt text](image-153.png)
+
+### Repairing Jobs
+![Alt text](image-154.png)
+In the above figure we can only rerun from the Silvers job and not the bronze one since its executed properly.
+
+### Demo of Workflow
+
+Go to Workflows > Create new workflow
+
+![Alt text](image-155.png)
+
+Here is the workflow run from the course. I cant run it on my workkspace due to resource constraints.
+
+![Alt text](image-156.png)
+
+Go to the same notebookDE 5.1.1 and Run the script under ```Generate Pipeline```
+
+**Creating a DLT Pipeline in the Workflow**
+![Alt text](image-157.png)
+
+For more info on workflows check [this](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282232/command/2951115793282237)
+
