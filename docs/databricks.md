@@ -1,5 +1,35 @@
 # Databricks
 
+## Quick Access
+
+1. [Databricks Lakehouse Fundamentals](https://vedanthv.github.io/data-engg-docs/databricks/#databricks-lakehouse-fundamentals)
+
+2. [Data Engineering with Databricks](https://vedanthv.github.io/data-engg-docs/databricks/#course-1-data-engineering-with-databricks)
+
+    - [Getting Started with Workspace](https://vedanthv.github.io/data-engg-docs/databricks/#getting-started-with-the-workspace)
+
+    - [Transform Data with Spark](https://vedanthv.github.io/data-engg-docs/databricks/#transform-data-with-spark)
+
+    - [Manage Data with Delta Lake](https://vedanthv.github.io/data-engg-docs/databricks/#managing-data-with-delta-lake)
+
+    - [Building Data Pipelines wit DLT](https://vedanthv.github.io/data-engg-docs/databricks/#data-pipelines-with-delta-live-tables)
+
+    - [Workflows in Databricks](https://vedanthv.github.io/data-engg-docs/databricks/?h=workflow#databricks-workflows)
+
+    - [Data Access with Unity Catelog]()
+
+3. Brian Cafferky Training Material
+
+    - [Dimension Modelling Concepts]()
+
+    - [Understanding Delta Event Logs]()
+
+    - [Delta Live Table Pipeline Example]()
+
+    - [Databricks Workflows Features]()
+
+Databricks Workspace [link](https://community.cloud.databricks.com/?o=446238005128756)
+
 ## Databricks Lakehouse Fundamentals
 
 ![Alt text](image-62.png)
