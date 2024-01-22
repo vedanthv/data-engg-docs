@@ -2302,3 +2302,474 @@ Go to the same notebookDE 5.1.1 and Run the script under ```Generate Pipeline```
 
 For more info on workflows check [this](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282232/command/2951115793282237)
 
+### Unity Catalog
+
+- There is something called Unity Catalog Metastore that is different from the Hive Metastore and has advanced data lineage, security and auditing capabilities.
+
+- Metadata like data about the tables, columns and ACL for the objects is stored in the Control Plane
+- Data related objects that are managed by the metastore are stored in the Cloud Storage.
+- Once we connect to Unity Catalog, it connects the Hive Metastore as a special catalog named ```hive_metastore```
+- Assets within the hive metastore can be easily referenced from Unity Catalog.
+- Unity Catalog won't control access to the hive metastore but we can use the traditional ACLs
+
+#### Components of Unity Catalog
+
+- Catalogs - Containers that only contain schemas
+- Schema - Its a container for data bearing assets.
+- Tables - They have two main information associated with them : data and metadata
+- Views - perform SQL transformation of other tables or views. They do not have the ability to modify the other tables or views.
+- Storage Credential - Allows Unity Catalog to access the external cloud storage via access creds.
+- External Location - Allow users to divide the containers into smaller pieces and exercise control over it, They are mainly used to support external tables.
+- Shares - They are used to define a read only logical collection of tables. These can be shared with a data reader outside the org.
+
+#### Unity Catalog Architecture
+
+![ ](https://snipboard.io/3AskyN.jpg)
+
+- In case before UC, we should provide different ACL's for each workspace and it must be shared.
+- If the compute resources are not properly configured then the access rules can be bypassed very easily.
+- In case of Unity Catalog, we can take out the entire User and Config Management outside workspaces.
+- We just need to take care of the Compute Resources in the Workspaces. Any changes in the UC is automatically reflected in the Workspaces.
+
+#### Query Lifecycle
+
+- Queries can be issued via a data warehouse or BI tool. The compute resource begins processing the query.
+- The UC then accepts the query, logs it and checks the security constraints.
+- For each object of the query, UC assumes the IAM role or service principal governing the object as provided by a cloud admin.
+- UC then generates a short term token and returns that token to the principal with the access url.
+- Now the principal can request data using the URL from the cloud storage with the token.
+- Data is then sent back from the cloud storage.
+- Last mile row or column filtering can now be applied on the sql warehouse data.
+
+![](https://snipboard.io/K3Iinw.jpg)
+
+#### Compute Resources and Unity Catalog
+
+![](https://snipboard.io/ONhTE4.jpg)
+
+- Dynamic Views are not supported on Single User Cluster.
+- Cluster level installations don't work on Shared Clusters
+- Dynamic Views offer row and column protection.
+
+![](https://snipboard.io/9EtA71.jpg)
+
+#### Roles and Admins in Unity Catalog
+
+![](https://snipboard.io/3lbvRX.jpg)
+
+We can assign the roles via access connectors and there is no manual intervention needed.
+
+![](https://snipboard.io/LYzWCD.jpg)
+
+- Account and Metastore admins have full access to grant privileges and have the access to data objects.
+- The Metastore admins have same privileges as Cloud Admin but only within the metastore that they own.
+- There is also a Data Owner that controls and owns only the data objects that they created.
+
+![](https://snipboard.io/CqZfAW.jpg)
+
+#### Identities in Unity Catalog
+
+- Service Principal is an individual identity for use with automated tools to run jobs and applications.
+- They are assigned a name by the creator but are uniquely identified by the Global Unique Identifier ID.
+- An access token can be used by the Service Principal using an API to access the data or use Databricks workflows.
+- The Service Principals can be elevated to have admin privileges.
+
+![](https://snipboard.io/Ys6FPK.jpg)
+
+#### Groups in Unity Catalog
+
+- Basically its a set of individual users gathered in one place to simplify the access.
+- Any grants given to group are inherited by the users.
+
+- Groups can define who can access what data objects and how simplifying data governance policies.
+
+![](https://snipboard.io/lqPd48.jpg)
+
+#### Multiple Nested Groups
+
+![](https://snipboard.io/7COVtL.jpg)
+
+#### Identity Federation
+
+![](https://snipboard.io/DYjCip.jpg)
+
+- There are two main identities, account identity and workspace identity.
+- They are linked by a common identity like the email id of a user.
+- So its important to have the same email in Account and Workspace, otherwise users can login to the workspace using one email but may not be able to access any data.
+- To simplify this identity federation is used where the users, groups and their access controls are defined once in the Account Console and then they can be assigned to one or more workspaces as needed.
+
+### Data Access Privileges
+
+The access privileges are not implied or imperative in the case of Databricks.
+
+**CREATE** - Allows us to create child data objects like views, table and functions within the catalog.
+
+**USAGE** - Allows the person to traverse the child objects. To access a table we need usage access on the containing schema and the catalog.
+
+The privileges are propagated to child objects. For example, granting privileges to a catalog gives us the access to all the tables within the catalog.
+
+**SELECT** - allows querying of the table.
+
+**MODIFY** - allows modification of the table.
+
+**VIEWS** - users don't need access to the underlying source tables to access the view.
+
+**EXECUTE** - allows us to use the functions.
+
+**STORAGE CREDENTIALS** and **EXTERNAL LOCATION** - support three privileges, READ FILES, WRITE FILES and CREATE TABLE.
+
+**SHARE** - supports select statements only.
+
+![](https://snipboard.io/Pnif2s.jpg)
+
+#### Privilege on various objects
+![](https://snipboard.io/62nv7V.jpg)
+
+![](https://snipboard.io/6wPrMV.jpg)
+
+#### Dynamic Views
+
+![](https://snipboard.io/6wPrMV.jpg)
+
+Dropping objects in any scenario can be done only by the owner.
+
+#### External Locations and Storage Credentials
+
+We can refer to a single storage credential from various external locations.
+
+Because there can be many external locations that use the same storage credentials, DB recommends defining access using the external locations.
+
+![](https://snipboard.io/z0n7VP.jpg)
+
+#### Best Practices using Unity Catalog
+
+1. One Unity Catalog per region
+2. We can implement table sharing across many regions. But when we are sharing the tables, they appear as read only in the destination metastore.
+3. ACL's are not implemented in Region B, so they need to be setup separately.
+4. It may be costly to do this because data is queried across regions, we can rather ingest the data into region B and then query it.
+
+![](https://snipboard.io/v0fWkb.jpg)
+
+### Data Segregation
+
+1. We should not use Metastores to segregate data, because switching metastores needs workspace reassignment so the access and creds get spread across several roles in the workspaces.
+2. Metastores are actually a thin layer that references the meta data cloud storage object. Using UC container constructs [schemas and catalogs], enables the entire access and credentials to be handled by the metastore admins and the other catalog and workspace admins dont need to get involved.
+
+![](https://snipboard.io/P6tR7E.jpg)
+
+#### Methods of Data Segregation
+
+![](https://snipboard.io/d4TYhf.jpg)
+
+- Workspace only identities will not have access to data access within unity catalog.
+- But in June 2022, DB elevated all workspace and service principal users to account level privileges.
+- No one should run 	production jobs in the prod environment. This risks overwriting the prod data. Users should never be allowed modify access on prod tables.
+
+#### Storage Credential vs External Location
+
+The same access credentials that are part of the storage location is provided to the External Locations.
+
+![](https://snipboard.io/4ZsRKG.jpg)
+
+### Unity Catalog
+
+- There is something called Unity Catalog Metastore that is different from the Hive Metastore and has advanced data lineage, security and auditing capabilities.
+
+- Metadata like data about the tables, columns and ACL for the objects is stored in the Control Plane
+- Data related objects that are managed by the metastore are stored in the Cloud Storage.
+- Once we connect to Unity Catalog, it connects the Hive Metastore as a special catalog named ```hive_metastore```
+- Assets within the hive metastore can be easily referenced from Unity Catalog.
+- Unity Catalog won't control access to the hive metastore but we can use the traditional ACLs
+
+#### Components of Unity Catalog
+
+- Catalogs - Containers that only contain schemas
+- Schema - Its a container for data bearing assets.
+- Tables - They have two main information associated with them : data and metadata
+- Views - perform SQL transformation of other tables or views. They do not have the ability to modify the other tables or views.
+- Storage Credential - Allows Unity Catalog to access the external cloud storage via access creds.
+- External Location - Allow users to divide the containers into smaller pieces and exercise control over it, They are mainly used to support external tables.
+- Shares - They are used to define a read only logical collection of tables. These can be shared with a data reader outside the org.
+
+#### Unity Catalog Architecture
+
+![ ](https://snipboard.io/3AskyN.jpg)
+
+- In case before UC, we should provide different ACL's for each workspace and it must be shared.
+- If the compute resources are not properly configured then the access rules can be bypassed very easily.
+- In case of Unity Catalog, we can take out the entire User and Config Management outside workspaces.
+- We just need to take care of the Compute Resources in the Workspaces. Any changes in the UC is automatically reflected in the Workspaces.
+
+#### Query Lifecycle
+
+- Queries can be issued via a data warehouse or BI tool. The compute resource begins processing the query.
+- The UC then accepts the query, logs it and checks the security constraints.
+- For each object of the query, UC assumes the IAM role or service principal governing the object as provided by a cloud admin.
+- UC then generates a short term token and returns that token to the principal with the access url.
+- Now the principal can request data using the URL from the cloud storage with the token.
+- Data is then sent back from the cloud storage.
+- Last mile row or column filtering can now be applied on the sql warehouse data.
+
+![](https://snipboard.io/K3Iinw.jpg)
+
+#### Compute Resources and Unity Catalog
+
+![](https://snipboard.io/ONhTE4.jpg)
+
+- Dynamic Views are not supported on Single User Cluster.
+- Cluster level installations don't work on Shared Clusters
+- Dynamic Views offer row and column protection.
+
+![](https://snipboard.io/9EtA71.jpg)
+
+#### Roles and Admins in Unity Catalog
+
+![](https://snipboard.io/3lbvRX.jpg)
+
+We can assign the roles via access connectors and there is no manual intervention needed.
+
+![](https://snipboard.io/LYzWCD.jpg)
+
+- Account and Metastore admins have full access to grant privileges and have the access to data objects.
+- The Metastore admins have same privileges as Cloud Admin but only within the metastore that they own.
+- There is also a Data Owner that controls and owns only the data objects that they created.
+
+![](https://snipboard.io/CqZfAW.jpg)
+
+#### Identities in Unity Catalog
+
+- Service Principal is an individual identity for use with automated tools to run jobs and applications.
+- They are assigned a name by the creator but are uniquely identified by the Global Unique Identifier ID.
+- An access token can be used by the Service Principal using an API to access the data or use Databricks workflows.
+- The Service Principals can be elevated to have admin privileges.
+
+![](https://snipboard.io/Ys6FPK.jpg)
+
+#### Groups in Unity Catalog
+
+- Basically its a set of individual users gathered in one place to simplify the access.
+- Any grants given to group are inherited by the users.
+
+- Groups can define who can access what data objects and how simplifying data governance policies.
+
+![](https://snipboard.io/lqPd48.jpg)
+
+#### Multiple Nested Groups
+
+![](https://snipboard.io/7COVtL.jpg)
+
+#### Identity Federation
+
+![](https://snipboard.io/DYjCip.jpg)
+
+- There are two main identities, account identity and workspace identity.
+- They are linked by a common identity like the email id of a user.
+- So its important to have the same email in Account and Workspace, otherwise users can login to the workspace using one email but may not be able to access any data.
+- To simplify this identity federation is used where the users, groups and their access controls are defined once in the Account Console and then they can be assigned to one or more workspaces as needed.
+
+### Data Access Privileges
+
+The access privileges are not implied or imperative in the case of Databricks.
+
+**CREATE** - Allows us to create child data objects like views, table and functions within the catalog.
+
+**USAGE** - Allows the person to traverse the child objects. To access a table we need usage access on the containing schema and the catalog.
+
+The privileges are propagated to child objects. For example, granting privileges to a catalog gives us the access to all the tables within the catalog.
+
+**SELECT** - allows querying of the table.
+
+**MODIFY** - allows modification of the table.
+
+**VIEWS** - users don't need access to the underlying source tables to access the view.
+
+**EXECUTE** - allows us to use the functions.
+
+**STORAGE CREDENTIALS** and **EXTERNAL LOCATION** - support three privileges, READ FILES, WRITE FILES and CREATE TABLE.
+
+**SHARE** - supports select statements only.
+
+![](https://snipboard.io/Pnif2s.jpg)
+
+#### Privilege on various objects
+![](https://snipboard.io/62nv7V.jpg)
+
+![](https://snipboard.io/6wPrMV.jpg)
+
+#### Dynamic Views
+
+![](https://snipboard.io/6wPrMV.jpg)
+
+Dropping objects in any scenario can be done only by the owner.
+
+#### External Locations and Storage Credentials
+
+We can refer to a single storage credential from various external locations.
+
+Because there can be many external locations that use the same storage credentials, DB recommends defining access using the external locations.
+
+![](https://snipboard.io/z0n7VP.jpg)
+
+#### Best Practices using Unity Catalog
+
+1. One Unity Catalog per region
+2. We can implement table sharing across many regions. But when we are sharing the tables, they appear as read only in the destination metastore.
+3. ACL's are not implemented in Region B, so they need to be setup separately.
+4. It may be costly to do this because data is queried across regions, we can rather ingest the data into region B and then query it.
+
+![](https://snipboard.io/v0fWkb.jpg)
+
+### Data Segregation
+
+1. We should not use Metastores to segregate data, because switching metastores needs workspace reassignment so the access and creds get spread across several roles in the workspaces.
+2. Metastores are actually a thin layer that references the meta data cloud storage object. Using UC container constructs [schemas and catalogs], enables the entire access and credentials to be handled by the metastore admins and the other catalog and workspace admins dont need to get involved.
+
+![](https://snipboard.io/P6tR7E.jpg)
+
+#### Methods of Data Segregation
+
+![](https://snipboard.io/d4TYhf.jpg)
+
+- Workspace only identities will not have access to data access within unity catalog.
+- But in June 2022, DB elevated all workspace and service principal users to account level privileges.
+- No one should run 	production jobs in the prod environment. This risks overwriting the prod data. Users should never be allowed modify access on prod tables.
+
+#### Storage Credential vs External Location
+
+The same access credentials that are part of the storage location is provided to the External Locations.
+
+![](https://snipboard.io/4ZsRKG.jpg)
+
+#### Practical Example
+
+I cannot create metastore in my account due to privilege problems. Just check the code to understand. Here is a video from the course regarding the [example](https://customer-academy.databricks.com/learn/course/1266/play/14569/create-and-govern-data-with-unity-catalog;lp=10).
+
+##### Create a New Catalog
+
+Let's create a new catalog in our metastore. The variable **`${DA.my_new_catalog}`** was displayed by the setup cell above, containing a unique string generated based on your username.
+
+Run the **`CREATE`** statement below, and click the **Data** icon in the left sidebar to confirm this new catalog was created.
+
+```sql
+CREATE CATALOG IF NOT EXISTS ${DA.my_new_catalog}
+```
+
+##### Selecting the Default Catalog
+
+SQL developers will probably also be familiar with the **`USE`** statement to select a default schema, thereby shortening queries by not having to specify it all the time. To extend this convenience while dealing with the extra level in the namespace, Unity Catalog augments the language with two additional statements, shown in the examples below:
+
+    USE CATALOG mycatalog;
+    USE SCHEMA myschema;  
+    
+Let's select the newly created catalog as the default. Now, any schema references will be assumed to be in this catalog unless explicitly overridden by a catalog reference.
+
+```sql
+USE CATALOG ${DA.my_new_catalog}
+```
+
+##### Create a New Schema
+
+Next, let's create a schema in this new catalog. We won't need to generate another unique name for this schema, since we're now using a unique catalog that is isolated from the rest of the metastore. Let's also set this as the default schema. Now, any data references will be assumed to be in the catalog and schema we created, unless explicitely overridden by a two- or three-level reference.
+
+Run the code below, and click the **Data** icon in the left sidebar to confirm this schema was created in the new catalog we created.
+
+```sql
+CREATE SCHEMA IF NOT EXISTS example;
+USE SCHEMA example
+```
+
+##### Set Up Tables and Views
+
+With all the necessary containment in place, let's set up tables and views. For this example, we'll use mock data to create and populate a *silver* managed table with synthetic patient heart rate data and a *gold* view that averages heart rate data per patient on a daily basis.
+
+Run the cells below, and click the **Data** icon in the left sidebar to explore the contents of the *example* schema. Note that we don't need to specify three levels when specifying the table or view names below, since we selected a default catalog and schema.
+
+```sql
+CREATE OR REPLACE TABLE heartrate_device (device_id INT, mrn STRING, name STRING, time TIMESTAMP, heartrate DOUBLE);
+
+INSERT INTO heartrate_device VALUES
+  (23, "40580129", "Nicholas Spears", "2020-02-01T00:01:58.000+0000", 54.0122153343),
+  (17, "52804177", "Lynn Russell", "2020-02-01T00:02:55.000+0000", 92.5136468131),
+  (37, "65300842", "Samuel Hughes", "2020-02-01T00:08:58.000+0000", 52.1354807863),
+  (23, "40580129", "Nicholas Spears", "2020-02-01T00:16:51.000+0000", 54.6477014191),
+  (17, "52804177", "Lynn Russell", "2020-02-01T00:18:08.000+0000", 95.033344842);
+  
+SELECT * FROM heartrate_device
+```
+
+![Alt text](image-158.png)
+
+```sql
+CREATE OR REPLACE VIEW agg_heartrate AS (
+  SELECT mrn, name, MEAN(heartrate) avg_heartrate, DATE_TRUNC("DD", time) date
+  FROM heartrate_device
+  GROUP BY mrn, name, DATE_TRUNC("DD", time)
+);
+SELECT * FROM agg_heartrate
+```
+
+![Alt text](image-159.png)
+
+Querying the table above works as expected since we are the data owner. That is, we have ownership of the data object we're querying. Querying the view also works because we are the owner of both the view and the table it's referencing. Thus, no object-level permissions are required to access these resources.
+
+##### The ```accounts_user_group```
+
+In accounts with Unity Catalog enabled, there is an _account users_ group. This group contains all users that have been assigned to the workspace from the Databricks account. We are going to use this group to show how data object access can be different for users in different groups.
+
+##### Grant Access to Data Objects
+
+Unity Catalog employs an explicit permission model by default; no permissions are implied or inherited from containing elements. Therefore, in order to access any data objects, users will need **USAGE** permission on all containing elements; that is, the containing schema and catalog.
+
+Now let's allow members of the *account users* group to query the *gold* view. In order to do this, we need to grant the following permissions:
+1. USAGE on the catalog and schema
+1. SELECT on the data object (e.g. view)
+
+We need the USAGE command to actually make sure that the user reaches the point through the tree level structure to get to where the catalog is stored.
+
+**Grant Privileges**
+
+```sql
+GRANT USAGE ON CATALOG ${DA.my_new_catalog} TO `account users`;
+GRANT USAGE ON SCHEMA example TO `account users`;
+GRANT SELECT ON VIEW agg_heartrate to `account users`
+```
+
+##### Generate a Query and access the data
+
+```sql
+SELECT "SELECT * FROM ${DA.my_new_catalog}.example.agg_heartrate" AS Query
+```
+![Alt text](image-160.png)
+
+##### Can we query the silver table?
+
+Back in the same query in the Databricks SQL session, let's replace *gold* with *silver* and run the query. This time it fails, because we never set up permissions on the *silver* table. 
+
+Querying *gold* works because the query represented by a view is essentially executed as the owner of the view. This important property enables some interesting security use cases; in this way, views can provide users with a restricted view of sensitive data, without providing access to the underlying data itself. We will see more of this shortly.
+
+##### Granting Access to UDF
+
+```sql
+CREATE OR REPLACE FUNCTION mask(x STRING)
+  RETURNS STRING
+  RETURN CONCAT(REPEAT("*", LENGTH(x) - 2), RIGHT(x, 2)
+); 
+SELECT mask('sensitive data') AS data
+```
+
+The above function masks the last two characters of the string ```sensitive_data```
+
+Now let's grant access to the function
+
+```sql
+GRANT EXECUTE ON FUNCTION mask to `account users`
+```
+
+Run the function using
+
+```sql
+SELECT "SELECT ${DA.my_new_catalog}.example.mask('sensitive data') AS data" AS Query
+```
+
+Now run the query in the SQL Editor you can see that the last two characters are redacted.
+
