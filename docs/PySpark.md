@@ -133,3 +133,542 @@ The performance can be hit when we use the On Heap Memory because in the middle 
 ### Spark Architecture Diagram
 
 ![image](https://github.com/vedanthv/data-engg/assets/44313631/3186a6a2-5521-481a-9de1-1853087a9031)
+
+## Apache Spark Internals
+
+![](https://snipboard.io/0KCWc4.jpg)
+
+![](https://snipboard.io/SFokjG.jpg)
+
+### How does Spark Execute Queries?
+
+![](https://snipboard.io/RL7lNh.jpg)
+
+### Spark Cluster Execution
+
+![](https://snipboard.io/t3F1mQ.jpg)
+
+- Executor is a JVM virtual machine that runs on the workers.
+- The 625mb file is divided into memory partitions and then sent to the workers for execution.
+- Its an automatic parallelism process.
+
+### Hive Metastore
+
+![](https://snipboard.io/bSnPkw.jpg)
+
+### Parquet File Format
+
+![](https://snipboard.io/dmtEkC.jpg)
+
+- We prefer the parquet format because consider a dataset with 100 columns in it and we want to only fetch data of first three columns. We can use parquet format to do it faster compared to csv.
+
+- Search for files with java in it with Linux
+```%sh ps grep 'java'```
+
+- How to read markdown files use bash
+```%fs head /databricks-dataset/README.md```
+
+- Display all mount points
+```%fs mounts```
+
+- Declare a python variable in the spark context which SQL commands can access.
+```spark.sql(f"SET c.events_path = {events_path}")```
+
+- Creating a table form the files and load it as a table
+```sql
+CREATE TABLE IF NOT EXISTS 
+events
+USING DELTA OPTIONS
+{path "${c.events_path}"}
+```
+- Add notebook params as widgets
+
+```SQL
+CREATE WIDGET TEXT state default "KA"
+```
+```SQL
+SELECT * FROM events WHERE state = getArgument("state")
+```
+
+### What is there in Spark SQL?
+
+![](https://snipboard.io/QgEmFf.jpg)
+
+### Lazy Evaluation
+
+![](https://snipboard.io/wYCutU.jpg)
+
+![](https://snipboard.io/saCl2z.jpg)
+
+![](https://snipboard.io/i5CwNx.jpg)
+
+### Explicit vs Implicit vs Infer Schema
+
+![](https://snipboard.io/EgsMPk.jpg)
+
+Fastest one is explicit since we don't need to read the data files.
+
+![](https://snipboard.io/ZAEJHc.jpg)
+
+### Query Execution Process
+
+![](![query execution engine](https://files.training.databricks.com/images/aspwd/spark_sql_query_execution_engine.png)
+
+### DataFrame Action 
+
+![](https://snipboard.io/lA3W5s.jpg)
+
+- anything we specify as options are actions.
+
+### Inferring JSON Schema
+
+```python
+from pyspark.sql.types import ArrayType, DoubleType, IntegerType, LongType, StringType, StructType, StructField
+
+  
+
+user_defined_schema = StructType([
+
+StructField("device", StringType(), True),
+
+StructField("ecommerce", StructType([
+
+StructField("purchaseRevenue", DoubleType(), True),
+
+StructField("total_item_quantity", LongType(), True),
+
+StructField("unique_items", LongType(), True)
+
+]), True),
+
+StructField("event_name", StringType(), True),
+
+StructField("event_previous_timestamp", LongType(), True),
+
+StructField("event_timestamp", LongType(), True),
+
+StructField("geo", StructType([
+
+StructField("city", StringType(), True),
+
+StructField("state", StringType(), True)
+
+]), True),
+
+StructField("items", ArrayType(
+
+StructType([
+
+StructField("coupon", StringType(), True),
+
+StructField("item_id", StringType(), True),
+
+StructField("item_name", StringType(), True),
+
+StructField("item_revenue_in_usd", DoubleType(), True),
+
+StructField("price_in_usd", DoubleType(), True),
+
+StructField("quantity", LongType(), True)
+
+])
+
+), True),
+
+StructField("traffic_source", StringType(), True),
+
+StructField("user_first_touch_timestamp", LongType(), True),
+
+StructField("user_id", StringType(), True)
+
+])
+
+  
+
+events_df = (spark
+
+.read
+
+.schema(user_defined_schema)
+
+.json(events_json_path)
+
+)
+```
+
+There are no jobs that are spanned while running the above code since we give all the data to infer that spark needs.
+
+### Write Dataframes to tables
+
+```python
+events_df.write.mode("overwrite").saveAsTable("events")
+```
+
+### Reading Complex JSON and performing operations
+
+```python
+rev_df = (events_df
+
+.filter(col("ecommerce.purchase_revenue_in_usd").isNotNull())
+.withColumn("purchase_revenue", (col("ecommerce.purchase_revenue_in_usd") * 100).cast("int"))
+.withColumn("avg_purchase_revenue", col("ecommerce.purchase_revenue_in_usd") / col("ecommerce.total_item_quantity"))
+
+.sort(col("avg_purchase_revenue").desc())
+
+)
+display(rev_df)
+```
+
+![](https://snipboard.io/gkP7WZ.jpg)
+
+### ```selectExpr()```
+
+```sql
+apple_df = events_df.selectExpr("user_id", "device in ('macOS', 'iOS') as apple_user")
+
+display(apple_df)
+```
+![](https://snipboard.io/LXeRz0.jpg)
+
+### Drop multiple columns
+
+```sql
+anonymous_df = events_df.drop("user_id", "geo", "device")
+display(anonymous_df)
+```
+### Create New Columns
+
+```sql
+mobile_df = events_df.withColumn("mobile", col("device").isin("iOS", "Android"))
+display(mobile_df)
+```
+### ```filter()``` to subset rows
+
+```python
+purchases_df = events_df.filter("ecommerce.total_item_quantity > 0")
+display(purchases_df)	
+```
+
+```python
+revenue_df = events_df.filter(col("ecommerce.purchase_revenue_in_usd").isNotNull())
+display(revenue_df)
+```
+
+### ```sort``` vs ```order_by```
+
+```sort``` will run on individual memory partitions and ```order_by``` will sort all the memory partitions together.
+
+```python
+revenue_df = events_df.filter(col("ecommerce.purchase_revenue_in_usd").isNotNull())
+display(revenue_df)
+```
+
+```python
+decrease_sessions_df = events_df.sort(col("user_first_touch_timestamp").desc(), col("event_timestamp"))
+display(decrease_sessions_df)
+```
+
+### Aggregations
+
+![](https://snipboard.io/6WrK7H.jpg)
+
+### Group By Operations
+
+```sql
+df.groupBy("geo.state", "geo.city")
+```
+
+### How Group By Works?
+
+![](https://files.training.databricks.com/images/aspwd/aggregation_groupby.png)
+
+### Group Data Methods
+
+![](https://snipboard.io/GeSnNc.jpg)
+
+Average Purchase Revenue for each state
+
+```sql
+avg_state_purchases_df = df.groupBy("geo.state").avg("ecommerce.purchase_revenue_in_usd")
+display(avg_state_purchases_df)
+```
+![](https://snipboard.io/0YE3h7.jpg)
+
+Total Quantity and sum of purchase revenue and quantity for each combo of city and state
+
+```sql
+city_purchase_quantities_df = df.groupBy("geo.state", "geo.city").sum("ecommerce.total_item_quantity", "ecommerce.purchase_revenue_in_usd")
+display(city_purchase_quantities_df)
+```
+![](https://snipboard.io/7pyXY3.jpg)
+
+### List of Aggregation Functions
+
+![](https://snipboard.io/Pzv9sI.jpg)
+
+**Multiple Aggregate Functions**
+
+```python
+from pyspark.sql.functions import avg, approx_count_distinct
+state_aggregates_df = (df
+.groupBy("geo.state")
+.agg(avg("ecommerce.total_item_quantity").alias("avg_quantity"),
+approx_count_distinct("user_id").alias("distinct_users"))
+
+)
+display(state_aggregates_df)
+```
+
+### Unix Timestamps
+
+![](https://snipboard.io/FpCJtM.jpg)
+
+#### Datetime Functions 
+
+Refer this [docs](https://www.databricks.com/blog/2020/07/22/a-comprehensive-look-at-dates-and-timestamps-in-apache-spark-3-0.html)
+
+![](https://snipboard.io/Evl8Df.jpg)
+
+**Add and Subtract Dates**
+
+```sql
+plus_2_df = timestamp_df.withColumn("plus_two_days", date_add(col("timestamp"), 2))
+```
+
+**String Built In Functions**
+
+![](https://snipboard.io/pPeEyK.jpg)
+
+![](https://snipboard.io/LXB2UF.jpg)
+
+**Complex Data types**
+
+![](https://snipboard.io/idbtZH.jpg)
+
+**Review**
+
+![](https://snipboard.io/3hfWuT.jpg)
+
+#### Collection Functions
+
+![](https://snipboard.io/iSJX8t.jpg)
+
+```array_contains```
+
+![](https://snipboard.io/IpGYTc.jpg)
+
+```exlpode()```
+
+![](https://snipboard.io/IhvlpO.jpg)
+
+```element_at```
+
+![](https://snipboard.io/KA0o7s.jpg)
+
+```collect_set```
+
+![](https://snipboard.io/rCvKbf.jpg)
+
+Split to extract email address
+
+```sql
+display(df.select(split(df.email, '@', 0).alias('email_handle')))
+```
+
+#### Collection Functions Review
+
+![](https://snipboard.io/dDvPzO.jpg)
+
+Create a column for the size of mattress
+
+```sql
+mattress_df = (details_df
+.filter(array_contains(col("details"), "Mattress"))
+.withColumn("size", element_at(col("details"), 2)))
+display(mattress_df)
+```
+![](https://snipboard.io/m5DHjX.jpg)
+
+For each email, check what mattress type they purchased.
+
+```sql
+size_df = mattress_df.groupBy("email").agg(collect_set("size").alias("size options"))
+display(size_df)
+```
+![](https://snipboard.io/pYMh9u.jpg)
+
+#### Miscellaneous Functions
+
+![](https://snipboard.io/bumgyI.jpg)
+
+**Joins Demo**
+
+![](https://snipboard.io/DukP6S.jpg)
+
+**Handling Null Values**
+
+![](https://snipboard.io/XhNu1S.jpg)
+
+### How UDFs run in Scala and Python?
+
+![](https://snipboard.io/MmIw1E.jpg)
+
+- In case of Scala UDFs, it lies inside the executor so there is no inter process communication is required.
+- But in case of Python UDF, we will have a driver program and an executor but the Python UDFs run outside the Executor.
+- This means that the Spark DataFrame rows are deserialized, sent row by row to the python UDF that transforms it, serializes it row by row and sends it back to the executors.
+- The UDFs are registered on Python Interpreters.
+
+![](https://snipboard.io/GC5sfe.jpg)
+
+#### Transform function execution
+
+![](https://snipboard.io/N9KdTv.jpg)
+
+- The custom UDF that was written took twice as long to execute due to the extra work involved. 
+- The problem with UDFs is that if we write it in Python, there is extra overhead of converting it to Java bytecode and providing it to the executor.
+
+#### How to register UDFs?
+
+![](https://snipboard.io/i2W5lJ.jpg)
+
+![](https://snipboard.io/DLviFg.jpg)
+
+![](https://snipboard.io/EAw5Sl.jpg)
+
+#### Python vs Pandas UDF
+
+![](https://snipboard.io/rm9D6E.jpg)
+
+#### SQL UDF
+
+![](https://snipboard.io/3x6NvT.jpg)
+
+### Apache Spark Architecture
+
+![](https://snipboard.io/SE9xBF.jpg)
+
+### Cluster Architecture
+
+![](https://snipboard.io/ZV673F.jpg)
+
+- Each worker will have only one executor
+
+![](https://snipboard.io/4bl6h3.jpg)
+
+There is one task for each memory partition.
+
+![](https://snipboard.io/4KXOvo.jpg)
+
+#### Driver's work 
+
+![](https://snipboard.io/XvBOuq.jpg)
+
+![](https://snipboard.io/AK8rFJ.jpg)
+
+![](https://snipboard.io/D6i7ul.jpg)
+
+![](https://snipboard.io/tYDE2C.jpg)
+
+![](https://snipboard.io/6YaWFz.jpg)
+
+The rest of the memory partitions do not have any cores to execute on and wait in the queue.
+
+![](https://snipboard.io/lXwj34.jpg)
+
+A,E,H and J have finished working. They are idle so worker node assigns the memory partitions 13,14,15 and 16 to them.
+
+![](https://snipboard.io/nLl1s3.jpg)
+
+Once all of them complete the work, the driver sends the answer set to the client.
+
+![](https://snipboard.io/N1rqhp.jpg)
+
+- The intermediate result sets mentioned as shuffle write and shuffle read are then sent to the worker node hard drives.
+
+![](https://snipboard.io/JG2zWe.jpg)
+
+#### Deep Dive Into Shuffle
+
+![](https://snipboard.io/7KlhLM.jpg)
+
+- The memory used went from 20mb to 560 bytes because we are only storing the key value pairs and not the entire data. The key value pairs indicate the color and the number of rows that they are part of. The data is written to the disk under shuffle write.
+
+- In stage 2 we build shuffle partition with Green, Red and Yellow rows.
+
+![](https://snipboard.io/sAFqK0.jpg)
+
+![](https://snipboard.io/p1JsP2.jpg)
+
+![](https://snipboard.io/akHOIW.jpg)
+
+![](https://snipboard.io/R6sXt8.jpg)
+
+![](https://snipboard.io/ufO1Gd.jpg)
+
+#### Summary
+
+![](https://snipboard.io/PYzwXI.jpg)
+
+### Query Optimization
+
+![](https://snipboard.io/AHCm8q.jpg)
+
+- RDD is resilient distributed dataset that is just an array of data.
+
+#### Example
+
+![](https://snipboard.io/4dINXp.jpg)
+
+#### Example 2
+
+![](https://snipboard.io/cC73YN.jpg)
+
+#### Adaptive Query Optimization
+
+![](https://snipboard.io/z9T0Ok.jpg)
+
+#### Shuffle Partitions : With and Without AQE
+
+![](https://snipboard.io/rVH0Ls.jpg)
+
+![](https://snipboard.io/XBdqHy.jpg)
+
+#### Predicate Pushdown
+
+![](https://snipboard.io/Ovah36.jpg)
+
+- In this case, less RAM is used so query is faster.
+
+![](https://snipboard.io/P84qKc.jpg)
+
+- If we don't remove things from cache that is not needed, when there is only one core in the executor and a query is called in, then it will be given precedence and the cache will be evicted.
+
+#### Memory Partitioning Guidelines
+
+![](https://snipboard.io/hRP6b0.jpg)
+
+![](https://snipboard.io/BuAK5W.jpg)
+
+In the below example we have 8 memory partitions and 200 shuffle partitions.
+
+![](https://snipboard.io/FnydDf.jpg)
+
+Check the number of cores in the cluster
+
+![](https://snipboard.io/7kLTAj.jpg)
+
+Check the number of memory partitions
+
+![](https://snipboard.io/er4WDd.jpg)
+
+Repartitioning Dataset
+
+![](https://snipboard.io/ychkz1.jpg)
+
+Repartitioning is always a wide transformation.
+
+### AQE and Shuffle Partitions
+
+![](https://files.training.databricks.com/images/aspwd/partitioning_aqe.png)
+
+We can set the ```spark.sql.shuffle.partitions``` based on the largest dataset that our application can process.
