@@ -33,6 +33,7 @@ nav:
   - Azure Databricks : databricks.md
   - PySpark : PySpark.md
   - Microsoft Azure - DP 203 : Azure.md
+  - Streaming Architecture: streaming.md
 
 markdown_extensions:
   - pymdownx.highlight:
