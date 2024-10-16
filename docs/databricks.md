@@ -349,6 +349,8 @@ Some supported operations include:
 - Creating a new branch.
 - Any changes that are made in a Databricks Repo can be tracked in a Git Repo
 
+We cannot DELETE branches from repos in databricks. It has to be done using Github/Azure Devops.
+
 #### Transform Data With Spark
 
 ##### Data Objects in the Lakehouse
