@@ -364,7 +364,9 @@ Many operations of the control plane can be versioned using Repos feature like k
 
 ##### Managed vs External Storage
 ![Alt text](image-61.png)
+- Managed Tables are made up of files that are stored in a managed store location configured to the metastore. Dropping the table deletes all the files also.
 
+- In case of external tables, the data is stored in a cloud storage location. When we drop an external table, this underlying data is retained.
 - View is a saved query against one or more databass. Can be temporary or global. Temp Views are scoped only to the current spark session
 
 - CTE's only alias the results of the query while that query is being planned or executed.
