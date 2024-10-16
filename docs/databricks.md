@@ -351,6 +351,8 @@ Some supported operations include:
 
 We cannot DELETE branches from repos in databricks. It has to be done using Github/Azure Devops.
 
+Many operations of the control plane can be versioned using Repos feature like keeping track of versions of notebooks and also to test clusters.
+
 #### Transform Data With Spark
 
 ##### Data Objects in the Lakehouse
