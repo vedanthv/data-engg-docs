@@ -363,7 +363,9 @@ Many operations of the control plane can be versioned using Repos feature like k
 - Every schema has a table that is managed or external
 
 ##### Managed vs External Storage
+
 ![Alt text](image-61.png)
+
 - Managed Tables are made up of files that are stored in a managed store location configured to the metastore. Dropping the table deletes all the files also.
 
 - In case of external tables, the data is stored in a cloud storage location. When we drop an external table, this underlying data is retained.
@@ -478,6 +480,11 @@ No data will be moved while creating out tables. the data is just called from th
 DESCRIBE EXTENDED sales_csv
 ```
 
+**IMP!!!** : The table that is created using the external source will be in CSV format and not delta.
+
+![image](https://github.com/user-attachments/assets/1318a3f5-8c8c-4493-881b-19bb55e31c01)
+
+
 #### Limits of Tables with External Data Sources
 
 - When we are using external data sources other than Delta Lake and Data Lakehouse we can't expect the performance to be good always.
@@ -545,6 +552,9 @@ print(f"Found {len(files)} files"
 - Move the entire database to Databricks and then execute logic on the currently active cluster.
 
 - Pushing the query to an external database and only transfer results back to Databricks.
+
+- There will be network transfer latency while moving data back and forth between databricks and DWH.
+- Queries will not run well on big tables. 
 
 ### Cleaning Data using Spark
 
@@ -658,6 +668,7 @@ SELECT max(row_count) <= 1 AS no_of_duplicate_ids FROM(
 - true -> if no duplicate ids
 - false -> if dup ids are there
 
+
 **Checking if each user has at most one email id**
 
 ```sql
@@ -698,8 +709,6 @@ FROM (
 ```
 
 [Why divide by 1e6 to convert timestamp to a date?](https://stackoverflow.com/questions/65124408/pyspark-convert-bigint-to-timestamp-with-microseconds#:~:text=Divide%20your%20timestamp%20by%201e6,units%20of%20second%2C%20not%20microsecond.)
-
-Final Result - Check the [code block](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282457/command/2951115793282483)
 
 In Python
 
@@ -770,8 +779,7 @@ CREATE OR REPLACE TEMP VIEW parsed_events AS SELECT json.* FROM
 	FROM event_strings
 ) 
 ```
-
-**Output** : Check the output of the code [here](https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/2951115793282381/command/2951115793282395)
+Check 3:19 in ![Complex Transformations](https://customer-academy.databricks.com/learn/course/1266/play/7856/complex-transformations;lp=10) for the result...
 
 ```sql
 SELECT * FROM parsed_events;
