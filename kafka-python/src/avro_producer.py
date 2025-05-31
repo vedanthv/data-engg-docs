@@ -1,8 +1,11 @@
+import logging
 import os
 
 from confluent_kafka.schema_registry.avro import AvroSerializer
 from confluent_kafka.serialization import MessageField, SerializationContext
 
+import logging_config
+import utils
 from admin import Admin
 from producer import ProducerClass
 from register_avro_schema import SchemaClient
@@ -39,15 +42,14 @@ class AvroProducer(ProducerClass):
                 message, SerializationContext(topic, MessageField.VALUE)
             )
             self.producer.produce(self.topic, message)
-            print(f"Message sent successfully: {message}")
+            logging.info(f"Message sent successfully: {message}")
         except Exception as e:
-            print(f"Error while sending message: {e}")
+            logging.error(f"Error while sending message: {e}")
 
 
 if __name__ == "__main__":
-
-    bootstrap_servers = "localhost:19092"
-    topic = "avro-topic"
+    bootstrap_servers = 'localhost:19092'
+    topic = 'avro-topic'
     schema_registry_url = 'http://localhost:18081'
     schema_type = "AVRO"
 
@@ -61,9 +63,11 @@ if __name__ == "__main__":
     schema_client = SchemaClient(schema_registry_url, topic, avro_schema, schema_type)
     schema_client.register_schema()
 
+    # fetch schema_str from Schema Registry
+    schema_str = schema_client.get_schema_str()
     # Produce messages
     producer = AvroProducer(
-        bootstrap_servers, topic, schema_client.schema_registry_client, avro_schema
+        bootstrap_servers, topic, schema_client.schema_registry_client, schema_str
     )
 
     try:
