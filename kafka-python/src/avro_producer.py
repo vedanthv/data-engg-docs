@@ -2,13 +2,14 @@ import logging
 import os
 
 from confluent_kafka.schema_registry.avro import AvroSerializer
-from confluent_kafka.serialization import MessageField, SerializationContext
+from confluent_kafka.serialization import MessageField, SerializationContext,StringSerializer
 
 import logging_config
 import utils
 from admin import Admin
 from producer import ProducerClass
 from register_avro_schema import SchemaClient
+from uuid import uuid4
 
 class User:
     def __init__(self, first_name, middle_name, last_name, age):
@@ -28,23 +29,39 @@ def user_to_dict(user):
         age=user.age,
     )
 
+def delivery_report(err, msg):
+    if err is not None:
+        print(
+            f"Delivery failed for User record for {msg.key()} with error {err}"
+        )
+        return
+    print(
+        f"Successfully produced User record: key - {msg.key()}, topic - {msg.topic}, partition - {msg.partition()}, offset - {msg.offset()}"
+    )
 
 class AvroProducer(ProducerClass):
-    def __init__(self, bootstrap_server, topic, schema_registry_client, schema_str):
-        super().__init__(bootstrap_server, topic)
+    def __init__(self, bootstrap_server, topic, schema_registry_client, schema_str,message_size = None,compression_type = None):
+        super().__init__(bootstrap_server, topic,message_size)
         self.schema_registry_client = schema_registry_client
         self.schema_str = schema_str
         self.value_serializer = AvroSerializer(schema_registry_client, schema_str)
+        self.string_serializer = StringSerializer("utf-8")
 
     def send_message(self, message):
         try:
             message = self.value_serializer(
                 message, SerializationContext(topic, MessageField.VALUE)
             )
-            self.producer.produce(self.topic, message)
-            logging.info(f"Message sent successfully: {message}")
+            self.producer.produce(
+                topic=self.topic,
+                key=self.string_serializer(str(uuid4())),
+                value=message,
+                headers={"correlation_id": str(uuid4())},
+                on_delivery = delivery_report
+            )
+            print(f"Message sent successfully")
         except Exception as e:
-            logging.error(f"Error while sending message: {e}")
+            print(f"Error while sending message: {e}")
 
 
 if __name__ == "__main__":
@@ -67,7 +84,7 @@ if __name__ == "__main__":
     schema_str = schema_client.get_schema_str()
     # Produce messages
     producer = AvroProducer(
-        bootstrap_servers, topic, schema_client.schema_registry_client, schema_str
+        bootstrap_servers, topic, schema_client.schema_registry_client, schema_str,message_size = 5*1024*1024,compression_type = 'snappy'
     )
 
     try:
@@ -84,6 +101,7 @@ if __name__ == "__main__":
             )
             # Prior to serialization, all values must first be converted to a dict instance.
             producer.send_message(user_to_dict(user))
+            break
     except KeyboardInterrupt:
         pass
 
