@@ -1,108 +1,74 @@
-import logging
 import os
 
-from confluent_kafka.schema_registry.avro import AvroSerializer
-from confluent_kafka.serialization import MessageField, SerializationContext,StringSerializer
+from confluent_kafka import Consumer
+from confluent_kafka.schema_registry.avro import AvroDeserializer
+from confluent_kafka.serialization import MessageField, SerializationContext
 
-import logging_config
-import utils
-from admin import Admin
-from producer import ProducerClass
 from register_avro_schema import SchemaClient
-from uuid import uuid4
-
-class User:
-    def __init__(self, first_name, middle_name, last_name, age):
-        self.first_name = first_name
-        self.middle_name = middle_name
-        self.last_name = last_name
-        self.age = age
 
 
-def user_to_dict(user):
-    """Return a dictionary representation of a User instance  for
-    serialization."""
-    return dict(
-        first_name=user.first_name,
-        middle_name=user.middle_name,
-        last_name=user.last_name,
-        age=user.age,
-    )
-
-def delivery_report(err, msg):
-    if err is not None:
-        print(
-            f"Delivery failed for User record for {msg.key()} with error {err}"
+class AvroConsumerClass:
+    def __init__(
+        self, bootstrap_server, topic, group_id, schema_registry_client, schema_str
+    ):
+        """Initializes the consumer."""
+        self.bootstrap_server = bootstrap_server
+        self.topic = topic
+        self.group_id = group_id
+        self.consumer = Consumer(
+            {"bootstrap.servers": bootstrap_server, "group.id": self.group_id,"auto.offset.reset":"latest"}
         )
-        return
-    print(
-        f"Successfully produced User record: key - {msg.key()}, topic - {msg.topic}, partition - {msg.partition()}, offset - {msg.offset()}"
-    )
-
-class AvroProducer(ProducerClass):
-    def __init__(self, bootstrap_server, topic, schema_registry_client, schema_str,message_size = None,compression_type = None):
-        super().__init__(bootstrap_server, topic,message_size)
         self.schema_registry_client = schema_registry_client
         self.schema_str = schema_str
-        self.value_serializer = AvroSerializer(schema_registry_client, schema_str)
-        self.string_serializer = StringSerializer("utf-8")
+        self.value_deserializer = AvroDeserializer(schema_registry_client, schema_str)
 
-    def send_message(self, message):
+    def consume_messages(self):
+        """Consume Messages from Kafka."""
+        self.consumer.subscribe([self.topic])
+        print(f"Successfully subscribed to topic: {self.topic}")
+
         try:
-            message = self.value_serializer(
-                message, SerializationContext(topic, MessageField.VALUE)
-            )
-            self.producer.produce(
-                topic=self.topic,
-                key=self.string_serializer(str(uuid4())),
-                value=message,
-                headers={"correlation_id": str(uuid4())},
-                on_delivery = delivery_report
-            )
-            print(f"Message sent successfully")
-        except Exception as e:
-            print(f"Error while sending message: {e}")
+            while True:
+                msg = self.consumer.poll(1.0)
+                if msg is None:
+                    continue
+                if msg.error():
+                    print(f"Consumer error: {msg.error()}")
+                    continue
+                byte_message = msg.value()
+                print(
+                    f"Byte message: {byte_message}, Type: {type(byte_message)}"
+                )
+                decoded_message = self.value_deserializer(
+                    byte_message, SerializationContext(topic, MessageField.VALUE)
+                )
+                print(
+                    f"Decoded message: {decoded_message}, Type: {type(decoded_message)}"  # noqa: E501
+                )
+        except KeyboardInterrupt:
+            pass
+        finally:
+            self.consumer.close()
 
 
 if __name__ == "__main__":
-    bootstrap_servers = 'localhost:19092'
-    topic = 'avro-topic'
-    schema_registry_url = 'http://localhost:18081'
+    bootstrap_server = os.environ.get("KAFKA_BOOTSTRAP_SERVERS","localhost:19092")
+    topic = os.environ.get("KAFKA_TOPIC","avro-topic")
+    group_id = os.environ.get("KAFKA_GROUP_ID", "my-consumer-group-1")
+    schema_registry_url = os.environ.get("SCHEMA_REGISTRY_URL","http://localhost:18081")
     schema_type = "AVRO"
 
-    # Create Topic
-    admin = Admin(bootstrap_servers)
-    admin.create_topic(topic)
-
-    # Register the Schema
     with open("./schema.avsc") as avro_schema_file:
         avro_schema = avro_schema_file.read()
     schema_client = SchemaClient(schema_registry_url, topic, avro_schema, schema_type)
-    schema_client.register_schema()
 
-    # fetch schema_str from Schema Registry
+    # Schema already in Schema Registry, So fetch from Schema Registry
     schema_str = schema_client.get_schema_str()
-    # Produce messages
-    producer = AvroProducer(
-        bootstrap_servers, topic, schema_client.schema_registry_client, schema_str,message_size = 5*1024*1024,compression_type = 'snappy'
+    consumer = AvroConsumerClass(
+        bootstrap_server,
+        topic,
+        group_id,
+        schema_client.schema_registry_client,
+        schema_str,
     )
-
-    try:
-        while True:
-            first_name = input("Enter first name: ")
-            middle_name = input("Enter middle name: ")
-            last_name = input("Enter last name: ")
-            age = int(input("Enter age: "))
-            user = User(
-                first_name=first_name,
-                middle_name=middle_name,
-                last_name=last_name,
-                age=age,
-            )
-            # Prior to serialization, all values must first be converted to a dict instance.
-            producer.send_message(user_to_dict(user))
-            break
-    except KeyboardInterrupt:
-        pass
-
-    producer.commit()
+    consumer.consume_messages()
