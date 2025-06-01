@@ -1,0 +1,36 @@
+{
+    "type": "record",
+    "name": "User",
+    "fields": [
+        {
+            "name": "user_id",
+            "type": "int",
+            "default":-1
+        },
+        {
+            "name": "first_name",
+            "type": "string",
+            "default": "null"
+        },
+        {
+            "name": "middle_name",
+            "type": "string",
+            "default": "null"
+        },
+        {
+            "name": "last_name",
+            "type": "string",
+            "default": "null"
+        },
+        {
+            "name": "age",
+            "type": "int",
+            "default": 0
+        },
+        {
+            "name": "email",
+            "type": "string",
+            "default": "null"
+        }
+    ]
+}
