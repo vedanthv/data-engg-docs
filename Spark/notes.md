@@ -103,6 +103,99 @@ HDFS keeps track of which node / rack has the data from A B C and D
 - So Spark computes / transforms in multiple processes Process 1 -> Process 2 -> Process 3 ....
 - After each process the data is stored in a data structure called RDD which is immutable. So even if there is a failure Spark engine knows how to reconstruct the data for a particular process from the RDD at that stage.
 
+### Lecture 4 : Spark Ecosystem
+
+![image](https://github.com/user-attachments/assets/1790b682-10ba-4c47-8594-d743fbe54650)
+
+High Level API : We cna write any SQL queries in python,java etc... there are ML and GraphX librries also.
+
+We can write code in many languages. Low Level API : we can make RDD's and work on them.
+
+![image](https://github.com/user-attachments/assets/452c4dc0-20d7-45e3-89f6-fb53719f75b9)
+
+#### Where does Spark run?
+
+![image](https://github.com/user-attachments/assets/d2c11530-6dc3-485e-98c7-10e7bafac25b)
+
+Spark Engine would need some memory for transformation.
+
+- suppose it needs 4 worker nodes each 20 GB and a driver node of 20 gb.
+- it goes to the cluster manager and asks for total 100 GB of memory, if available then the manager will assign that muuch storage.
+- cluster manager is also called YARN, K8S, Standalone managers
+
+### Lecture 5 : Read Modes in Spark
+
+![image](https://github.com/user-attachments/assets/7ab22f33-3951-45d7-849e-83f693e5bf4b)
+
+format -> data file format : csv,json,jdbc and odbc connection. Format is optional parameter, by default its parquet format
+option -> inferschema, mode and header [**optional field**]
+schema -> manual schema can be passed here
+load -> path from where we need to read the data [**not optional**]
+
+#### DataframeReader API
+
+Access it using 'spark.read' in the spark session
+
+![image](https://github.com/user-attachments/assets/0ba45b86-8921-41dc-8453-ebc4298184ab)
+
+#### `mode` in Spark
+
+![image](https://github.com/user-attachments/assets/8ef66ae0-5f09-4610-8ae4-120aa9ecd673)
+
+### Lecture 6 : Spark Architecture
+
+#### Spark Cluster
+
+![image](https://github.com/user-attachments/assets/58ee64d9-0105-453c-97a6-9888b804c98a)
+
+- 20 core per machine and 100 GB RAM / each machine
+- Total Cluster : 200 cores and 1TB RAM
+
+![image](https://github.com/user-attachments/assets/aaaca550-af99-41ba-bbd3-158a83941819)
+
+- The master is controlled by Resource Manager and the workers are controlled by Node Manager.
+
+#### What happens when user submits code?
+![image](https://github.com/user-attachments/assets/1cea605b-f750-406a-ae44-819bc06ccea3)
+
+- The user submits some Spark code for execution to the Resource Manager. It needs 20 GB RAM, 25 GB executor, 5 total executors and 5 CPU cores.
+- So the manager goes to W5 and asks to create 20GB container as the driver node.
+
+#### What happens inside the container?
+
+##### Driver Allocation
+
+Now this 20 GB driver is called Application Master
+![image](https://github.com/user-attachments/assets/a85199e1-0036-4e51-842a-39faab13adab)
+
+There are two main() functions inside the master, one is for PySpark and other is for JVM like Java,Scala etc...
+
+The JVM main() is called Application Driver.
+
+The Spark Core has a Java Wrapper and the Java Wrapper has a Python Wrapper.
+
+When we write code in PySpark it gets converted to Java Wrapper.
+
+The PySpark driver is not a requirement but the Java Wrapper is required to run any code.
+
+##### Worker Allocation
+
+![image](https://github.com/user-attachments/assets/6fccdb87-a254-4bc2-9c50-38c9a9d26a02)
+
+- Now the Application master asks for the executors to be assigned and the resource manager allocates.
+
+#### Executor Container
+
+![image](https://github.com/user-attachments/assets/1ee66178-03be-474c-8b02-ec1cc8f73a01)
+
+Each executor has 5 core CPU and 25GB RAM.
+
+THe above is when we have pure Java code and dont use Python UDF.
+
+But what if we use Python UDF functions?
+
+![image](https://github.com/user-attachments/assets/69057cb6-f0f7-40c5-86ab-ab06689bcd08)
+We need a Python worker inside the executor to be able to run the code.
 
 
 
