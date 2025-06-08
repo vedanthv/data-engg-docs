@@ -313,7 +313,7 @@ Both the filters are on the same task
 ![image](https://github.com/user-attachments/assets/2682b8b3-3f31-4d5e-ba6a-b2ea32ea2246)
 The optimizations can be applied because Spark is lazily evaluated.
 
-### Lecture 11: WOrking with JSON Data in Spark
+### Lecture 11: Working with JSON Data in Spark
 
 ![image](https://github.com/user-attachments/assets/09ce5719-db12-446c-8247-9495ea979768)
 
