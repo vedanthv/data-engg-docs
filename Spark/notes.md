@@ -403,3 +403,22 @@ When we process the json it just reads the first dictionary as a record and the 
 We dont need to define ```_corrupted_record``` in the schema, it will add the column on its ownn
 
 ![image](https://github.com/user-attachments/assets/60f6c31e-6174-40ab-ba71-e3f0070a01fa)
+
+### Lecture 12: Spark SQL Engine
+
+![image](https://github.com/user-attachments/assets/ffb137d5-5a71-427d-b411-1493925ed6a4)
+
+#### How is Spark Code compiled?
+
+
+- The catalyst optimizer creates a plan and creates RDD lineage
+
+#### Phases in Catalsy Optimizer
+
+![image](https://github.com/user-attachments/assets/4dcb1108-768c-4c28-aa21-732e93fda646)
+
+##### Workflow Diagram
+
+
+- Unresolved 
+
