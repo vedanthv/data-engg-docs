@@ -413,12 +413,64 @@ We dont need to define ```_corrupted_record``` in the schema, it will add the co
 
 - The catalyst optimizer creates a plan and creates RDD lineage
 
-#### Phases in Catalsy Optimizer
+#### Phases in Catalyst Optimizer
 
 ![image](https://github.com/user-attachments/assets/4dcb1108-768c-4c28-aa21-732e93fda646)
 
 ##### Workflow Diagram
 
+- Unresolved Logical Plan : Bunch of crude steps to execute the SQL code
+- Catalog : The table, files and database metadata information si stored in the catalog. Suppose we call read.csv on file that doesnt exist. The procedure that gives / throws the error is assisted via the catalog. In Analysis phase, we go through these steps. If some file/table is not found then we get **Analysis Exception** This error occurs when the Logical plan provided is not able to be resolved.
+- Reoslved Logical Plan : This is the phase when we finished analysing the catalog objects.
+- Logical Optimization: There are many examples. Suppose we need just two columns in select output, the spark engine does not fetch all the columns rather jsut fetches the two columns from memory that we need. Another example is when we use multiple filters on the same column in different lines of code. When we execute this code, we see that all of it is executed with **or** statements in one single line of code.
+- Physical Plan: This involves taking decision like the type of join to use: Broadcast Join is one example. From the logical plan, we can build multiple physical plans.
+Thebest Physical Plan is a set of RDDs to be run on different executors on the cluster.
 
-- Unresolved 
+![image](https://github.com/user-attachments/assets/7931f705-5d53-45d0-8bdc-407e2b3426a7)
+
+### Lecture 13: Resilient Distributed Dataset
+
+![image](https://github.com/user-attachments/assets/9f092749-7050-4067-9b9f-4e19e3527a18)
+
+#### Data Storage of List
+![image](https://github.com/user-attachments/assets/023e8304-b40a-40a6-8f61-516efe301635)
+
+#### Data Storage in RDD
+
+Suppose we have 500MB of data and 128MB partition, so we will have 4 partitions.
+
+The data is scattered on various executors.
+![image](https://github.com/user-attachments/assets/4c99e784-5366-4ee4-b1ac-c7baa0a49f34)
+
+Its not in single contiguous location like elements of a list. The data structure used ot process this data is called RDD
+![image](https://github.com/user-attachments/assets/99aac217-5141-4c6b-bcbe-0873e7a9bbbd)
+
+![image](https://github.com/user-attachments/assets/01a10422-cb78-42a3-bb95-db643950b621)
+
+Why is RDD recoverable?
+
+- RDD is immutable. If we apply multiple filters each dataset after filtering is a different dataset
+![image](https://github.com/user-attachments/assets/ff872b52-f89f-406e-b8e1-30edd48624cf)
+
+- In below case if rdd2 fails then we can restore rdd1 because of the lineage.
+![image](https://github.com/user-attachments/assets/9497cf7a-7646-4dc1-ba2b-790e524572f5)
+
+#### Disadvantage of RDD
+
+- No optimization done by Spark on RDD. The dev must specify explicitly on how to optimize RDD.
+
+#### Advantage
+
+- Works well with unstructured data where there are no columns and rows / key-value pairs
+- RDD is type safe, we get error on compile time rather than runtime which happens with Dataframe API.
+
+#### Avoiding RDDs
+
+![image](https://github.com/user-attachments/assets/7dcd2caa-fac8-478f-9ba2-e99370c3fb44)
+
+- RDD : How to do? Dataframe API: Just specify what to do?
+
+![image](https://github.com/user-attachments/assets/a028ab4e-b35e-4ead-9c04-a5cdbbf7f228)
+You can see in above case that we have a join and filter but we are specifically saying that first join then filter so it triggers a shuffle first and then filter which is not beneficial.
+
 
