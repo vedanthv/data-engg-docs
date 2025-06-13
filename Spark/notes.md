@@ -473,4 +473,75 @@ Why is RDD recoverable?
 ![image](https://github.com/user-attachments/assets/a028ab4e-b35e-4ead-9c04-a5cdbbf7f228)
 You can see in above case that we have a join and filter but we are specifically saying that first join then filter so it triggers a shuffle first and then filter which is not beneficial.
 
+### Lecture 14 : Parquet File Internals
+
+![image](https://github.com/user-attachments/assets/50def6a3-7bfa-4b14-881d-46710762a06b)
+
+There are two types of file formats:
+
+- Columnar Based and Row Based
+
+#### Physical Storage of Data on Disk
+![image](https://github.com/user-attachments/assets/76e40279-29f0-43b3-80ec-fd4c3e9e4894)
+
+#### Write Once Read Many
+
+The funda of big data is write once read many.
+
+- We dont need all the columns for analytics of big data, so columnar storage is the best.
+- If we store in row based format then we need to jump many memory racks to be able to get the data we need.
+
+![image](https://github.com/user-attachments/assets/4fb9d3cc-541e-4b28-a818-5be35e211a8f)
+
+- OLTP generally use row base4d file format.
+- I/O should be reduced so OLAP uses columnar format.
+
+#### Why Columnar format may not be the best?
+
+![image](https://github.com/user-attachments/assets/94d7beb7-be65-4836-9fce-1ec86285d842)
+
+In above case we can get col1 and col2 easily but for col10 we still need to scan the entire file.
+
+To tackle this:
+
+Let's say we have 100 million total rows.
+
+We can store 100,000 records at a time, continuously in one row, then the next 100,000 records in next row and so on in hybrid format.
+
+![image](https://github.com/user-attachments/assets/af359956-aa81-4f62-a692-b1492bc7ae0c)
+
+#### Logical Partitioning in Parquet
+
+![image](https://github.com/user-attachments/assets/d72060bc-6425-4b18-a1e8-3bd2e7b6376d)
+
+Let's day we have 500mb data, each row group by default has 128 mb data, so we will have 4 row groups.
+Each row group will have some metadata attached to it.
+
+In our example let's say one row group has 100000 records.
+The column is futher stored as a page.
+
+#### Runlength Encoding and Bitpacking
+
+![image](https://github.com/user-attachments/assets/5a0219f3-ea0f-4758-ab80-1f3513a5a79f)
+
+Suppose we have 10 lakh records but there can be say 4 countries.
+
+So parquet actually creates a dictionary of key value pair with key as int starting from 0 to 3 and then in the dictionary encoded data, we can see the keys being used insted of country name.
+
+#### Demo
+
+```parquet-tools inspect <filename>```
+
+![image](https://github.com/user-attachments/assets/be572741-6fd9-470b-ad98-0f0d6c293a38)
+![image](https://github.com/user-attachments/assets/e4fff36d-48ed-4ca8-9cbd-310f8b35a103)
+
+Gives some file and brief column level metadata.
+
+```parquet_file.metadata.row_group(0).column_group(0)```
+![image](https://github.com/user-attachments/assets/ea81d74c-6fb3-4c80-bbbf-521f6c1a3be2)
+
+Compression is GZIP
+![image](https://github.com/user-attachments/assets/7d841a8d-fc8d-4f8c-8a42-da2b436a13fc)
+
+Encoding is explained on top.
 
