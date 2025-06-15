@@ -1008,7 +1008,13 @@ Now we need to join employee and salary df to get the output but they are on dif
 
 Each executor has 200 partitions. Goal is to get all same keys in one executor.
 ![image](https://github.com/user-attachments/assets/80daa55e-8dce-4e3e-839d-8f6b2b2bee16)
+
+![image](https://github.com/user-attachments/assets/e37dd852-daa4-4f1c-be91-83d01451cb57)
+
+![image](https://github.com/user-attachments/assets/9266d9fb-9dee-486a-9e38-ffcd00658fcf)
+
 - Since we want to get id for 1 we divide 1/200 = 1 and then send all the data to that executor 1.
+
 ![image](https://github.com/user-attachments/assets/69e73f9b-f7af-461e-8ac9-65f2d279a1c3)
 
 Suppose we want to map the salary for id = 7 so the data from the employee df with id = 7 and also salary df with id=7 will come into the executor 7.
@@ -1017,15 +1023,5 @@ Similarly id = 201 will go into 201/200 = executor no 1.
 
 #### Types of Join Strategies
 ![image](https://github.com/user-attachments/assets/58ea7594-9378-4fd6-b0f7-a16b77c88d4c)
-
-
-
-![image](https://github.com/user-attachments/assets/e37dd852-daa4-4f1c-be91-83d01451cb57)
-
-
-
-
-
-![image](https://github.com/user-attachments/assets/9266d9fb-9dee-486a-9e38-ffcd00658fcf)
 
 
