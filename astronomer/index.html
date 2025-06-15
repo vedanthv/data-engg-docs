@@ -1,0 +1,2230 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vedanthv.github.io/data-engg-docs/astronomer/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../databricks/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Astronomer and Airflow - Data Engineering Docs by Vedanth</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#airflow-with-astronomer-cli" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-header__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering Docs by Vedanth
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Astronomer and Airflow
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Astronomer and Airflow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../databricks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Azure Databricks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_Databricks_Course/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark Databricks Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_YT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark YouTube
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Azure/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Microsoft Azure - DP 203
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../streaming/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Streaming Architecture
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-nav__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Engineering Docs by Vedanth
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-airflow-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Airflow Concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-airflow-for-data-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Airflow for Data Pipelines
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Airflow for Data Pipelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-pip-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using pip package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-for-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker for Installation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-task-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Task Lifecycle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-airflow-architecture-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Airflow Architecture Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-dags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating DAGs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#airflow-xcoms-for-information-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Airflow XComs For Information Sharing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#astronomer-course" class="md-nav__link">
+    <span class="md-ellipsis">
+      Astronomer Course
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-intro-to-astro-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 1 - Intro to Astro CLI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 - Intro to Astro CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-and-running-astro-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up and Running Astro CLI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pushing-the-dag-to-the-production-envt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushing the DAG to the Production Envt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-astro-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing Astro CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-airflow-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 2 - Airflow Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 - Airflow Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-airflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Airflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-additional-providers-in-airflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add additional providers in Airflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upgrading-astro-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upgrading Astro Runtime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-base-images-vs-base-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non Base Images v/s Base Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persisting-variables-after-killing-airflow-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persisting Variables after killing Airflow Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-dags-for-errors-before-running-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking DAGs for Errors before Running it
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-everything-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Everything Works?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-airflow-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 3 : Airflow UI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 : Airflow UI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gantt-charts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gantt Charts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz Questions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-and-rerun-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debug and Rerun DAG
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-simple-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 4 : Simple DAG
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4 : Simple DAG">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-dag-with-traditional-paradigm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create DAG with Traditional Paradigm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-taskapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the TaskAPI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-a-python-operator-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining a Python Operator Task
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dag-without-context-manager-with" class="md-nav__link">
+    <span class="md-ellipsis">
+      DAG without context manager with
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chain-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chain Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-default-args" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Default Args
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies-with-task-flow-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies with Task Flow API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment-creating-dag-with-bash-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assignment : Creating DAG with Bash Operator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-5-sheduling-dags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 5 : Sheduling DAGs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 5 : Sheduling DAGs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-dagrun" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a DAGRun?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-dags-are-scheduled" class="md-nav__link">
+    <span class="md-ellipsis">
+      How DAGs are scheduled?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-start_date-parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      The start_date parameter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cron-expressions-for-schedule_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cron Expressions for schedule_interval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concept-of-catchup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concept Of Catchup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backfilling-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backfilling Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-command-to-backfill-the-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      CLI Command to Backfill the DAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz-questions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz Questions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-6-connections-in-airflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 6 : Connections In Airflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 6 : Connections In Airflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-create-a-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to create a connection?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pain-points-with-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pain Points with Connections
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pain Points with Connections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cannot-share-the-connections-from-dev-to-prod-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cannot share the connections from Dev to Prod Environment.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specific-forms-for-each-connection-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specific Forms For Each Connection Type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#there-is-no-inheritance-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      There is no Inheritance Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#there-is-no-secret-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      There is no Secret Backend
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-case-sharing-connections-with-dev-deployment-and-local-dev-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case : Sharing Connections with Dev Deployment and Local Dev Environments
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-7-xcom" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 7 - XCom
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 7 - XCom">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties-of-xcom" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties of XCom
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-of-xcom" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Of XCom
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulling-xcom-values-with-specific-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulling XCom Values with Specific Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulling-multiple-values-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulling Multiple Values @ once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-xcom" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations of XCom
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz Answers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-8-variables-in-airflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 8 : Variables in Airflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 8 : Variables in Airflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Variable
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Variable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-using-the-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 1 : Using the UI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Method 1 : Using the UI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hiding-the-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hiding the Values
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-using-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 2 : Using Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-variables-from-dags" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Access Variables From DAGS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚠️ Access Variables From DAGS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dag-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      DAG Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jinja-templating-to-access-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Jinja Templating to Access Variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-9-debugging-dags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 9 : Debugging DAGs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 9 : Debugging DAGs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Checks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-airflow-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging Airflow Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-error-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Error Checks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduler-error-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scheduler Error Checks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-management-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Management Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#improper-behaviour-of-dags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Improper Behaviour Of DAGs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-postgres-connection-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Postgres Connection Id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-avoid-dependency-conflicts" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Avoid Dependency Conflicts?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz-questions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Quiz Questions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_Databricks_Course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_YT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Azure - DP 203
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="airflow-with-astronomer-cli">Airflow with Astronomer CLI</h1>
+<h2 id="core-airflow-concepts">Core Airflow Concepts</h2>
+<h2 id="core-airflow-for-data-pipelines">Core Airflow for Data Pipelines</h2>
+<p>This is the notes for Airflow tool from coder2j channel on YouTube.</p>
+<p>A quick note, you can refer this <a href="https://vedanthv.github.io/data-engg-docs/astronomer/">link</a>. It has most of the details from here but the installation steps are much more clear here!!</p>
+<h3 id="installation">Installation</h3>
+<h4 id="using-pip-package">Using pip package</h4>
+<ol>
+<li>
+<p>Python 3.6 is the min version required.</p>
+</li>
+<li>
+<p>Create a Python Virtual Environment <code>python3 -m venv py_env</code></p>
+</li>
+<li>
+<p>Activate the Python Environment <strong>py_env</strong> <code>source py_env/bin/activate</code></p>
+</li>
+<li>
+<p>Install airflow using <code>pip install apache-airflow</code></p>
+</li>
+<li>
+<p>Now before creating a db, we have to set the path <code>export AIRFLOW_HOME = .</code></p>
+</li>
+<li>
+<p>Initialize the db with <code>airflow db init</code></p>
+</li>
+<li>
+<p>Start Airflow Web Server using <code>airflow webserver -p 8080</code></p>
+</li>
+<li>
+<p>Create a username and password <code>airflow users create --username admin --firstname ved --lastname baliga --role admin --email vedanthvbaliga@gmail.com</code> and set the password.</p>
+</li>
+<li>
+<p>Run <code>airflow scheduler</code> to start the scheduler.</p>
+</li>
+</ol>
+<h4 id="using-docker-for-installation">Using Docker for Installation</h4>
+<ol>
+<li>
+<p>For Windows, first setup and setup WSL2. Check out the <a href="https://www.youtube.com/watch?v=YByZ_sOOWsQ&amp;pp=ygUdaW5zdGFsbGluZyB3c2wyIG9uIHdpbmRvd3MgMTE%3D">video</a> here.</p>
+</li>
+<li>
+<p>Now download Docker Desktop from the <a href="https://docs.docker.com/desktop/install/windows-install/">website</a></p>
+</li>
+<li>
+<p>Use this curl command to dowload Airflow yaml file via Docker Compose.[<code>curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.7.3/docker-compose.yaml'</code>]</p>
+</li>
+<li>
+<p>Change the core executor in yaml file to LocalExecutor. Remove the Celery flower and celery-worker.</p>
+</li>
+<li>
+<p>Initialize the Environment : <code>mkdir -p ./dags ./logs ./plugins ./config echo -e "AIRFLOW_UID=$(id -u)" &gt; .env</code></p>
+</li>
+<li>
+<p>Start the docker environment : <code>docker compose up airflow-init</code></p>
+</li>
+<li>
+<p>Run Airflow : <code>docker compose up</code></p>
+</li>
+</ol>
+<h3 id="core-concepts">Core Concepts</h3>
+<p>What is Airflow?
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/8edfa98b-7119-4d66-b0fd-e6e6687a952a" /></p>
+<p>What is a workflow?
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/48ef6fce-07e4-422c-9e63-022ec686cbfd" /></p>
+<p>DAG, Task and Operator
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/3fc46745-e852-4007-bf76-820ae2c48c5a" /></p>
+<p>Here A is the downstream task of C and B is the upstream task of A. Task implements an operator and DAG is a collection of operators working together.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/dd4617c9-1145-4b5a-9aae-72b84e72343a" /></p>
+<h3 id="task-architecture">Task Architecture</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/c4861188-b5cf-4523-bf80-51079ca3f94e" /></p>
+<h3 id="complete-task-lifecycle">Complete Task Lifecycle</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/caebdbb0-96ff-4ec2-9361-f8621135425b" /></p>
+<h3 id="complete-airflow-architecture-design">Complete Airflow Architecture Design</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/898d4868-0e23-4111-aae6-976e4c35ba01" /></p>
+<p><strong>How does Data Engineer help in the process</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/ad4ff9f1-05f7-48c1-852f-20c9fcd81b6c" /></p>
+<h3 id="creating-dags">Creating DAGs</h3>
+<p>Downstream and Upstream Tasks with DAG
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/526fb6cd-ef73-496d-8aef-2512dc22e85d" /></p>
+<h3 id="airflow-xcoms-for-information-sharing">Airflow XComs For Information Sharing</h3>
+<p>Airflow XCom allows us to push info from one task to other and another task can pull information from the XCon.</p>
+<p>Every Function's return value goes to XCom by default.</p>
+<p>Here is the <a href="https://github.com/vedanthv/data-engg/blob/main/airflow/02-pythonOperator.py">code</a> for one value push into XComs.</p>
+<p>Here is the <a href="https://github.com/vedanthv/data-engg/blob/main/airflow/03-xcom.py">code</a> for pushing two or more values with keys into XComs.</p>
+<h2 id="astronomer-course">Astronomer Course</h2>
+<p>Airflow Astronomer is a data orchestration tool that allows us to create data pipelines using python and integrate a variety of operators like Databricks, Snowflake and dbt.</p>
+<p>Here are some notes I took while taking up a fantastic set of courses by Astronomer, a managed cloud service for Airflow.</p>
+<p>There are a bunch of different Modules but here is the <a href="https://academy.astronomer.io/path/airflow-101">learning path</a> that I followed.</p>
+<h2 id="module-1-intro-to-astro-cli">Module 1 - Intro to Astro CLI</h2>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/2f5e1fc3-f288-499b-adaa-6568e90cc7db" /></p>
+<h3 id="setting-up-and-running-astro-cli">Setting Up and Running Astro CLI?</h3>
+<ul>
+<li>Astro CLI uses docker to setup and run local dev environment.</li>
+<li>Two Commands to execute are:<ul>
+<li><code>dev init</code> to init the local dev envt</li>
+<li><code>dev start</code> to spin up airflow instance</li>
+</ul>
+</li>
+</ul>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/a8cc18a2-c300-4898-8aba-093a0dc26bca" /></p>
+<p>There are four docker images <strong>Web Server</strong>,<strong>Scheduler</strong>,<strong>Database</strong> and <strong>Triggerer</strong> that are part of a Docker Container called Astronomer Runtime.</p>
+<h3 id="pushing-the-dag-to-the-production-envt">Pushing the DAG to the Production Envt</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/11963165-96b8-4b5d-a36f-abbe836431dc" /></p>
+<ul>
+<li>
+<p>A request is sent to the Airflow API saying that we need to update the airflow instance of a deployment, a docker image is created with our DAGs and pushed
+into the registry.</p>
+</li>
+<li>
+<p>Then finally the Aiirflow instance in the data plane is restarted with the new docker instances with DAGs</p>
+</li>
+</ul>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/d3aac538-9e60-4ce2-9f44-73a130aeec3d" /></p>
+<h3 id="installing-astro-cli">Installing Astro CLI</h3>
+<p>Docs : <a href="https://docs.astronomer.io/astro/cli/install-cli?tab=windowswithwinget#install-the-astro-cli">Click Here</a></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/3a17ef3d-5fe5-4418-94c0-1351069f1187" /></p>
+<h2 id="module-2-airflow-concepts">Module 2 - Airflow Concepts</h2>
+<h3 id="creating-a-project">Creating a Project</h3>
+<ul>
+<li>
+<p><code>mkdir astro &amp;&amp; cs astro</code></p>
+</li>
+<li>
+<p><code>astro dev init</code></p>
+</li>
+</ul>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/67400781-8f0d-4a48-a2b5-c700feb18a70" /></p>
+<ul>
+<li><code>airflow_settings.yaml</code> allows us to recrete a project without creating variables and connections over and over again.</li>
+</ul>
+<h3 id="running-airflow">Running Airflow</h3>
+<ul>
+<li><code>astro dev start</code> spins up airflow and downloads the docker images for airflow components.</li>
+</ul>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/6a541aae-c382-4f43-8c4b-c5171d9e77e3" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/1023fe8b-c00d-4897-b64f-8744ea1c5bac" /></p>
+<h3 id="add-additional-providers-in-airflow">Add additional providers in Airflow</h3>
+<ul>
+<li>
+<p>On astro terminal type <code>astro dev run providers list</code> to check the list of all the providers.</p>
+</li>
+<li>
+<p>if anything is not installed, pip install it from the providers page in the UI and add it to the reqs file.</p>
+</li>
+</ul>
+<h3 id="upgrading-astro-runtime">Upgrading Astro Runtime</h3>
+<p>Go to Dockerfile and change the version then run <code>asto dev restart</code></p>
+<h3 id="non-base-images-vs-base-image">Non Base Images v/s Base Image</h3>
+<p>By default we have the non base image where the folders and dependencies are auto copied to the docker container but if we want to have full control of everything
+and add whatever folders we want, we have to use the base image.</p>
+<p>We can switch to the base image by changing the command in Dockerfile to <code>FROM quay.io/astronomer/astro-runtime:5.3.0-base</code></p>
+<h3 id="persisting-variables-after-killing-airflow-image">Persisting Variables after killing Airflow Image</h3>
+<p>Check how to do this <a href="https://academy.astronomer.io/path/airflow-101/local-development-environment/1569583">here</a></p>
+<h3 id="environment-variables">Environment Variables</h3>
+<p>In the <code>.env</code> file we can specify the name of the environment as <code>AIRFLOW__WEBSERVER__INSTANCE__NAME = ProdEnv</code></p>
+<p>If we want to keep mutiple environments just add one more file <code>.dev</code> and add <code>ENVIRONMENT = dev</code> in that file. </p>
+<p>Now we can start the server with this env, <code>airflow dev start --env .dev</code></p>
+<p>This is only valid in our local environment.</p>
+<p>If we want too export the environment variables to the Astro instance, then we need to add <code>ENV AIFLOW__WEBSERVER__INSTANCE__NAME = ProdEnv</code> to the Dockerfile.</p>
+<h3 id="checking-dags-for-errors-before-running-it">Checking DAGs for Errors before Running it</h3>
+<p>If we dodnt want to wait for 5-6 min for the UI to throw up any import or other errors then we can use <code>astro dev parse</code> to get all the possible errors in 
+the command line itself.</p>
+<p>We can also use the pytest library for testing using <code>astro dev pytest</code></p>
+<p>Another way to run and compile dags in the cli is <code>astro run</code>. This Trigger a single DAG run in a local Airflow environment and 
+see task success or failure in your terminal. This command compiles your DAG and runs it in a single Airflow worker container based on your 
+Astro project configurations.</p>
+<p>More type of testing like backtesting dependencies during updates is <a href="https://docs.astronomer.io/astro/cli/test-your-astro-project-locally">here</a></p>
+<h3 id="how-everything-works">How Everything Works?</h3>
+<p>Step 1 : 
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/15b456bc-9483-4f16-948a-bb668ae16212" /></p>
+<p>Step 2 : 
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/a6ea0d2f-44b3-4ead-9786-450ffed0839a" /></p>
+<p>Scheduler processes the DAG and we may need to wait upto 5 min before getting the new DAG on the Airflow UI.</p>
+<p>Step 3:
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/482ac766-06b0-4ee2-b7ed-f3dbf34ff5f4" />
+The scheduler creates the DAGRun Object that has the states running.</p>
+<p>Step 4:
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/08ca70cb-5b40-40d3-a36f-bd36f461e25f" /></p>
+<p>The scheduler then creates the task instance which is instance of the task at a certain time and it has the state scheduled.</p>
+<p>Step 5:
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/8704266e-8ca1-4ce2-93b3-2bc1adfc3853" /></p>
+<p>Now the Task Instance is queued and the scheduler sends the taskInstance object to the executor that executes it and the state of the task is complete.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/9c62f248-c618-4257-9c7d-3da847e7b3b1" /></p>
+<p>Now either the task status is success or failed and it updates the state accordingly.</p>
+<p>Then the scheduler checks whether the work is done or not.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/7cd5614e-cb73-4d13-8ec0-0d33d48915d6" /></p>
+<p>Finally the Airflow UI is updated.</p>
+<p>Check the <a href="https://academy.astronomer.io/path/airflow-101/astro-runtime-airflow-concepts/1273942">video</a> also.</p>
+<h2 id="module-3-airflow-ui">Module 3  : Airflow UI</h2>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/6355b8c6-d482-4ade-b9ce-94bebedf939c" /></p>
+<p>Here the long vertical line is the DagRun Object and the short boxes are the Task Instances.</p>
+<p>Landing time view illustrates how much time each task takes and we can check if optimizations applied are efficient or not.</p>
+<h3 id="gantt-charts">Gantt Charts</h3>
+<p>These charts show how much time it took to run the DAG. </p>
+<p>Grey color means that the DAG was queued and green means the DAG was running and completed.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/1c066fde-edd0-4efe-8731-7daf0f0f176b" /></p>
+<p>In this image, the second DAG took the longest to run.</p>
+<h3 id="quiz-questions">Quiz Questions</h3>
+<p>Video : Monitor DAG Runs and Task Instances</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/cea548d2-1a18-4a2b-abcb-84640b806a7c" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/07bb4a31-c263-43bb-8ae6-fe4ebc86244d" /></p>
+<p>Video: Overview Of DAG</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/208be62a-ce34-44b5-ad3c-2c6a86cf7c23" /></p>
+<p>So total number of successful DAGs are 4.</p>
+<p>Same type of logic here as well. Upstream Failed is represented by the orange color.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/f75d186e-7977-4dae-a432-770cf0c8d3f0" /></p>
+<h3 id="debug-and-rerun-dag">Debug and Rerun DAG</h3>
+<p>Go to this UI page by going to the link <code>http://localhost:8080/dagrun/list/?_flt_3_dag_id=example_dag_basic</code></p>
+<p>Add filter equal to failed</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/9463298c-e08b-4625-ab73-e886b48edac9" /></p>
+<p>Select the DAGs -&gt; Click on Action -&gt; Clear State to rerun the  DAGs</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/5a29ffcf-61e6-45de-9b64-5d11c6557860" /></p>
+<h2 id="module-4-simple-dag">Module 4 : Simple DAG</h2>
+<ul>
+<li>Catchup : Catchup refers to the process of scheduling and executing all the past DAG runs that would have been scheduled if the DAG had been created and running at an earlier point in time.</li>
+</ul>
+<h3 id="create-dag-with-traditional-paradigm">Create DAG with Traditional Paradigm</h3>
+<p>with is a context manager</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span><span class="s1">&#39;my_dag&#39;</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>         <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A simple tutorial DAG&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data_science&#39;</span><span class="p">],</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>         <span class="n">schedule</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</code></pre></div>
+<h3 id="using-the-taskapi">Using the TaskAPI</h3>
+<p><strong>@dag is a decorator</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nd">@dag</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A simple tutorial DAG&#39;</span><span class="p">,</span> 
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data_science&#39;</span><span class="p">],</span> <span class="n">schedule</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_dag</span><span class="p">():</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="kc">None</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">my_dag</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="defining-a-python-operator-task">Defining a Python Operator Task</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/3d99e0b0-2f56-46f4-b371-92237ae0bd0c" /></p>
+<h3 id="dag-without-context-manager-with">DAG without context manager with</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/ee4216ff-7d7b-47a9-b5e1-a5db44ff4d0b" /></p>
+<p>Much simpler method with TaskFlowAPI</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag</span><span class="p">,</span> <span class="n">task</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nd">@dag</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A simple tutorial DAG&#39;</span><span class="p">,</span> 
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data_science&#39;</span><span class="p">],</span> <span class="n">schedule</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_dag</span><span class="p">():</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="nd">@task</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_a</span><span class="p">():</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi from task a&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="chain-dependencies">Chain Dependencies</h3>
+<p>First Import <code>from airflow.util.helpers imoprt chain</code></p>
+<p><code>task_a &gt;&gt; [task_b,task_c,task_d] &gt;&gt; task_e</code></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/499d250a-7fd6-4c8b-979b-595b9d0797ff" /></p>
+<p><code>chain(task_a,[task_b,task_c],[task_d,task_e])</code></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/dfca384f-1c14-41ce-9cce-172c9df79bb6" /></p>
+<h3 id="setting-default-args">Setting Default Args</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="dependencies-with-task-flow-api">Dependencies with Task Flow API</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">dag</span><span class="p">,</span> <span class="n">task</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.utils.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nd">@dag</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>         <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A simple tutorial DAG&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data_science&#39;</span><span class="p">],</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>         <span class="n">schedule</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_dag</span><span class="p">():</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="nd">@task</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_a</span><span class="p">():</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi from task a&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="nd">@task</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_b</span><span class="p">():</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi from task b&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="nd">@task</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_c</span><span class="p">():</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi from task c&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="nd">@task</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_d</span><span class="p">():</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi from task d&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>    <span class="nd">@task</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_e</span><span class="p">():</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi from task e&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>    <span class="n">print_a</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">print_b</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">print_c</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">print_d</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">print_e</span><span class="p">()</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="n">my_dag</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="assignment-creating-dag-with-bash-operator">Assignment : Creating DAG with Bash Operator</h3>
+<p>The DAG should look like this:</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/ec52175b-ff94-4b34-b9cd-fa2556a34b8d" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.python</span><span class="w"> </span><span class="kn">import</span> <span class="n">PythonOperator</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.bash</span><span class="w"> </span><span class="kn">import</span> <span class="n">BashOperator</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span><span class="n">dag_id</span><span class="o">=</span><span class="s1">&#39;check_dag&#39;</span><span class="p">,</span> <span class="n">schedule</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> 
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;DAG to check data&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data_engineering&#39;</span><span class="p">]):</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">create_file</span> <span class="o">=</span> <span class="n">BashOperator</span><span class="p">(</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;create_file&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>        <span class="n">bash_command</span><span class="o">=</span><span class="s1">&#39;echo &quot;Hi there!&quot; &gt;/tmp/dummy&#39;</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="p">)</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="n">check_file_exists</span> <span class="o">=</span> <span class="n">BashOperator</span><span class="p">(</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;check_file_exists&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>        <span class="n">bash_command</span><span class="o">=</span><span class="s1">&#39;test -f /tmp/dummy&#39;</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    <span class="p">)</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    <span class="n">read_file</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;read_file&#39;</span><span class="p">,</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>        <span class="n">python_callable</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/dummy&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    <span class="p">)</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="n">create_file</span> <span class="o">&gt;&gt;</span> <span class="n">check_file_exists</span> <span class="o">&gt;&gt;</span> <span class="n">read_file</span>
+</code></pre></div>
+<p>Quiz Questions</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/dacf940f-5e52-4f97-ac89-1d6e122fb595" /></p>
+<h2 id="module-5-sheduling-dags">Module 5 : Sheduling DAGs</h2>
+<h3 id="what-is-a-dagrun">What is a DAGRun?</h3>
+<ul>
+<li>When the scheduler schedules the tasks to run, a DAG Run object is created with <code>data_interval_start</code> and <code>data_interval_end</code></li>
+</ul>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/ac9118ac-62fb-4177-beef-8558e21bd995" /></p>
+<p>First the DAGRun is is in the Queued state, once the first task runs its in the running state.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/da907040-0a9d-4dc0-a10e-603c095cfeba" /></p>
+<p>Final task state determines the end state of the DAGRun.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/95ca158a-4985-4a72-90e1-3bc390797a2c" /></p>
+<p><strong>Properties of DAG Run</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/08649391-4997-4076-a9ab-8202d8a662c2" /></p>
+<h3 id="how-dags-are-scheduled">How DAGs are scheduled?</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/f83699c2-18cf-458e-8358-c05c9eabd0f9" /></p>
+<p><strong>Example of three DAG runs</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/9d6b73d0-d3ef-4842-a53b-b3a4e7f7e743" /></p>
+<p><strong>Thing to Remember</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/05db8110-e7b2-47f4-83cd-765f863b346a" /></p>
+<h3 id="the-start_date-parameter">The <code>start_date</code> parameter</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/cd8aa7a7-18d7-4db4-8306-2bc052229285" /></p>
+<h3 id="how-it-works">How it works?</h3>
+<p><strong>Scenario I</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/f8bdc6a7-6f97-4c66-8163-94f80c3330d7" /></p>
+<ul>
+<li>
+<p>Let's say there are three dag runs from start date until now.</p>
+</li>
+<li>
+<p>Today if we hit the trigger on the dag...</p>
+</li>
+<li>
+<p>Then all the other previous dag runs from the start date till now are run.</p>
+</li>
+<li>
+<p>This happens only for the first time that we run the dag.</p>
+</li>
+</ul>
+<p><strong>Scenario II</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/960914cf-4ad5-4703-bedb-1edf4497f1b9" /></p>
+<ul>
+<li>
+<p>Let's say we made a mistake and stopped the DAG on 2nd Jan 2022,</p>
+</li>
+<li>
+<p>We fix it and then restart the DAG.</p>
+</li>
+<li>
+<p>In this case Airflow backfills the DAG from the last run and not the start date.</p>
+</li>
+<li>
+<p>So the dag is backfilled only from 2nd Jan and not 1st Jan.</p>
+</li>
+</ul>
+<h3 id="cron-expressions-for-schedule_interval">Cron Expressions for <code>schedule_interval</code></h3>
+<p>use <a href="crontab.guru">crontab.guru</a> website to construct cron expressions</p>
+<p>cron expressions take into account day light saving time.</p>
+<p>how to trigger dags every three days?</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/fad972bc-c576-4844-9840-8e7fc662c794" /></p>
+<p>Check the <a href="https://academy.astronomer.io/path/airflow-101/astro-runtime-scheduling/1555646">link</a> for a complete summary.</p>
+<h3 id="concept-of-catchup">Concept Of Catchup</h3>
+<p>The scheduler runs all the previous DAGRuns between now and the date @ which the DAG was triggeres or the start date of the DAG.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/18d0a9fb-3630-49ad-b887-9aaafa6273cf" /></p>
+<h3 id="backfilling-process">Backfilling Process</h3>
+<p>In the figure below we can see that there are DAGRuns that are alreasy triggered and executed from start_date until now.</p>
+<p>But what if we want to trigger the DAGs that are before the start date?</p>
+<p>We can do this with the backfilling mechanism.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/a043a36f-0894-43e7-88be-185abcf379a0" /></p>
+<h3 id="cli-command-to-backfill-the-dag">CLI Command to Backfill the DAG</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/33a826f4-b4a3-4853-8bbe-ac0f8b2761bd" /></p>
+<h3 id="quiz-questions_1">Quiz Questions</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/3cb036f8-1e90-47d9-800d-4f0ee656f94a" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/26efe313-a64a-46ea-94dd-8674f9a626e5" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/4ec48b0f-558f-44b0-b4a0-d83a63e95ae4" /></p>
+<h2 id="module-6-connections-in-airflow">Module 6 : Connections In Airflow</h2>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/e8adae05-418f-4e4a-8194-c2007c5e8ed0" /></p>
+<p>To Interact with external systems like APIs we need Connections. They are a set of parameters such as login and password that are encrypted.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/6eb58c81-c0f3-43e8-a08c-c4cd37d9e883" /></p>
+<p>If we want to interact with a software appln via a connection we need to install its provider first. dbt has its own provider, snowflake has its provider...</p>
+<h3 id="how-to-create-a-connection">How to create a connection?</h3>
+<p>Go to Admin &gt; Connections &gt; Create New Connection (+ button)</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/8bf6b66a-4ea4-4a30-af04-2f399a15bbd9" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/5746e495-6f65-433a-b15f-f51a46caba4a" /></p>
+<p>Password is the API Key from Calendarific Docs</p>
+<p>After Clicking on Save the connecton appears on the page</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/8b60066e-f839-449e-8559-2e9b71e57395" /></p>
+<p>Check out the <a href="registry.astronomer.io">Registry</a> to check the docs and parameters for any tool.</p>
+<p>We can export environment variables using the .env file and give parameters there, no need UI for this. Check this <a href="https://academy.astronomer.io/connections-101/1277466">Snowflake Example</a></p>
+<p>To deploy the connections use <code>astro deployment variable create --deployment-id &lt;ID&gt; --load --env .env</code></p>
+<h3 id="pain-points-with-connections">Pain Points with Connections</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/471a7282-0e97-48c5-a586-c4d116d83777" /></p>
+<h4 id="cannot-share-the-connections-from-dev-to-prod-environment">Cannot share the connections from Dev to Prod Environment.</h4>
+<p>With Astro we can create a <strong>Connection Management Environment</strong> to manage the connections.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/536bcd5f-bce5-4329-b8a8-887803ac5178" /></p>
+<h4 id="specific-forms-for-each-connection-type">Specific Forms For Each Connection Type</h4>
+<p>Astro unlike Airflow provides us with custom forms for each connection type.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/42ee370d-0927-4cea-b0f7-881dda5d40fb" /></p>
+<h4 id="there-is-no-inheritance-model">There is no Inheritance Model</h4>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/b9c29033-2bfc-4ad2-b8e6-25b6fe6da2c7" /></p>
+<p>In the above image we can see that most of the parameters in Dev Deployment and Prod Deployment are identical except the DB name. But with Airflow we cannot inherit the variables.</p>
+<p>This is solved by Astro.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/d49ce512-72af-4c66-9fd1-17bcbaa61b3f" /></p>
+<h4 id="there-is-no-secret-backend">There is no Secret Backend</h4>
+<p>There is no secret vault storage that is encrypted in Airflow, we need to create our own but in Astro it comes in built.</p>
+<h3 id="use-case-sharing-connections-with-dev-deployment-and-local-dev-environments">Use Case : Sharing Connections with Dev Deployment and Local Dev Environments</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/7e93f39d-4151-425b-8c05-e806bf32b23f" /></p>
+<p>You can check out the <a href="https://academy.astronomer.io/connections-101/1820300">Snowflake Example</a> of creating a Connection Management System in Astro Cloud, then enabling the local dev environments to access the secrets using a set of commands.</p>
+<h3 id="quiz">Quiz</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/88e672b2-3d62-4291-8f6e-f13738665e11" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/4ae5682b-772b-4dd3-be41-47f355c6323b" /></p>
+<h2 id="module-7-xcom">Module 7 - XCom</h2>
+<p>Suppose there are two tasks A and B. We want to send a file from A to B.</p>
+<p>We can use an external system like S3 bucket where task A can upload it to the bucket and then task B can download it.</p>
+<p>We can use a native way using XCom(Airflow Meta DB)</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/912756d0-d44b-4eec-96bc-633f81fee0a0" /></p>
+<h3 id="properties-of-xcom">Properties of XCom</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/3d397af8-3de9-47cd-8ec9-592c8fa7d0ed" /></p>
+<h3 id="example-of-xcom">Example Of XCom</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/2942607c-992c-4e3c-9fbd-77073ac84dbd" /></p>
+<p>Go to Admin &gt;&gt; XCom We can see that the variable is created</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/103d6ff9-db38-40fd-829b-a539ba58fe52" /></p>
+<h3 id="pulling-xcom-values-with-specific-key">Pulling XCom Values with Specific Key</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/e4630af6-211b-45ac-9114-ed126397b0d0" /></p>
+<p>Another <a href="https://academy.astronomer.io/path/airflow-101/astro-runtime-xcoms-101/1555644">example</a></p>
+<h3 id="pulling-multiple-values-once">Pulling Multiple Values @ once</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/bf03a922-5282-472f-9bbd-c9033988824f" /></p>
+<p>Here we can see that keys for both the tasks are the same, this is allowed because the XComs is defined not only by key but the dag_id and task_id also</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/2902cee6-e5b2-4d7c-a38d-2ceeeb38a178" /></p>
+<h3 id="limitations-of-xcom">Limitations of XCom</h3>
+<p>If we use SQLLite, we can share at most one gb in a given XCom, for PostGres its 1 gb for a given Xcom.</p>
+<p>If we use MySQL, we can share atmost 64kb in a given XCom.</p>
+<p><strong>So XCom is great for small data and it must be JSON Serializable.</strong></p>
+<p><strong>Example DAG Covering All Concepts</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.python</span><span class="w"> </span><span class="kn">import</span> <span class="n">PythonOperator</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pendulum</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.models.taskinstance</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaskInstance</span> <span class="k">as</span> <span class="n">ti</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">_transform</span><span class="p">(</span><span class="n">ti</span><span class="p">:</span> <span class="n">ti</span><span class="p">):</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>   <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>   <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://swapi.dev/api/people/1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>   <span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>   <span class="n">my_character</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">20</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">13</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;hair_color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span> <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;hair_color&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;blond&quot;</span> <span class="k">else</span> <span class="s2">&quot;blond&quot;</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;eye_color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hazel&quot;</span> <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;eye_color&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;blue&quot;</span> <span class="k">else</span> <span class="s2">&quot;blue&quot;</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;female&quot;</span> <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;male&quot;</span> <span class="k">else</span> <span class="s2">&quot;female&quot;</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>   <span class="n">ti</span><span class="o">.</span><span class="n">xcom_push</span><span class="p">(</span><span class="s2">&quot;character_info&quot;</span><span class="p">,</span> <span class="n">my_character</span><span class="p">)</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="k">def</span><span class="w"> </span><span class="nf">_transform2</span><span class="p">(</span><span class="n">ti</span><span class="p">:</span> <span class="n">ti</span><span class="p">):</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>   <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>   <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://swapi.dev/api/people/2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>   <span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>   <span class="n">my_character</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">50</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">20</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;hair_color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;burgundy&quot;</span> <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;hair_color&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;blond&quot;</span> <span class="k">else</span> <span class="s2">&quot;brown&quot;</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;eye_color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span> <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;eye_color&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;blue&quot;</span> <span class="k">else</span> <span class="s2">&quot;black&quot;</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>   <span class="n">my_character</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;male&quot;</span> <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;male&quot;</span> <span class="k">else</span> <span class="s2">&quot;female&quot;</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>   <span class="n">ti</span><span class="o">.</span><span class="n">xcom_push</span><span class="p">(</span><span class="s2">&quot;character_info&quot;</span><span class="p">,</span> <span class="n">my_character</span><span class="p">)</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a>
+<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>
+<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="k">def</span><span class="w"> </span><span class="nf">_load</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a>   <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a>
+<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span>
+<a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>   <span class="s1">&#39;xcoms_demo_4&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a>   <span class="n">schedule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-6-39" name="__codelineno-6-39" href="#__codelineno-6-39"></a>   <span class="n">start_date</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-6-40" name="__codelineno-6-40" href="#__codelineno-6-40"></a>   <span class="n">catchup</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a><span class="p">):</span>
+<a id="__codelineno-6-42" name="__codelineno-6-42" href="#__codelineno-6-42"></a>   <span class="n">t1</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+<a id="__codelineno-6-43" name="__codelineno-6-43" href="#__codelineno-6-43"></a>       <span class="n">task_id</span> <span class="o">=</span> <span class="s1">&#39;_transform&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-44" name="__codelineno-6-44" href="#__codelineno-6-44"></a>       <span class="n">python_callable</span> <span class="o">=</span> <span class="n">_transform</span>
+<a id="__codelineno-6-45" name="__codelineno-6-45" href="#__codelineno-6-45"></a>   <span class="p">)</span>
+<a id="__codelineno-6-46" name="__codelineno-6-46" href="#__codelineno-6-46"></a>
+<a id="__codelineno-6-47" name="__codelineno-6-47" href="#__codelineno-6-47"></a>   <span class="n">t2</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+<a id="__codelineno-6-48" name="__codelineno-6-48" href="#__codelineno-6-48"></a>       <span class="n">task_id</span> <span class="o">=</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-49" name="__codelineno-6-49" href="#__codelineno-6-49"></a>       <span class="n">python_callable</span> <span class="o">=</span> <span class="n">_load</span><span class="p">,</span>
+<a id="__codelineno-6-50" name="__codelineno-6-50" href="#__codelineno-6-50"></a>       <span class="n">op_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;{{ ti.xcom_pull(task_ids=[&#39;_transform&#39;,&#39;_transform2&#39;], key=&#39;character_info&#39;) }}&quot;</span><span class="p">]</span>
+<a id="__codelineno-6-51" name="__codelineno-6-51" href="#__codelineno-6-51"></a>   <span class="p">)</span>
+<a id="__codelineno-6-52" name="__codelineno-6-52" href="#__codelineno-6-52"></a>
+<a id="__codelineno-6-53" name="__codelineno-6-53" href="#__codelineno-6-53"></a>   <span class="n">t3</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+<a id="__codelineno-6-54" name="__codelineno-6-54" href="#__codelineno-6-54"></a>       <span class="n">task_id</span> <span class="o">=</span> <span class="s1">&#39;_transform2&#39;</span><span class="p">,</span>
+<a id="__codelineno-6-55" name="__codelineno-6-55" href="#__codelineno-6-55"></a>       <span class="n">python_callable</span> <span class="o">=</span> <span class="n">_transform2</span><span class="p">,</span>
+<a id="__codelineno-6-56" name="__codelineno-6-56" href="#__codelineno-6-56"></a>   <span class="p">)</span>
+<a id="__codelineno-6-57" name="__codelineno-6-57" href="#__codelineno-6-57"></a>   <span class="p">[</span><span class="n">t1</span><span class="p">,</span><span class="n">t3</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">t2</span>
+</code></pre></div>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/85ca1787-b9fa-416f-887e-4ff1dee82875" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/6b12b03f-632e-4506-b60c-e110db71433e" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/594ea56c-4618-444e-a30e-73ffd0d2ba9a" /></p>
+<h2 id="module-8-variables-in-airflow">Module 8 : Variables in Airflow</h2>
+<h3 id="introduction">Introduction</h3>
+<p>Suppose there is an API and many endpoints/tasks like create, read and delete.</p>
+<p>We will need to hardcode the information about the API in every task we do. </p>
+<p>If the API changes, then we may need to hardcode and modify the info for every single task.</p>
+<p>We can solve this problem with variables. We can put all the info the API needs.</p>
+<p>If something changes, just change the variables, no need to change for every DAG.</p>
+<p><img alt="Alt text" src="../image.png" /></p>
+<p>The variable has three properties: key, value and description. All of them have to be JSON serializable.</p>
+<h3 id="creating-a-variable">Creating a Variable</h3>
+<p>Go to Admin &gt;&gt; Variables</p>
+<h4 id="method-1-using-the-ui">Method 1 : Using the UI</h4>
+<p><img alt="Alt text" src="../image-1.png" /></p>
+<p>All the variables are stored in the meta database.
+The variables created this way using the UI is not very secure.</p>
+<h5 id="hiding-the-values">Hiding the Values</h5>
+<p>If we use a key name like api_key the value is automatically hidden.
+<img alt="Alt text" src="../image-2.png" /></p>
+<p>Variable keywords automatically hiding values</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>access_token
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>api_key
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>apikey
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>authorization
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>passphrase
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>passwd
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>password
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>private_key
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>secret
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>token
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>keyfile_dict
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>service_account
+</code></pre></div>
+<h4 id="method-2-using-environment-variables">Method 2 : Using Environment Variables</h4>
+<p>In the <code>.env</code> file add the following line to create an environment variable.</p>
+<p><code>AIRFLOW_ML_MODEL_PARAMS:'{"param":[100,200,300]}'</code></p>
+<p>We can't see them on the Airflow UI.</p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>
+<p>The variables are hidden on airflow UI.</p>
+</li>
+<li>
+<p>Since the variables are in .env they are not stored in the meta database, hence there is no need to create a connection to fetch these values.</p>
+</li>
+<li>
+<p>Easier to version the variables.</p>
+</li>
+</ul>
+<h3 id="access-variables-from-dags">⚠️ Access Variables From DAGS</h3>
+<p>We can use the variables in the DAG to perform operations also. The variable can be a single value or a list as seen below. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.python</span><span class="w"> </span><span class="kn">import</span> <span class="n">PythonOperator</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">_ml_task</span><span class="p">(</span><span class="n">ml_parameter</span><span class="p">):</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">ml_parameter</span><span class="p">)</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span><span class="s1">&#39;ml_dag&#39;</span><span class="p">,</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>          <span class="n">schedule_interval</span> <span class="o">=</span> <span class="s1">&#39;@daily&#39;</span><span class="p">,</span><span class="n">catchup</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">dag</span><span class="p">:</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>          <span class="k">for</span> <span class="n">ml_parameter</span> <span class="ow">in</span> <span class="n">Variable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ml_model_parameters&#39;</span><span class="p">,</span><span class="n">deserialize_json</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;params&#39;</span><span class="p">]:</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>            <span class="n">PythonOperator</span><span class="p">(</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>                <span class="n">task_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ml_task_</span><span class="si">{</span><span class="n">ml_parameter</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>                <span class="n">python_callable</span> <span class="o">=</span> <span class="n">_ml_task</span><span class="p">,</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>                <span class="n">op_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>                    <span class="s1">&#39;ml_parameter&#39;</span><span class="p">:</span><span class="n">ml_parameter</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>                <span class="p">}</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>            <span class="p">)</span>
+</code></pre></div>
+<h4 id="dag-graph">DAG Graph</h4>
+<p><img alt="Alt text" src="../image-3.png" /></p>
+<h3 id="jinja-templating-to-access-variables">⚠️ Jinja Templating to Access Variables</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.python</span><span class="w"> </span><span class="kn">import</span> <span class="n">PythonOperator</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.operators.bash</span><span class="w"> </span><span class="kn">import</span> <span class="n">BashOperator</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">airflow.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">_ml_task</span><span class="p">(</span><span class="n">ml_parameter</span><span class="p">):</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>   <span class="nb">print</span><span class="p">(</span><span class="n">ml_parameter</span><span class="p">)</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span><span class="s1">&#39;ml_dag&#39;</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>   <span class="n">schedule_interval</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">dag</span><span class="p">:</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>   <span class="n">ml_tasks</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>   <span class="k">for</span> <span class="n">ml_parameter</span> <span class="ow">in</span> <span class="n">Variable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ml_model_parameters&#39;</span><span class="p">,</span> <span class="n">deserialize_json</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">&quot;param&quot;</span><span class="p">]:</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>       <span class="n">ml_tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PythonOperator</span><span class="p">(</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>           <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;ml_task_</span><span class="si">{</span><span class="n">ml_parameter</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>           <span class="n">python_callable</span><span class="o">=</span><span class="n">_ml_task</span><span class="p">,</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>           <span class="n">op_kwargs</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>               <span class="s1">&#39;ml_parameter&#39;</span><span class="p">:</span> <span class="n">ml_parameter</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>           <span class="p">}</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>       <span class="p">))</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="n">report</span> <span class="o">=</span> <span class="n">BashOperator</span><span class="p">(</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>   <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;report&#39;</span><span class="p">,</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>   <span class="n">bash_command</span><span class="o">=</span><span class="s1">&#39;echo &quot;report_{{ var.value.ml_report_name }}&quot;&#39;</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="p">)</span>
+</code></pre></div>
+<p>Using Jinja Templating gives one advantage, we dont need to create a connection to access a variable everytime, its a one time thing. </p>
+<h2 id="module-9-debugging-dags">Module 9 : Debugging DAGs</h2>
+<h3 id="basic-checks">Basic Checks</h3>
+<ul>
+<li>
+<p>Ensure that all your DAG files are located in the dags folder.</p>
+</li>
+<li>
+<p>The .airflowignore file does not have the name of your DAG file as Airflow ignores any files present on it.</p>
+</li>
+<li>
+<p>At the code level, ensure that each DAG:</p>
+<ul>
+<li>Has a unique dag_id. if two dags have the same id, Airflow randomly parses one of them.</li>
+<li>Contains either the word airflow or dag. The scheduler only scans files that meet this requirement.</li>
+<li>If you are using Airflow decorator to instantiate your dag with the @dag decorator, make sure  the decorated function is invoked at the end.</li>
+</ul>
+</li>
+</ul>
+<h3 id="debugging-airflow-settings">Debugging Airflow Settings</h3>
+<p><img alt="Alt text" src="../image-4.png" /></p>
+<p>We can change the scheduler settings but its not recommended since it may overload the scheduler.</p>
+<h3 id="module-error-checks">Module Error Checks</h3>
+<p>Basically this error means the dag does not exist in the metadata database.</p>
+<p>To check the dags in your metadata database here is the command.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>airflow<span class="w"> </span>dags<span class="w"> </span>list
+</code></pre></div>
+Just try restarting the scheduler and then check again.</p>
+<p>If it does not work then check logs of the scheduler.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>astro<span class="w"> </span>dev<span class="w"> </span>logs<span class="w"> </span>-s
+</code></pre></div>
+<p>To check if you have any kind of import errors in any of the DAGs use:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>astro<span class="w"> </span>dev<span class="w"> </span>run<span class="w"> </span>dags<span class="w"> </span>list-import-errors
+</code></pre></div>
+<h3 id="scheduler-error-checks">Scheduler Error Checks</h3>
+<p>If you have installed some new Provider like Databricks, its important to configure it properly in the yml and .env files, otherwise scheduler crashes and UI is not visible.</p>
+<h3 id="module-management-errors">Module Management Errors</h3>
+<p>Let's consider the following code example</p>
+<p><img alt="Alt text" src="../image-5.png" /></p>
+<p>Here we can see that we are importing task1 from pandas that is a file in the same directory but we still get the error.</p>
+<p><img alt="Alt text" src="../image-6.png" /></p>
+<p>The import is happening from a python package not the file in our directory. </p>
+<p><strong>How to check if library exists in the airflow envt?</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>astro<span class="w"> </span>dev<span class="w"> </span>bash
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>pip<span class="w"> </span>freeze<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>pandas
+</code></pre></div>
+<p>So dont name the file as the name of any existing package.</p>
+<h3 id="more-common-issues">More Common Issues</h3>
+<ul>
+<li>
+<p>Refraining from immediately triggering DAGs after making changes to them or any other files in the DAG folder is advisable, as the scheduler may still need to parse the DAG.</p>
+</li>
+<li>
+<p>Confirm that you have unpaused your DAGs to enable them to execute according to their schedule.</p>
+</li>
+<li>
+<p>Ensure that the start_date of your DAG is set to a date in the past else if you trigger the DAG manually you will see a successful DAG run but no successful tasks.</p>
+</li>
+<li>
+<p>Ensure the end_date of your DAG is set to the future else you won’t see any tasks executed like above.</p>
+</li>
+</ul>
+<p>Often if you expect many instances of your DAG or tasks to be running simultaneously, make sure you verify these core airflow settings usually found in airflow.cfg file.</p>
+<p><code>max_active_runs_per_dag</code> (The maximum number of active DAG runs per DAG). Default → 16.</p>
+<p><code>max_active_tasks_per_dag</code> (The maximum number of task instances allowed to run concurrently in each DAG). Default → 16.</p>
+<p><code>parallelism</code> (This defines the maximum number of task instances that can run concurrently per scheduler in Airflow, regardless of the worker count). Default → 32.</p>
+<h3 id="improper-behaviour-of-dags">Improper Behaviour Of DAGs</h3>
+<p>Let's say we have a DAG that uses the Postgres Operator to create a new table(task 1) and also insert data into it(task 2). </p>
+<p>We can see an error : 
+<img alt="Alt text" src="../image-7.png" /></p>
+<p>The connection is not successful because the security admins restrict the database access based on the IP Addresses. This means the firewall allows conn to db based on the ip address.</p>
+<h3 id="default-postgres-connection-id">Default Postgres Connection Id</h3>
+<p>The default postgres connection id is <code>postgres_default</code></p>
+<p>So when we are going to use some other connection id like <code>pg_default</code> make sure that its specified during the connection, otherwise a connection would be established with the default one but the tables we need may not exist there.</p>
+<p>We need to make sure that connection can be made from external system where airflow has been installed.</p>
+<h3 id="how-to-avoid-dependency-conflicts">How to Avoid Dependency Conflicts?</h3>
+<ul>
+<li>
+<p>One option is the KubernetesPodOperator, which is suitable for users who operate Airflow on Kubernetes and require greater control over the resources and infrastructure used to run the task, in addition to package management. However, there are some drawbacks, such as a more complicated setup and increased task latency.</p>
+</li>
+<li>
+<p>The ExternalPythonOperator is another choice that enables you to execute certain tasks with a different set of Python libraries than others and the primary Airflow environment. This may be a virtual environment or any pre-installed Python installation that is accessible in the Airflow task's execution environment.</p>
+</li>
+<li>
+<p>Another option is the PythonVirtualenvOperator, which functions similarly as the ExternalPythonOperator . However, it generates and deletes a new virtual environment for each task. This operator is ideal if you don't want to retain your virtual environment. The disadvantage of this operator is that it takes more time to generate the environment each time the task is executed, resulting in higher task latency.</p>
+</li>
+</ul>
+<h3 id="quiz-questions_2">⚠️ Quiz Questions</h3>
+<p><strong>Q1. The DAG does not come on UI? Why?</strong></p>
+<p><img alt="Alt text" src="../image-8.png" /></p>
+<p><img alt="Alt text" src="../image-9.png" /></p>
+<p><img alt="Alt text" src="../image-10.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1782 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vedanthv.github.io/data-engg-docs/Spark_Databricks_Course/">
+      
+      
+        <link rel="prev" href="../databricks/">
+      
+      
+        <link rel="next" href="../Spark_YT/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Spark Databricks Course - Data Engineering Docs by Vedanth</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pyspark-internals-for-large-scale-data-processing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-header__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering Docs by Vedanth
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spark Databricks Course
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../astronomer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Astronomer and Airflow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../databricks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Azure Databricks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark Databricks Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_YT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark YouTube
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Azure/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Microsoft Azure - DP 203
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../streaming/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Streaming Architecture
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-nav__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Engineering Docs by Vedanth
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../astronomer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pyspark-internals-for-large-scale-data-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      PySpark Internals for Large Scale Data Processing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PySpark Internals for Large Scale Data Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-working-and-architecture-of-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Internal Working and Architecture of Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Internal Working and Architecture of Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Level Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-of-the-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flow of the Logic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-node-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Worker Node Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-spark-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary of Spark Application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attributes-of-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes of Spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-terminologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Terminologies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stages-and-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stages and Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libraries-suppoprted-by-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Libraries Suppoprted by Spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#driver-node-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Driver Node Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-node-architecture_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Worker Node Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-heap-memory-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      On Heap Memory Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-architecture-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Architecture in Spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformations-and-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transformations and Actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-evaluation-and-dag-logic-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lazy Evaluation and DAG Logic Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#narrow-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Narrow Transformation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wide-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wide Transformation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-heap-vs-off-heap-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      On heap vs Off Heap Memory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clusters-in-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clusters in PySpark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cluster Modes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Architecture Diagram
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apache-spark-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Spark Internals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Apache Spark Internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-does-spark-execute-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does Spark Execute Queries?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-cluster-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Cluster Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hive-metastore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hive Metastore
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parquet-file-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parquet File Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-there-in-spark-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is there in Spark SQL?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lazy Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicit-vs-implicit-vs-infer-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicit vs Implicit vs Infer Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-execution-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Execution Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataframe-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataFrame Action
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inferring-json-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inferring JSON Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write-dataframes-to-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write Dataframes to tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-complex-json-and-performing-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Complex JSON and performing operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selectexpr" class="md-nav__link">
+    <span class="md-ellipsis">
+      selectExpr()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drop-multiple-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drop multiple columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-new-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create New Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-to-subset-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      filter() to subset rows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-vs-order_by" class="md-nav__link">
+    <span class="md-ellipsis">
+      sort vs order_by
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group By Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-group-by-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Group By Works?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-data-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Data Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-of-aggregation-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      List of Aggregation Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unix-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unix Timestamps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unix Timestamps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datetime-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datetime Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collection Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-functions-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collection Functions Review
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#miscellaneous-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Miscellaneous Functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-udfs-run-in-scala-and-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      How UDFs run in Scala and Python?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How UDFs run in Scala and Python?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transform-function-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transform function execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-register-udfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to register UDFs?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-vs-pandas-udf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python vs Pandas UDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-udf" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL UDF
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-spark-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Spark Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cluster Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cluster Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drivers-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Driver's work
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-dive-into-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deep Dive Into Shuffle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adaptive-query-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adaptive Query Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shuffle-partitions-with-and-without-aqe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shuffle Partitions : With and Without AQE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predicate-pushdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Predicate Pushdown
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-partitioning-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Partitioning Guidelines
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aqe-and-shuffle-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      AQE and Shuffle Partitions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_YT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Azure - DP 203
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Spark Databricks Course</h1>
+
+<h2 id="pyspark-internals-for-large-scale-data-processing">PySpark Internals for Large Scale Data Processing</h2>
+<h3 id="internal-working-and-architecture-of-spark">Internal Working and Architecture of Spark</h3>
+<h4 id="high-level-overview">High Level Overview</h4>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/fc63ecce-41ce-477b-8964-86a4a4b86d20" /></p>
+<h3 id="flow-of-the-logic">Flow of the Logic</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/a0091ce1-edaf-4dce-9754-caf5238f8506" /></p>
+<h3 id="worker-node-architecture">Worker Node Architecture</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/ea6e5e52-7b70-4550-8fef-8858691bbbd2" />
+- There are total of 64 cores, so 64 processes can execute parallelly and each executor will have 16 processes running.
+- There can be partitions within each executor that can remain idle without any process running so we need to define a parameter to define how many min number of processes need to be run on each executor at once.
+- To avoid having idle nodes we need to keep the number of partitions as a multiple of the core processor.</p>
+<h3 id="summary-of-spark-application">Summary of Spark Application</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/84d10017-7a63-49cc-97d6-0c9761d7ae47" /></p>
+<h3 id="attributes-of-spark">Attributes of Spark</h3>
+<ul>
+<li>Its Scalable.</li>
+<li>Its Fault Tolerant and follows lazy evaluation. First Spark makes logical plans to process the data, then it builds a DAG and hence if one worker node goes down we can still recover the data.</li>
+<li>Spark supports multiple programming languages like Python and Scala.</li>
+<li>Spark can handle streaming data also.</li>
+<li>Spark is known for its speed due to in memory computation model.</li>
+<li>Spark has rich libraries for ML and Data Processsing.</li>
+</ul>
+<h3 id="common-terminologies">Common Terminologies</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/f3d39071-82b2-4d95-8bf0-69c5da259f36" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/de3e02ff-2580-433f-8183-935ac4b2feda" /></p>
+<p>Spark does not immediately process the data as mentioned above. When an action is called by the developer for storage or transformation purposes, it processes the data according to the DAG and return the output to the user.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/93110364-1dc5-443c-b6ad-9d89edcf7b46" /></p>
+<p>To store data in on heap memory we need to serialize the data.</p>
+<h3 id="stages-and-tasks">Stages and Tasks</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/0c913da4-73d2-4bf2-b844-05a6a38b2797" /></p>
+<h3 id="libraries-suppoprted-by-spark">Libraries Suppoprted by Spark</h3>
+<ul>
+<li>SQL</li>
+<li>Streaming</li>
+<li>MLLib</li>
+<li>SparkX</li>
+</ul>
+<h3 id="driver-node-architecture">Driver Node Architecture</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/b1d68634-96f0-4354-9fb6-43c4c28f4265" /></p>
+<h3 id="worker-node-architecture_1">Worker Node Architecture</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/7ebf4dee-073a-46c3-8c8d-01f6f0ec30b1" /></p>
+<h3 id="on-heap-memory-architecture">On Heap Memory Architecture</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/28abf5f6-c5f2-4a54-8094-5265a4f7fab9" /></p>
+<ul>
+<li>Out of 32gb, around 300mb is used by spark for disaster recovery and cannot be used by the user or the processes.</li>
+<li>Of the remaining (32gb - 300mb) we allocate 40% of the heap memory as the user memory and then 60% of the heap memory as the unified memory.</li>
+<li>In unified memory 50% is used for scheduling and 50% of the memory is used for executing.</li>
+</ul>
+<h3 id="api-architecture-in-spark">API Architecture in Spark</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/8624a26b-2757-44cf-8dfe-c62ad0bc3f40" /></p>
+<p>Dataset = Best of RDD + Best Of DataFrame
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/03ca4c37-ea52-4a32-83ed-29c860ff0b7a" /></p>
+<ul>
+<li>
+<p>RDDs were always stored on the on heap memory but dataframes can be stored on the off heap memory also.</p>
+</li>
+<li>
+<p>All types of datasets here are immutable.</p>
+</li>
+</ul>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/81820aea-4e35-4844-b2dc-57d94bcf742d" /></p>
+<ul>
+<li>Strong Typed feature ensures certain things like mismatch in the datatypes is detected in compile time.</li>
+</ul>
+<h3 id="transformations-and-actions">Transformations and Actions</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/dd340e15-a52a-4bc1-8d74-cee5a2e33aad" /></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/9c0eaada-5429-481b-a639-2903571ff9a2" /></p>
+<h3 id="lazy-evaluation-and-dag-logic-flow">Lazy Evaluation and DAG Logic Flow</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/83769424-47af-45a5-b47d-f4c1acf3aaa6" /></p>
+<h3 id="narrow-transformation">Narrow Transformation</h3>
+<p>Each and every executor can work independently on the data and don't require any dependency from the others.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/caddbaaf-39be-4907-9722-abc1dc609a14" /></p>
+<h3 id="wide-transformation">Wide Transformation</h3>
+<p>This type of transformation involves the shuffling of data.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/0540bea6-e3b3-4f95-b111-9b035682af43" /></p>
+<p><code>df.collect</code> is used to perform action after various transformations have been applied to the data.</p>
+<h3 id="on-heap-vs-off-heap-memory">On heap vs Off Heap Memory</h3>
+<p><strong>On Heap Memory Architecture</strong></p>
+<p>Each and every executor has its own On Heap Memory
+<img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/36dfd2f0-bd1d-44e3-9c0d-2dc98ac14292" /></p>
+<p><strong>Off Heap Memory Architecture</strong></p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/94e2ed45-54e8-4cb1-9e26-053b9a8b77e0" /></p>
+<p>The Off Heap Memory is managed by the OS and shared by all the executors when the on heap memory runs out of space.</p>
+<p>The performance can be hit when we use the On Heap Memory because in the middle of any process if the on heap memory is full, then the Garbage Colector has to scan theentire memory to check and remove the unwanted memory space and then resume the process again.</p>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/b1c493c3-6071-4442-9133-50a799b29374" /></p>
+<h3 id="clusters-in-pyspark">Clusters in PySpark</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/0b23a605-1585-4cf2-83b0-117a41a45897" /></p>
+<ul>
+<li>
+<p>If multiple users are using All Purpose Clusters the resources are shared between them.</p>
+</li>
+<li>
+<p>It is used in notebooks where we have to check the output of every command after executing it.</p>
+</li>
+<li>
+<p>Job Clusters are used for schedulle jobs and the clusters are created duing runtime.</p>
+</li>
+<li>
+<p>Pools are used to create and combine multiple clusters where we can command how many clusters must be active all the time. So there is no bootup time and is used for cost cutting.</p>
+</li>
+</ul>
+<h3 id="cluster-modes">Cluster Modes</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/71d9774b-367c-48e3-bf67-b89f3693dafd" /></p>
+<h3 id="spark-architecture-diagram">Spark Architecture Diagram</h3>
+<p><img alt="image" src="https://github.com/vedanthv/data-engg/assets/44313631/3186a6a2-5521-481a-9de1-1853087a9031" /></p>
+<h2 id="apache-spark-internals">Apache Spark Internals</h2>
+<p><img alt="" src="https://snipboard.io/0KCWc4.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/SFokjG.jpg" /></p>
+<h3 id="how-does-spark-execute-queries">How does Spark Execute Queries?</h3>
+<p><img alt="" src="https://snipboard.io/RL7lNh.jpg" /></p>
+<h3 id="spark-cluster-execution">Spark Cluster Execution</h3>
+<p><img alt="" src="https://snipboard.io/t3F1mQ.jpg" /></p>
+<ul>
+<li>Executor is a JVM virtual machine that runs on the workers.</li>
+<li>The 625mb file is divided into memory partitions and then sent to the workers for execution.</li>
+<li>Its an automatic parallelism process.</li>
+</ul>
+<h3 id="hive-metastore">Hive Metastore</h3>
+<p><img alt="" src="https://snipboard.io/bSnPkw.jpg" /></p>
+<h3 id="parquet-file-format">Parquet File Format</h3>
+<p><img alt="" src="https://snipboard.io/dmtEkC.jpg" /></p>
+<ul>
+<li>
+<p>We prefer the parquet format because consider a dataset with 100 columns in it and we want to only fetch data of first three columns. We can use parquet format to do it faster compared to csv.</p>
+</li>
+<li>
+<p>Search for files with java in it with Linux
+<code>%sh ps grep 'java'</code></p>
+</li>
+<li>
+<p>How to read markdown files use bash
+<code>%fs head /databricks-dataset/README.md</code></p>
+</li>
+<li>
+<p>Display all mount points
+<code>%fs mounts</code></p>
+</li>
+<li>
+<p>Declare a python variable in the spark context which SQL commands can access.
+<code>spark.sql(f"SET c.events_path = {events_path}")</code></p>
+</li>
+<li>
+<p>Creating a table form the files and load it as a table
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">events</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">USING</span><span class="w"> </span><span class="n">DELTA</span><span class="w"> </span><span class="k">OPTIONS</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="err">{</span><span class="n">path</span><span class="w"> </span><span class="ss">&quot;${c.events_path}&quot;</span><span class="err">}</span>
+</code></pre></div></p>
+</li>
+<li>Add notebook params as widgets</li>
+</ul>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">WIDGET</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="ss">&quot;KA&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">events</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getArgument</span><span class="p">(</span><span class="ss">&quot;state&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="what-is-there-in-spark-sql">What is there in Spark SQL?</h3>
+<p><img alt="" src="https://snipboard.io/QgEmFf.jpg" /></p>
+<h3 id="lazy-evaluation">Lazy Evaluation</h3>
+<p><img alt="" src="https://snipboard.io/wYCutU.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/saCl2z.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/i5CwNx.jpg" /></p>
+<h3 id="explicit-vs-implicit-vs-infer-schema">Explicit vs Implicit vs Infer Schema</h3>
+<p><img alt="" src="https://snipboard.io/EgsMPk.jpg" /></p>
+<p>Fastest one is explicit since we don't need to read the data files.</p>
+<p><img alt="" src="https://snipboard.io/ZAEJHc.jpg" /></p>
+<h3 id="query-execution-process">Query Execution Process</h3>
+<p>![](<img alt="query execution engine" src="https://files.training.databricks.com/images/aspwd/spark_sql_query_execution_engine.png" /></p>
+<h3 id="dataframe-action">DataFrame Action</h3>
+<p><img alt="" src="https://snipboard.io/lA3W5s.jpg" /></p>
+<ul>
+<li>anything we specify as options are actions.</li>
+</ul>
+<h3 id="inferring-json-schema">Inferring JSON Schema</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayType</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span> <span class="n">LongType</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">user_defined_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ecommerce&quot;</span><span class="p">,</span> <span class="n">StructType</span><span class="p">([</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;purchaseRevenue&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total_item_quantity&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;unique_items&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="p">]),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;event_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;event_previous_timestamp&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;event_timestamp&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="n">StructType</span><span class="p">([</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="p">]),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="n">ArrayType</span><span class="p">(</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="n">StructType</span><span class="p">([</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;coupon&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;item_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;item_revenue_in_usd&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;price_in_usd&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;quantity&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a><span class="p">])</span>
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a><span class="p">),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;traffic_source&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;user_first_touch_timestamp&quot;</span><span class="p">,</span> <span class="n">LongType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a><span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a><span class="p">])</span>
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>
+<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>
+<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>
+<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a><span class="n">events_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">spark</span>
+<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>
+<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a><span class="o">.</span><span class="n">read</span>
+<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>
+<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a><span class="o">.</span><span class="n">schema</span><span class="p">(</span><span class="n">user_defined_schema</span><span class="p">)</span>
+<a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a>
+<a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">events_json_path</span><span class="p">)</span>
+<a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a>
+<a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a><span class="p">)</span>
+</code></pre></div>
+<p>There are no jobs that are spanned while running the above code since we give all the data to infer that spark needs.</p>
+<h3 id="write-dataframes-to-tables">Write Dataframes to tables</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">events_df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="reading-complex-json-and-performing-operations">Reading Complex JSON and performing operations</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">rev_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">events_df</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;purchase_revenue&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">))</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;avg_purchase_revenue&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;ecommerce.total_item_quantity&quot;</span><span class="p">))</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;avg_purchase_revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">display</span><span class="p">(</span><span class="n">rev_df</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="" src="https://snipboard.io/gkP7WZ.jpg" /></p>
+<h3 id="selectexpr"><code>selectExpr()</code></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">apple_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">events_df</span><span class="p">.</span><span class="n">selectExpr</span><span class="p">(</span><span class="ss">&quot;user_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;device in (&#39;macOS&#39;, &#39;iOS&#39;) as apple_user&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">display</span><span class="p">(</span><span class="n">apple_df</span><span class="p">)</span>
+</code></pre></div>
+<img alt="" src="https://snipboard.io/LXeRz0.jpg" /></p>
+<h3 id="drop-multiple-columns">Drop multiple columns</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">anonymous_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">events_df</span><span class="p">.</span><span class="k">drop</span><span class="p">(</span><span class="ss">&quot;user_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;geo&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;device&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">display</span><span class="p">(</span><span class="n">anonymous_df</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="create-new-columns">Create New Columns</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">mobile_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">events_df</span><span class="p">.</span><span class="n">withColumn</span><span class="p">(</span><span class="ss">&quot;mobile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="p">(</span><span class="ss">&quot;device&quot;</span><span class="p">).</span><span class="n">isin</span><span class="p">(</span><span class="ss">&quot;iOS&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Android&quot;</span><span class="p">))</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">display</span><span class="p">(</span><span class="n">mobile_df</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="filter-to-subset-rows"><code>filter()</code> to subset rows</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">purchases_df</span> <span class="o">=</span> <span class="n">events_df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;ecommerce.total_item_quantity &gt; 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">display</span><span class="p">(</span><span class="n">purchases_df</span><span class="p">)</span>   
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">revenue_df</span> <span class="o">=</span> <span class="n">events_df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">display</span><span class="p">(</span><span class="n">revenue_df</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="sort-vs-order_by"><code>sort</code> vs <code>order_by</code></h3>
+<p><code>sort</code> will run on individual memory partitions and <code>order_by</code> will sort all the memory partitions together.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">revenue_df</span> <span class="o">=</span> <span class="n">events_df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isNotNull</span><span class="p">())</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">display</span><span class="p">(</span><span class="n">revenue_df</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">decrease_sessions_df</span> <span class="o">=</span> <span class="n">events_df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;user_first_touch_timestamp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">desc</span><span class="p">(),</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;event_timestamp&quot;</span><span class="p">))</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">display</span><span class="p">(</span><span class="n">decrease_sessions_df</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="aggregations">Aggregations</h3>
+<p><img alt="" src="https://snipboard.io/6WrK7H.jpg" /></p>
+<h3 id="group-by-operations">Group By Operations</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">df</span><span class="p">.</span><span class="n">groupBy</span><span class="p">(</span><span class="ss">&quot;geo.state&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;geo.city&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="how-group-by-works">How Group By Works?</h3>
+<p><img alt="" src="https://files.training.databricks.com/images/aspwd/aggregation_groupby.png" /></p>
+<h3 id="group-data-methods">Group Data Methods</h3>
+<p><img alt="" src="https://snipboard.io/GeSnNc.jpg" /></p>
+<p>Average Purchase Revenue for each state</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">avg_state_purchases_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">.</span><span class="n">groupBy</span><span class="p">(</span><span class="ss">&quot;geo.state&quot;</span><span class="p">).</span><span class="k">avg</span><span class="p">(</span><span class="ss">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">display</span><span class="p">(</span><span class="n">avg_state_purchases_df</span><span class="p">)</span>
+</code></pre></div>
+<img alt="" src="https://snipboard.io/0YE3h7.jpg" /></p>
+<p>Total Quantity and sum of purchase revenue and quantity for each combo of city and state</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">city_purchase_quantities_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">.</span><span class="n">groupBy</span><span class="p">(</span><span class="ss">&quot;geo.state&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;geo.city&quot;</span><span class="p">).</span><span class="k">sum</span><span class="p">(</span><span class="ss">&quot;ecommerce.total_item_quantity&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;ecommerce.purchase_revenue_in_usd&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">display</span><span class="p">(</span><span class="n">city_purchase_quantities_df</span><span class="p">)</span>
+</code></pre></div>
+<img alt="" src="https://snipboard.io/7pyXY3.jpg" /></p>
+<h3 id="list-of-aggregation-functions">List of Aggregation Functions</h3>
+<p><img alt="" src="https://snipboard.io/Pzv9sI.jpg" /></p>
+<p><strong>Multiple Aggregate Functions</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">avg</span><span class="p">,</span> <span class="n">approx_count_distinct</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">state_aggregates_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;geo.state&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;ecommerce.total_item_quantity&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;avg_quantity&quot;</span><span class="p">),</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">approx_count_distinct</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;distinct_users&quot;</span><span class="p">))</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="p">)</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="n">display</span><span class="p">(</span><span class="n">state_aggregates_df</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="unix-timestamps">Unix Timestamps</h3>
+<p><img alt="" src="https://snipboard.io/FpCJtM.jpg" /></p>
+<h4 id="datetime-functions">Datetime Functions</h4>
+<p>Refer this <a href="https://www.databricks.com/blog/2020/07/22/a-comprehensive-look-at-dates-and-timestamps-in-apache-spark-3-0.html">docs</a></p>
+<p><img alt="" src="https://snipboard.io/Evl8Df.jpg" /></p>
+<p><strong>Add and Subtract Dates</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">plus_2_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timestamp_df</span><span class="p">.</span><span class="n">withColumn</span><span class="p">(</span><span class="ss">&quot;plus_two_days&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">date_add</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="ss">&quot;timestamp&quot;</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+<p><strong>String Built In Functions</strong></p>
+<p><img alt="" src="https://snipboard.io/pPeEyK.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/LXB2UF.jpg" /></p>
+<p><strong>Complex Data types</strong></p>
+<p><img alt="" src="https://snipboard.io/idbtZH.jpg" /></p>
+<p><strong>Review</strong></p>
+<p><img alt="" src="https://snipboard.io/3hfWuT.jpg" /></p>
+<h4 id="collection-functions">Collection Functions</h4>
+<p><img alt="" src="https://snipboard.io/iSJX8t.jpg" /></p>
+<p><code>array_contains</code></p>
+<p><img alt="" src="https://snipboard.io/IpGYTc.jpg" /></p>
+<p><code>exlpode()</code></p>
+<p><img alt="" src="https://snipboard.io/IhvlpO.jpg" /></p>
+<p><code>element_at</code></p>
+<p><img alt="" src="https://snipboard.io/KA0o7s.jpg" /></p>
+<p><code>collect_set</code></p>
+<p><img alt="" src="https://snipboard.io/rCvKbf.jpg" /></p>
+<p>Split to extract email address</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="k">select</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">).</span><span class="k">alias</span><span class="p">(</span><span class="s1">&#39;email_handle&#39;</span><span class="p">)))</span>
+</code></pre></div>
+<h4 id="collection-functions-review">Collection Functions Review</h4>
+<p><img alt="" src="https://snipboard.io/dDvPzO.jpg" /></p>
+<p>Create a column for the size of mattress</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">mattress_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">details_df</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">array_contains</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="ss">&quot;details&quot;</span><span class="p">),</span><span class="w"> </span><span class="ss">&quot;Mattress&quot;</span><span class="p">))</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="p">.</span><span class="n">withColumn</span><span class="p">(</span><span class="ss">&quot;size&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">element_at</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="ss">&quot;details&quot;</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)))</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">display</span><span class="p">(</span><span class="n">mattress_df</span><span class="p">)</span>
+</code></pre></div>
+<img alt="" src="https://snipboard.io/m5DHjX.jpg" /></p>
+<p>For each email, check what mattress type they purchased.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">size_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mattress_df</span><span class="p">.</span><span class="n">groupBy</span><span class="p">(</span><span class="ss">&quot;email&quot;</span><span class="p">).</span><span class="n">agg</span><span class="p">(</span><span class="n">collect_set</span><span class="p">(</span><span class="ss">&quot;size&quot;</span><span class="p">).</span><span class="k">alias</span><span class="p">(</span><span class="ss">&quot;size options&quot;</span><span class="p">))</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">display</span><span class="p">(</span><span class="n">size_df</span><span class="p">)</span>
+</code></pre></div>
+<img alt="" src="https://snipboard.io/pYMh9u.jpg" /></p>
+<h4 id="miscellaneous-functions">Miscellaneous Functions</h4>
+<p><img alt="" src="https://snipboard.io/bumgyI.jpg" /></p>
+<p><strong>Joins Demo</strong></p>
+<p><img alt="" src="https://snipboard.io/DukP6S.jpg" /></p>
+<p><strong>Handling Null Values</strong></p>
+<p><img alt="" src="https://snipboard.io/XhNu1S.jpg" /></p>
+<h3 id="how-udfs-run-in-scala-and-python">How UDFs run in Scala and Python?</h3>
+<p><img alt="" src="https://snipboard.io/MmIw1E.jpg" /></p>
+<ul>
+<li>In case of Scala UDFs, it lies inside the executor so there is no inter process communication is required.</li>
+<li>But in case of Python UDF, we will have a driver program and an executor but the Python UDFs run outside the Executor.</li>
+<li>This means that the Spark DataFrame rows are deserialized, sent row by row to the python UDF that transforms it, serializes it row by row and sends it back to the executors.</li>
+<li>The UDFs are registered on Python Interpreters.</li>
+</ul>
+<p><img alt="" src="https://snipboard.io/GC5sfe.jpg" /></p>
+<h4 id="transform-function-execution">Transform function execution</h4>
+<p><img alt="" src="https://snipboard.io/N9KdTv.jpg" /></p>
+<ul>
+<li>The custom UDF that was written took twice as long to execute due to the extra work involved. </li>
+<li>The problem with UDFs is that if we write it in Python, there is extra overhead of converting it to Java bytecode and providing it to the executor.</li>
+</ul>
+<h4 id="how-to-register-udfs">How to register UDFs?</h4>
+<p><img alt="" src="https://snipboard.io/i2W5lJ.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/DLviFg.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/EAw5Sl.jpg" /></p>
+<h4 id="python-vs-pandas-udf">Python vs Pandas UDF</h4>
+<p><img alt="" src="https://snipboard.io/rm9D6E.jpg" /></p>
+<h4 id="sql-udf">SQL UDF</h4>
+<p><img alt="" src="https://snipboard.io/3x6NvT.jpg" /></p>
+<h3 id="apache-spark-architecture">Apache Spark Architecture</h3>
+<p><img alt="" src="https://snipboard.io/SE9xBF.jpg" /></p>
+<h3 id="cluster-architecture">Cluster Architecture</h3>
+<p><img alt="" src="https://snipboard.io/ZV673F.jpg" /></p>
+<ul>
+<li>Each worker will have only one executor</li>
+</ul>
+<p><img alt="" src="https://snipboard.io/4bl6h3.jpg" /></p>
+<p>There is one task for each memory partition.</p>
+<p><img alt="" src="https://snipboard.io/4KXOvo.jpg" /></p>
+<h4 id="drivers-work">Driver's work</h4>
+<p><img alt="" src="https://snipboard.io/XvBOuq.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/AK8rFJ.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/D6i7ul.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/tYDE2C.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/6YaWFz.jpg" /></p>
+<p>The rest of the memory partitions do not have any cores to execute on and wait in the queue.</p>
+<p><img alt="" src="https://snipboard.io/lXwj34.jpg" /></p>
+<p>A,E,H and J have finished working. They are idle so worker node assigns the memory partitions 13,14,15 and 16 to them.</p>
+<p><img alt="" src="https://snipboard.io/nLl1s3.jpg" /></p>
+<p>Once all of them complete the work, the driver sends the answer set to the client.</p>
+<p><img alt="" src="https://snipboard.io/N1rqhp.jpg" /></p>
+<ul>
+<li>The intermediate result sets mentioned as shuffle write and shuffle read are then sent to the worker node hard drives.</li>
+</ul>
+<p><img alt="" src="https://snipboard.io/JG2zWe.jpg" /></p>
+<h4 id="deep-dive-into-shuffle">Deep Dive Into Shuffle</h4>
+<p><img alt="" src="https://snipboard.io/7KlhLM.jpg" /></p>
+<ul>
+<li>
+<p>The memory used went from 20mb to 560 bytes because we are only storing the key value pairs and not the entire data. The key value pairs indicate the color and the number of rows that they are part of. The data is written to the disk under shuffle write.</p>
+</li>
+<li>
+<p>In stage 2 we build shuffle partition with Green, Red and Yellow rows.</p>
+</li>
+</ul>
+<p><img alt="" src="https://snipboard.io/sAFqK0.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/p1JsP2.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/akHOIW.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/R6sXt8.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/ufO1Gd.jpg" /></p>
+<h4 id="summary">Summary</h4>
+<p><img alt="" src="https://snipboard.io/PYzwXI.jpg" /></p>
+<h3 id="query-optimization">Query Optimization</h3>
+<p><img alt="" src="https://snipboard.io/AHCm8q.jpg" /></p>
+<ul>
+<li>RDD is resilient distributed dataset that is just an array of data.</li>
+</ul>
+<h4 id="example">Example</h4>
+<p><img alt="" src="https://snipboard.io/4dINXp.jpg" /></p>
+<h4 id="example-2">Example 2</h4>
+<p><img alt="" src="https://snipboard.io/cC73YN.jpg" /></p>
+<h4 id="adaptive-query-optimization">Adaptive Query Optimization</h4>
+<p><img alt="" src="https://snipboard.io/z9T0Ok.jpg" /></p>
+<h4 id="shuffle-partitions-with-and-without-aqe">Shuffle Partitions : With and Without AQE</h4>
+<p><img alt="" src="https://snipboard.io/rVH0Ls.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/XBdqHy.jpg" /></p>
+<h4 id="predicate-pushdown">Predicate Pushdown</h4>
+<p><img alt="" src="https://snipboard.io/Ovah36.jpg" /></p>
+<ul>
+<li>In this case, less RAM is used so query is faster.</li>
+</ul>
+<p><img alt="" src="https://snipboard.io/P84qKc.jpg" /></p>
+<ul>
+<li>If we don't remove things from cache that is not needed, when there is only one core in the executor and a query is called in, then it will be given precedence and the cache will be evicted.</li>
+</ul>
+<h4 id="memory-partitioning-guidelines">Memory Partitioning Guidelines</h4>
+<p><img alt="" src="https://snipboard.io/hRP6b0.jpg" /></p>
+<p><img alt="" src="https://snipboard.io/BuAK5W.jpg" /></p>
+<p>In the below example we have 8 memory partitions and 200 shuffle partitions.</p>
+<p><img alt="" src="https://snipboard.io/FnydDf.jpg" /></p>
+<p>Check the number of cores in the cluster</p>
+<p><img alt="" src="https://snipboard.io/7kLTAj.jpg" /></p>
+<p>Check the number of memory partitions</p>
+<p><img alt="" src="https://snipboard.io/er4WDd.jpg" /></p>
+<p>Repartitioning Dataset</p>
+<p><img alt="" src="https://snipboard.io/ychkz1.jpg" /></p>
+<p>Repartitioning is always a wide transformation.</p>
+<h3 id="aqe-and-shuffle-partitions">AQE and Shuffle Partitions</h3>
+<p><img alt="" src="https://files.training.databricks.com/images/aspwd/partitioning_aqe.png" /></p>
+<p>We can set the <code>spark.sql.shuffle.partitions</code> based on the largest dataset that our application can process.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
