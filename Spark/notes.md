@@ -1,4 +1,4 @@
-## Spark Concepts and Code
+![image](https://github.com/user-attachments/assets/980e3d37-c000-40fa-888d-ba685423ea88)## Spark Concepts and Code
 
 ### Lecture 1 : What is Apache Spark
 
@@ -545,3 +545,195 @@ Compression is GZIP
 
 Encoding is explained on top.
 
+#### Bitpacking Advantage
+
+- Bitpacking helps in compressing the bits so in above case we just have 4 unique values and hence we need just 2 bytes.
+- Query in seconds for running select on csv,parquet etc..
+
+![image](https://github.com/user-attachments/assets/7700c5a0-90b9-4ad1-b430-25ca7df99903)
+
+#### Summary
+
+![image](https://github.com/user-attachments/assets/e4a1bbe6-629b-4970-94bf-a6493f32146b)
+
+- Here the actual data is stored in the pages and it has metadata like min,max and count.
+
+- Let's say we need to find out people less than 18 years age
+
+![image](https://github.com/user-attachments/assets/eb37e1e1-ddab-42da-872b-0de10dbf12f2)
+
+Here when we divide data into row groups, we dont need to do any IO read operation on Row group 2, it saves lot of time and optimize performance.
+
+The above concept is called **Predicate Pushdown**.
+
+#### Projection Pruning
+
+Projection Pruning means we dont read IO from columns that are not part of the select query or that arent required for any join.
+
+### Lecture 15 : How to write data on the disk?
+
+![image](https://github.com/user-attachments/assets/a22d1931-1b95-4515-9311-5c53883b47ba)
+
+![image](https://github.com/user-attachments/assets/03f8e132-9ead-4ae4-9d59-ad339ebcf615)
+
+#### Modes to write data
+
+![image](https://github.com/user-attachments/assets/1ecedad1-043a-49d9-be96-d1ba66d062c3)
+
+Create three files
+![image](https://github.com/user-attachments/assets/5e28b1b7-af47-4cb6-ac24-45d0a64b03a7)
+
+```python
+  write_df = read_df.repartition(3).write.format("csv")\
+    .option("header", "True")\
+    .mode("overwrite")\  # Using .mode() instead of .option() for overwrite mode
+    .option("path", "/FileStore/tables/Write_Data/")\
+    .save()
+```
+
+### Lecture 16: Partitioning and Bucketing
+
+![image](https://github.com/user-attachments/assets/48c965e1-ffe3-4cb8-b1cf-40d3135a8cc1)
+
+In above data we cannot partition by any column because there is no similarity but we can bucket the data.
+
+![image](https://github.com/user-attachments/assets/a6557580-ea42-442b-9167-2bc4e5c825e0)
+
+![image](https://github.com/user-attachments/assets/637c53b2-5a96-4388-ab07-113e5917ce99)
+In above data we can partition by the country, but again we might have more data in India partition and less data in Japan.
+
+#### Example of Partitioning 
+
+![image](https://github.com/user-attachments/assets/6fd554a4-5d68-41c5-bb7e-d2b59a5edd51)
+
+![image](https://github.com/user-attachments/assets/c9f1a402-de99-4ae2-8842-c357b31e3636)
+
+The advantage is that the entire data is not scanned and only few partitions are scanned based on the filters.
+
+**Partitioning by Id**
+
+![image](https://github.com/user-attachments/assets/ca71390e-bcd6-423e-9a0a-4a8f48abe967)
+
+Here we can see that we have created partitions by ID and since ID is low cardinality column partitioning is not efficient and we need to use bucketing.
+
+#### Partitioning by Address and Gender
+
+![image](https://github.com/user-attachments/assets/9a1a1836-f740-4f74-a3a8-412d8b4c39c6)
+
+#### Bucketing by Id
+
+Dividing into 3 buckets
+![image](https://github.com/user-attachments/assets/9c9446d5-a67a-4a7b-9816-a3dd5f87a6f1)
+
+#### Tasks vs Buckets
+
+![image](https://github.com/user-attachments/assets/28c545a4-74dd-4dc8-8406-f716a769b09b)
+
+- If we have 200 partitions we will have 200 tasks and each task will create 5 buckets each, to tackle this we first repartition into 5 partitions and then bucketBy 5.
+
+#### How does bucketing help with joins?
+
+![image](https://github.com/user-attachments/assets/6db2b3d0-7a19-40dd-8f22-f0bb95b7df9e)
+
+- Here we can see that since we have same column bucket on both tables the ids can be easily mapped and there is no shuffling.
+
+#### Bucket Pruning
+
+![image](https://github.com/user-attachments/assets/237d7bda-2c12-462c-9092-b71921c3321d)
+Suppose we have 1M Aadhar Ids and we divide into 100,000 each bucket so when we divide the above aadhar id by 100000 then we get the exact bucket where the number lies in.
+
+### Lecture 17 : Spark Session vs Spark Context
+
+- Spark Session is entry point to the Spark cluster where we provide the parameters to create and operate our cluster.
+- Spark session will have different context like one for SQL, PySpark etc...
+
+![image](https://github.com/user-attachments/assets/c122f106-6b42-42d1-bd4a-201e8b482152)
+
+### Lecture 18: Job, Stage and Tasks
+
+![image](https://github.com/user-attachments/assets/f54725bf-2e81-4b73-a65c-97cb449887c7)
+
+- One Application is created.
+- One job is created per action.
+- One stage is defined for every transformation like filter.
+- Task is the actually activity on the data that's happening.
+
+![image](https://github.com/user-attachments/assets/025a67b4-2ced-4ad9-a23a-eaa6d65f349c)
+
+#### Example of Job,Action and Task
+
+![image](https://github.com/user-attachments/assets/b232dc8d-ff27-4650-92ca-7c3b912b5132)
+
+#### Complete flow diagram
+![image](https://github.com/user-attachments/assets/4e07a77b-8885-46a7-8793-53d7dd3f5f59)
+
+Every job has minimum one stage and one task.
+
+![image](https://github.com/user-attachments/assets/96990346-8429-41e7-ac94-f11855baa9de)
+Repartition to filter is one job because we dont hit an action in between.
+
+Every wide dependency transformation has its own stage. All narrow dependency transformations come in one stage as a DAG.
+
+![image](https://github.com/user-attachments/assets/d9c8d425-892c-4ac0-bb6e-930bc9f51a32)
+
+#### How do tasks get created? [Read and Write Exchange]
+
+![image](https://github.com/user-attachments/assets/4d47470c-a3bc-4656-9b1a-7f718edd2c47)
+
+- The repartition stage actually is a wide dependency transformation and creates two partitions from one, its a Write exchange of data.
+- Now the filter and select stage reads this repartitioned data(**Read exchange**) and filter creates two tasks because we have two partitions.
+- Next we need to find out how many folks earn > 90000 and age > 25 so we need to do a groupby that's a wide dependency transformation and it creates another stage. By default there are 200 partitions created.
+- So some partitions may have data and some wont.
+
+![image](https://github.com/user-attachments/assets/ec5734b2-3985-4fdd-abc4-4933e890e080)
+
+### Lecture 17: Dataframe Transformations in Spark Part 1
+
+![image](https://github.com/user-attachments/assets/b3c9d9a3-b664-4cde-868f-d8d9c508ed9f)
+Data gets stored in Row() format in the form of bytes
+
+![image](https://github.com/user-attachments/assets/fccd78ab-d343-41dd-9a48-77122a4447d9)
+
+Columns are expressions. Expressions are set of transformations on more than one value in a record.
+
+#### Ways to select values / columns
+
+![image](https://github.com/user-attachments/assets/3bb9ee25-d1d2-42e9-bb8b-22cb7c1030d3)
+
+![image](https://github.com/user-attachments/assets/ccd538cb-5122-4ca4-ae8f-0e1d46a56996)
+
+Column Manipulations
+
+![image](https://github.com/user-attachments/assets/be26f027-5ef2-4475-8fd9-2e520be44dab)
+
+Other methods
+![image](https://github.com/user-attachments/assets/705819f1-fb56-4024-a3f1-4590706a58f7)
+
+**selectExpr**
+![image](https://github.com/user-attachments/assets/7ccf1d62-4834-43b8-84ae-7727a159eccc)
+
+**Aliasing Columns**
+![image](https://github.com/user-attachments/assets/e9710673-c2b4-476f-8296-fd1ee25681b5)
+
+### Lecutre 18 : Dataframe Transformations in Spark Part II
+
+#### ```filter()``` / ```where()``` no difference
+
+![image](https://github.com/user-attachments/assets/ccdb523c-04bb-490a-bd54-e051dc0d221b)
+
+![image](https://github.com/user-attachments/assets/19d178e5-086e-41c1-908f-689badb24df8)
+
+#### Multiple filter conditions 
+
+![image](https://github.com/user-attachments/assets/baa7134d-e151-404e-98d6-5dc8b010fc5d)
+
+#### Literals in spark
+Used to pass same value in all the columns
+![image](https://github.com/user-attachments/assets/b96c60d9-754f-450d-bc46-7aaf6848c095)
+
+#### Adding Columns
+If the column already exists then it gets overwritten.
+![image](https://github.com/user-attachments/assets/32f4d415-9685-4329-acfd-41ee7a7fd720)
+
+#### Renaming Columns
+![image](https://github.com/user-attachments/assets/6fa9577a-c0f3-4e54-b756-d24cb6fb6eda)
