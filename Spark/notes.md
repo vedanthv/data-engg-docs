@@ -737,3 +737,166 @@ If the column already exists then it gets overwritten.
 
 #### Renaming Columns
 ![image](https://github.com/user-attachments/assets/6fa9577a-c0f3-4e54-b756-d24cb6fb6eda)
+
+### Lecture 19: union vs unionAll()
+
+![image](https://github.com/user-attachments/assets/3e649ae8-6b69-4fa9-b687-109e4ede5615)
+
+We can see that here we have a duplicate id
+![image](https://github.com/user-attachments/assets/3680c897-59c2-4f04-963d-3ce99981f3b4)
+
+In PySpark union and unionAll behaves in the same way, both retain duplicates
+![image](https://github.com/user-attachments/assets/041e31d1-017f-45f7-aa7e-3c7db513d617)
+
+But in Spark SQL when we do union it drops the duplicate records
+![image](https://github.com/user-attachments/assets/05af5b19-9963-4581-a71d-77fe42f739cf)
+
+![image](https://github.com/user-attachments/assets/00fde583-6538-4cc3-b275-97d8c5d620b2)
+
+#### Selecting data and unioning the same table
+
+![image](https://github.com/user-attachments/assets/f9226608-4b77-40db-91e1-82072e8cd14b)
+
+#### What happens when we change the order of the columns?
+
+```wrong_manager_df``` actually has the wrong order of columns but still we get the union output but in a wrong column values.
+![image](https://github.com/user-attachments/assets/3db3d2c8-3008-4930-b223-6f7bb31da477)
+
+If we give different number of columns an exception is thrown.
+![image](https://github.com/user-attachments/assets/ece32bd0-6ea3-45f1-8919-721ef783c65b)
+
+If we use unionByName then the column names on both dfs must be the same.
+![image](https://github.com/user-attachments/assets/fd3659ae-703f-42bc-bd4a-49c9c427cd9e)
+
+### Lecture 19: Repartitioning and Coalesce
+
+Suppose we have 5 partitions and one of them is skewed a lot 100MB, let's say this is the best selling product records. This partition takes lot of time to compute. So the other executors have to wait until this executor finishes processing.
+![image](https://github.com/user-attachments/assets/2a5567b0-486c-4b8b-aa91-41d077281e91)
+
+#### Repartitioning vs Coalesce
+
+##### Repartitioning
+
+Suppose we have the above partitions and total data is 100mb. let's say we do repartition(5) so we will have 5 partitions now for the data with 40mb per partition.
+
+##### Coalesce
+
+In case of coalesce there is no equal splitting of partition memory, rather the already existing partitions get merged together.
+![image](https://github.com/user-attachments/assets/85f6803b-6905-49e4-b3b3-3a896cde668f)
+
+There is no shuffling in coalesce but in repartitioning there is shuffling of data.
+
+#### Pros and Cons in repartitioning
+
+- There is evenly distributed data.
+- Con is that IO operations are more, its expensive.
+- Con of coalesce is that the data is unevenly distributed.
+
+Repartitioning can increase or decrease the partitions but coalescing can only decrease the partitions.
+
+#### How to get number of partitions?
+
+```flight_df.rdd.getNumPartitions()``` gets the initial number of partitions and then we can repartition ```flight_df.repartition(4)```. Data is evenly distributed.
+
+![image](https://github.com/user-attachments/assets/00bd0cfe-e61a-4826-b978-b6c02924a363)
+
+**Repartitioning based on columns**
+
+![image](https://github.com/user-attachments/assets/9d39f248-2be8-4520-a57a-4084bcfc297f)
+
+Since we asked for 300 partitions and we have 255 records some partitions will have null record.
+![image](https://github.com/user-attachments/assets/c59615d8-65c1-44e8-85c4-3e1833a4cb60)
+
+#### Coalescing
+
+![image](https://github.com/user-attachments/assets/210eb04d-80b3-4cce-a7dd-1b7757b3bd1c)
+Suppose we have 8 partitions and we coalesce into 3 partitions. Coalesce has only one arg.
+
+Uneven distribution of data in partitions.
+![image](https://github.com/user-attachments/assets/bc136007-2ae3-4df1-90b4-625352a81809)
+
+### Lecture 20 : Case when / if else in Spark
+
+![image](https://github.com/user-attachments/assets/ee17eab0-640d-4fc5-ac03-f751a8a90831)
+
+![image](https://github.com/user-attachments/assets/310da700-3caa-44c2-a508-5fa19ff1ef66)
+
+#### Apply logic on one column then process if else logic
+
+![image](https://github.com/user-attachments/assets/ba68a0f3-82d4-4db1-a879-fb977423f9dc)
+
+#### Spark SQL Logic
+
+![image](https://github.com/user-attachments/assets/b0fd9a4f-b452-4132-9b6b-ad543a0c7056)
+
+### Lecture 21 : Unique and Sorted Records
+
+![image](https://github.com/user-attachments/assets/bff40f32-fa87-4a64-b448-a72ca92bf1d2)
+
+#### distinct()
+
+Original Data
+![image](https://github.com/user-attachments/assets/8417fe25-264b-4d03-910b-a28063b07186)
+
+Distinct Data
+![image](https://github.com/user-attachments/assets/95b4fe97-033f-4a28-87a7-d0a1ad37498b)
+
+Distinct Based on certain columns
+![image](https://github.com/user-attachments/assets/612a6833-011e-4631-b706-4df9f318d6e9)
+
+⚠️ Distinct takes no arguments we need to select the columns first and then apply distinct.
+
+#### Dropping duplicate records
+
+Point to note is that the dataframe ```manager_df``` has no changes, it just shows the records after dups have been dropped.
+![image](https://github.com/user-attachments/assets/b443755e-1fc8-4d30-95f8-9c73c3412c6d)
+
+#### sort()
+
+![image](https://github.com/user-attachments/assets/fc5d7b04-992a-4530-9660-a4f2ae7d82f9)
+
+Descending order
+![image](https://github.com/user-attachments/assets/3865f2de-b818-4d5c-84e0-193390ba4586)
+
+**Sorting on multiple columns**
+
+Here first the salary is srranged in desc order then we arrange the name in asc order from those records with same salary.
+![image](https://github.com/user-attachments/assets/3fce7816-872f-414f-8bfb-8ad329d9ed73)
+
+### Lecture 22 : Aggregate functions
+
+#### Count as both Action and Transformation
+
+![image](https://github.com/user-attachments/assets/d2cd9647-fc8a-4247-b04e-539a48331f76)
+
+⚠️ When we are doing count on a single column and there is a null in it, its not considered in the count. But for all columns we have nulls in the count.
+![image](https://github.com/user-attachments/assets/1ae8b278-3675-439c-9b12-8853064c9f3a)
+
+Job created in first case and its not created in second case below.
+![image](https://github.com/user-attachments/assets/8a771986-85e2-465d-a2c4-d4a2bd86dfca)
+
+### Lecture 23: Group By In Spark
+
+Sample Data
+
+![image](https://github.com/user-attachments/assets/17c9a1dd-b003-4c67-8b1f-3f4e8fb6a556)
+
+#### Questions
+
+![image](https://github.com/user-attachments/assets/60d2d30b-c2c9-4e3f-9544-b8ab7eece55c)
+
+Salary per department using groupBy()
+![image](https://github.com/user-attachments/assets/b90a254d-1aac-46f1-8e2e-c66e8d99c0ad)
+
+#### Where do we use window functions?
+
+Suppose we need to find out the percentage of total salary from a particular dept that the person is earning. we can use window function to specify the total salary per department in the particular record itself like I've shown below.
+![image](https://github.com/user-attachments/assets/6c328d14-bf1e-4059-83d5-618f6c7a0ec0)
+
+This way we dont need to perform a join.
+
+![image](https://github.com/user-attachments/assets/c6ababa6-3031-4147-887e-1b0b80a7fc13)
+
+#### Grouping by two columns
+
+![image](https://github.com/user-attachments/assets/0822535b-c50a-433a-bd1e-67b9ee6b9dcc)
