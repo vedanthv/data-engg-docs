@@ -31,7 +31,8 @@ nav:
   - About : index.md
   - Astronomer and Airflow : astronomer.md
   - Azure Databricks : databricks.md
-  - PySpark : PySpark.md
+  - Spark Databricks Course : Spark_Databricks_Course.md
+  - Spark YouTube : Spark_YT.md
   - Microsoft Azure - DP 203 : Azure.md
   - Streaming Architecture: streaming.md
 
