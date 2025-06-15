@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/980e3d37-c000-40fa-888d-ba685423ea88)## Spark Concepts and Code
+## Spark Concepts and Code
 
 ### Lecture 1 : What is Apache Spark
 
