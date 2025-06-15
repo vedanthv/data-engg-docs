@@ -999,9 +999,11 @@ Never use cross join!
 Joins are expensive due to shuffling.
 
 4 partitions are there in each dataframe.
+
 ![image](https://github.com/user-attachments/assets/cae9e337-7d63-4134-8df1-964847c351e4)
 
 Executors in the cluster
+
 ![image](https://github.com/user-attachments/assets/267e6dd1-b981-441d-a2dd-693e2e013c7d)
 
 Now we need to join employee and salary df to get the output but they are on different executors, so we need to do data shuffling.
