@@ -1,0 +1,2101 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vedanthv.github.io/data-engg-docs/Azure/">
+      
+      
+        <link rel="prev" href="../Spark_YT/">
+      
+      
+        <link rel="next" href="../streaming/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Microsoft Azure - DP 203 - Data Engineering Docs by Vedanth</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#microsoft-azure-dp-203" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-header__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering Docs by Vedanth
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Microsoft Azure - DP 203
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../astronomer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Astronomer and Airflow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../databricks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Azure Databricks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_Databricks_Course/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark Databricks Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_YT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark YouTube
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Microsoft Azure - DP 203
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../streaming/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Streaming Architecture
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-nav__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Engineering Docs by Vedanth
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../astronomer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_Databricks_Course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_YT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Azure - DP 203
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Azure - DP 203
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#intro-to-de-with-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intro to DE with Azure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intro to DE with Azure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#types-of-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Transformation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-consolidation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Consolidation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Important Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-and-analytical-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operational and Analytical Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Pipelines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-lakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Lakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-warehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Warehouses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microsoft-azure-data-engineering-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microsoft Azure Data Engineering Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-data-lake-gen2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Data Lake Gen2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure Data Lake Gen2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azure-data-lake-storage-gen2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Data Lake Storage Gen2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benefits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Redundancy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-data-lake-store-vs-azure-blob-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Data Lake Store vs Azure Blob Storage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use What?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stages-of-processing-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stages of Processing Big Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-lakehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Lakehouses
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Lakehouses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      ETL Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#realtime-streaming-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Realtime Streaming Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-science-and-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Science and ML
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quiz_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#achievement_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-synapse-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Synapse Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure Synapse Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analytical-workloads-handled-by-synapse-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analytical Workloads Handled by Synapse Analytics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-synapse-analytics-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Synapse Analytics Exercise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-query-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL Query Engines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exploring-synapse-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exploring Synapse Analytics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-databricks-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Databricks Module
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure Databricks Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-databricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Databricks?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#databricks-workload-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Databricks Workload Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Concepts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-spark-in-databricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Spark in Databricks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-level-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Level Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-spark-execute-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does spark execute jobs?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How does spark execute jobs?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallelism-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallelism in Spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jobs-and-stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jobs and Stages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-cluster-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Cluster Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyspark-code-snippets" class="md-nav__link">
+    <span class="md-ellipsis">
+      PySpark Code Snippets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PySpark Code Snippets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loading-data-into-dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loading Data into Dataframe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specifying-a-database-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specifying a Database Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-and-group-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filter and Group Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chaining-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chaining Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group By + Aggregation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-create-db-objects-in-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL - Create db objects in catalog
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-api-to-access-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark API to Access Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-sql-code-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use SQL Code Directly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualizing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visualizing Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-exploring-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise : Exploring Spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-delta-lake-in-azure-databricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Delta Lake in Azure Databricks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Delta Lake in Azure Databricks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits-of-delta-lake" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of Delta Lake
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-delta-lake-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Delta Lake Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating Delta Lake Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-delta-lake-table-from-a-dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Delta Lake Table From A Dataframe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#making-conditional-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making Conditional Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-a-previous-version-of-the-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query a Previous Version of the table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#catalog-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Catalog Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Catalog Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#external-vs-managed-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      External vs Managed Tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-catalog-table-from-dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Catalog Table From Dataframe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-table-with-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Table with SQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-the-table-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining the Table Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-use-catalog-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to use catalog tables?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-structured-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Structured Streaming
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spark Structured Streaming">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-delta-lake-as-a-streaming-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Delta Lake as a Streaming Source
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-delta-table-as-streaming-sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Delta Table as streaming sink
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-are-external-and-managed-tables-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where are External and Managed Tables Stored?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-delta-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise : Delta Tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiz_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quiz
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-warehouse-in-databricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL Warehouse in Databricks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SQL Warehouse in Databricks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configurations-in-sql-warehouses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configurations in SQL Warehouses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-tables-and-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating tables and databases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-azure-databricks-notebooks-in-azure-data-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Azure Databricks Notebooks in Azure Data Factory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running Azure Databricks Notebooks in Azure Data Factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters-from-the-pipeline-to-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters from the Pipeline to Notebook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters from the Pipeline to Notebook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#below-code-passes-the-value-data-to-the-folder-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Below code passes the value data to the folder variable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-the-value-for-the-parameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get the value for the parameter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passing-output-values-in-a-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passing output values in a notebook
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievement_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Achievement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="microsoft-azure-dp-203">Microsoft Azure - DP 203</h1>
+<p>DP 203 Study Guide - <a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4MbYT?WT.mc_id=Azure_BoM-wwl">PDF</a></p>
+<h2 id="intro-to-de-with-azure">Intro to DE with Azure</h2>
+<h3 id="introduction">Introduction</h3>
+<p>In most organizations, a data engineer is the primary role responsible for integrating, transforming, and consolidating data from various structured and unstructured data systems into structures that are suitable for building analytics solutions. </p>
+<p>An Azure data engineer also helps ensure that data pipelines and data stores are high-performing, efficient, organized, and reliable, given a specific set of business requirements and constraints.</p>
+<h3 id="types-of-data">Types of Data</h3>
+<p><img alt="Alt text" src="../image-11.png" /></p>
+<h3 id="data-operations">Data Operations</h3>
+<h4 id="data-integration">Data Integration</h4>
+<p>Data Integration involves establishing links between operational and analytical services and data sources to enable secure, reliable access to data across multiple systems. </p>
+<p>For example, a business process might rely on data that is spread across multiple systems, and a data engineer is required to establish links so that the required data can be extracted from all of these systems.</p>
+<h4 id="data-transformation">Data Transformation</h4>
+<p>Operational data usually needs to be transformed into suitable structure and format for analysis, often as part of an extract, transform, and load (ETL) process; though increasingly a variation in which you extract, load, and transform (ELT) the data is used to quickly ingest the data into a data lake and then apply "big data" processing techniques to transform it. Regardless of the approach used, the data is prepared to support downstream analytical needs.</p>
+<h4 id="data-consolidation">Data Consolidation</h4>
+<p>Data consolidation is the process of combining data that has been extracted from multiple data sources into a consistent structure - usually to support analytics and reporting. Commonly, data from operational systems is extracted, transformed, and loaded into analytical stores such as a data lake or data warehouse.</p>
+<h3 id="important-concepts">Important Concepts</h3>
+<h4 id="operational-and-analytical-data">Operational and Analytical Data</h4>
+<p>Operational data is usually transactional data that is generated and stored by applications, often in a relational or non-relational database. Analytical data is data that has been optimized for analysis and reporting, often in a data warehouse.</p>
+<h4 id="streaming-data">Streaming Data</h4>
+<p>Streaming data refers to perpetual sources of data that generate data values in real-time, often relating to specific events. Common sources of streaming data include internet-of-things (IoT) devices and social media feeds.</p>
+<p>Data engineers often need to implement solutions that capture real-time stream of data and ingest them into analytical data systems, often combining the real-time data with other application data that is processed in batches.</p>
+<h4 id="data-pipelines">Data Pipelines</h4>
+<p>Data pipelines are used to orchestrate activities that transfer and transform data. Pipelines are the primary way in which data engineers implement repeatable extract, transform, and load (ETL) solutions that can be triggered based on a schedule or in response to events.</p>
+<h4 id="data-lakes">Data Lakes</h4>
+<p>A data lake is a storage repository that holds large amounts of data in native, raw formats. Data lake stores are optimized for scaling to massive volumes (terabytes or petabytes) of data. The data typically comes from multiple heterogeneous sources, and may be structured, semi-structured, or unstructured.</p>
+<p>The idea with a data lake is to store everything in its original, untransformed state. This approach differs from a traditional data warehouse, which transforms and processes the data at the time of ingestion.</p>
+<h4 id="data-warehouses">Data Warehouses</h4>
+<p>A data warehouse is a centralized repository of integrated data from one or more disparate sources. Data warehouses store current and historical data in relational tables that are organized into a schema that optimizes performance for analytical queries.</p>
+<p>Data engineers are responsible for designing and implementing relational data warehouses, and managing regular data loads into tables.</p>
+<h4 id="apache-spark">Apache Spark</h4>
+<p>Apache Spark is a parallel processing framework that takes advantage of in-memory processing and a distributed file storage. It's a common open-source software (OSS) tool for big data scenarios.</p>
+<h4 id="microsoft-azure-data-engineering-pipeline">Microsoft Azure Data Engineering Pipeline</h4>
+<p><img alt="Alt text" src="../image-12.png" /></p>
+<h3 id="quiz">Quiz</h3>
+<p><img alt="Alt text" src="../image-13.png" /></p>
+<h3 id="achievement">Achievement</h3>
+<p><img alt="Alt text" src="../image-14.png" /></p>
+<h2 id="azure-data-lake-gen2">Azure Data Lake Gen2</h2>
+<p>Many BI solutions have lost out on opportunities to store unstructured data due to cost and complexity in these types of data in databases.</p>
+<p>Data lakes have become a common solution to this problem. A data lake provides file-based storage, usually in a distributed file system that supports high scalability for massive volumes of data. </p>
+<p>Organizations can store structured, semi-structured, and unstructured files in the data lake and then consume them from there in big data processing technologies, such as Apache Spark.</p>
+<p>Azure Data Lake Storage Gen2 provides a cloud-based solution for data lake storage in Microsoft Azure, and underpins many large-scale analytics solutions built on Azure.</p>
+<h3 id="azure-data-lake-storage-gen2">Azure Data Lake Storage Gen2</h3>
+<p>Azure Data Lake Storage combines a file system with a storage platform to help you quickly identify insights into your data. Data Lake Storage builds on Azure Blob storage capabilities to optimize it specifically for analytics workloads. </p>
+<p>This integration enables analytics performance, the tiering and data lifecycle management capabilities of Blob storage, and the high-availability, security, and durability capabilities of Azure Storage.</p>
+<h3 id="benefits">Benefits</h3>
+<h4 id="security">Security</h4>
+<p>Data Lake Storage supports access control lists (ACLs) and Portable Operating System Interface (POSIX) permissions that don't inherit the permissions of the parent directory. In fact, you can set permissions at a directory level or file level for the data stored within the data lake, providing a much more secure storage system.</p>
+<p><strong>POSIX Style in Gen2</strong></p>
+<p>In the POSIX-style model that's used by Data Lake Storage Gen2, permissions for an item are stored on the item itself. In other words, permissions for an item cannot be inherited from the parent items if the permissions are set after the child item has already been created. </p>
+<p>Permissions are only inherited if default permissions have been set on the parent items before the child items have been created.</p>
+<h4 id="performance">Performance</h4>
+<p>Azure Data Lake Storage organizes the stored data into a hierarchy of directories and subdirectories, much like a file system, for easier navigation. As a result, data processing requires less computational resources, reducing both the time and cost.</p>
+<h4 id="data-redundancy">Data Redundancy</h4>
+<p>Data Lake Storage takes advantage of the Azure Blob replication models that provide data redundancy in a single data center with locally redundant storage (LRS), or to a secondary region by using the Geo-redundant storage (GRS) option.</p>
+<h2 id="azure-data-lake-store-vs-azure-blob-storage">Azure Data Lake Store vs Azure Blob Storage</h2>
+<p>In <strong>Azure Blob storage</strong>, you can store large amounts of unstructured ("object") data in a flat namespace within a blob container. Blob names can include "/" characters to organize blobs into virtual "folders", but in terms of blob manageability the blobs are stored as a single-level hierarchy in a flat namespace.</p>
+<p><img alt="Alt text" src="../image-15.png" /></p>
+<p><strong>Azure Data Lake Storage Gen2</strong> builds on blob storage and optimizes I/O of high-volume data by using a hierarchical namespace that organizes blob data into directories, and stores metadata about each directory and the files within it. This structure allows operations, such as directory renames and deletes, to be performed in a single atomic operation.</p>
+<p><img alt="Alt text" src="../image-16.png" /></p>
+<p>Flat namespaces, by contrast, require several operations proportionate to the number of objects in the structure. Hierarchical namespaces keep the data organized, which yields better storage and retrieval performance for an analytical use case and lowers the cost of analysis.</p>
+<p><img alt="Alt text" src="../image-17.png" /></p>
+<h2 id="when-to-use-what">When to Use What?</h2>
+<p><img alt="Alt text" src="../image-18.png" /></p>
+<h2 id="stages-of-processing-big-data">Stages of Processing Big Data</h2>
+<p><img alt="Alt text" src="../image-19.png" /></p>
+<h2 id="data-lakehouses">Data Lakehouses</h2>
+<p>In some cases, the data warehouse uses external tables to define a relational metadata layer over files in the data lake and create a hybrid "data lakehouse" or "lake database" architecture. The data warehouse can then support analytical queries for reporting and visualization.</p>
+<h3 id="etl-architecture">ETL Architecture</h3>
+<ul>
+<li>
+<p>Azure Synapse Analytics can host pipelines to perform ETL processing using Azure Data Factory.</p>
+</li>
+<li>
+<p>These processes can then load data from operational data sources and load it into a data lake hosted in Azure Data Lake Gen2.</p>
+</li>
+<li>
+<p>The data is then processed and loaded into a relational data warehouse in an Azure Synapse Analytics dedicated SQL pool, from where it can support data visualization and reporting using Microsoft Power BI.
+<img alt="Alt text" src="../image-20.png" /></p>
+</li>
+</ul>
+<h3 id="realtime-streaming-architecture">Realtime Streaming Architecture</h3>
+<p>Increasingly, businesses and other organizations need to capture and analyze perpetual streams of data, and analyze it in real-time (or as near to real-time as possible). </p>
+<p>These streams of data can be generated from connected devices (often referred to as internet-of-things or IoT devices) or from data generated by users in social media platforms or other applications. Unlike traditional batch processing workloads, streaming data requires a solution that can capture and process a boundless stream of data events as they occur.</p>
+<p><strong>Streaming Events</strong>
+Streaming events are often captured in a queue for processing. There are multiple technologies you can use to perform this task, including Azure Event Hubs as shown in the image. </p>
+<p>From here, the data is processed, often to aggregate data over temporal windows (for example to count the number of social media messages with a given tag every five minutes, or to calculate the average reading of an Internet connected sensor per minute). </p>
+<h3 id="data-science-and-ml">Data Science and ML</h3>
+<p>Data science involves the statistical analysis of large volumes of data, often using tools such as Apache Spark and scripting languages such as Python. Azure Data Lake Storage Gen 2 provides a highly scalable cloud-based data store for the volumes of data required in data science workloads.</p>
+<p>Machine learning is a subarea of data science that deals with training predictive models. Model training requires huge amounts of data, and the ability to process that data efficiently.</p>
+<h2 id="quiz_1">Quiz</h2>
+<p><img alt="Alt text" src="../image-21.png" /></p>
+<h2 id="achievement_1">Achievement</h2>
+<p><img alt="Alt text" src="../image-22.png" /></p>
+<h2 id="azure-synapse-analytics">Azure Synapse Analytics</h2>
+<p>Azure Synapse Analytics provides a single, cloud-scale platform that supports multiple analytical technologies; enabling a consolidated and integrated experience for data engineers, data analysts, data scientists, and other professionals who need to work with data.</p>
+<h3 id="analytical-workloads-handled-by-synapse-analytics">Analytical Workloads Handled by Synapse Analytics</h3>
+<p><img alt="Alt text" src="../image-23.png" /></p>
+<p>Azure Synapse Analytics provides a cloud platform for all of these analytical workloads through support for multiple data storage, processing, and analysis technologies in a single, integrated solution. </p>
+<p>The integrated design of Azure Synapse Analytics enables organizations to leverage investments and skills in multiple commonly used data technologies, including SQL, Apache Spark, and others; while providing a centrally managed service and a single, consistent user interface.</p>
+<h3 id="azure-synapse-analytics-exercise">Azure Synapse Analytics Exercise</h3>
+<p>This is an exercise in the MS Learn Path <a href="https://learn.microsoft.com/en-us/training/modules/introduction-azure-synapse-analytics/3-how-works">link</a> but its paid.</p>
+<p><img alt="Alt text" src="../image-24.png" /></p>
+<h3 id="sql-query-engines">SQL Query Engines</h3>
+<p>Structured Query Language (SQL) is a ubiquitous language for querying and manipulating data, and is the foundation for relational databases, including the popular Microsoft SQL Server database platform. Azure Synapse Analytics supports SQL-based data querying and manipulation through two kinds of SQL pool.</p>
+<ul>
+<li>
+<p>A built-in serverless pool that is optimized for using relational SQL semantics to query file-based data in a data lake.</p>
+</li>
+<li>
+<p>Custom dedicated SQL pools that host relational data warehouses.
+The Azure Synapse SQL system uses a distributed query processing model to parallelize SQL operations, resulting in a highly scalable solution for relational data processing. </p>
+</li>
+</ul>
+<p>You can use the built-in serverless pool for cost-effective analysis and processing of file data in the data lake, and use dedicated SQL pools to create relational data warehouses for enterprise data modeling and reporting.</p>
+<p><img alt="Alt text" src="../image-45.png" /></p>
+<h3 id="exploring-synapse-analytics">Exploring Synapse Analytics</h3>
+<p>Here is the <a href="https://microsoftlearning.github.io/dp-203-azure-data-engineer/Instructions/Labs/01-Explore-Azure-Synapse.html">link</a> to experiment with Synapse Analytics.</p>
+<h3 id="quiz_2">Quiz</h3>
+<p><img alt="" src="../image-25.png" /></p>
+<h3 id="achievement_2">Achievement</h3>
+<p><img alt="Alt text" src="../image-26.png" /></p>
+<h2 id="azure-databricks-module">Azure Databricks Module</h2>
+<h3 id="what-is-databricks">What is Databricks?</h3>
+<p>Azure Databricks is a fully managed, cloud-based data analytics platform, which empowers developers to accelerate AI and innovation by simplifying the process of building enterprise-grade data applications. Built as a joint effort by Microsoft and the team that started Apache Spark, Azure Databricks provides data science, engineering, and analytical teams with a single platform for big data processing and machine learning.</p>
+<p>By combining the power of Databricks, an end-to-end, managed Apache Spark platform optimized for the cloud, with the enterprise scale and security of Microsoft's Azure platform, Azure Databricks makes it simple to run large-scale Spark workloads.</p>
+<h3 id="databricks-workload-types">Databricks Workload Types</h3>
+<p>Azure Databricks is a comprehensive platform that offers many data processing capabilities. While you can use the service to support any workload that requires scalable data processing, Azure Databricks is optimized for three specific types of data workload and associated user personas:</p>
+<ul>
+<li>Data Science and Engineering</li>
+<li>Machine Learning</li>
+<li>SQL</li>
+</ul>
+<h3 id="key-concepts">Key Concepts</h3>
+<ul>
+<li>
+<p>Apache Spark clusters - Spark is a distributed data processing solution that makes use of clusters to scale processing across multiple compute nodes. Each Spark cluster has a driver node to coordinate processing jobs, and one or more worker nodes on which the processing occurs. This distributed model enables each node to operate on a subset of the job in parallel; reducing the overall time for the job to complete.</p>
+</li>
+<li>
+<p>Databricks File System - Databricks File System (DBFS) - While each cluster node has its own local file system (on which operating system and other node-specific files are stored), the nodes in a cluster have access to a shared, distributed file system in which they can access and operate on data files. The Databricks File System (DBFS) enables you to mount cloud storage and use it to work with and persist file-based data.</p>
+</li>
+<li>
+<p>Hive Metastore - Hive is an open source technology used to define a relational abstraction layer of tables over file-based data. The tables can then be queried using SQL syntax. The table definitions and details of the file system locations on which they're based is stored in the metastore for a Spark cluster.</p>
+</li>
+<li>
+<p>Delta Lake builds on the relational table schema abstraction over files in the data lake to add support for SQL semantics commonly found in relational database systems. Capabilities provided by Delta Lake include transaction logging, data type constraints, and the ability to incorporate streaming data into a relational table.</p>
+</li>
+<li>
+<p>SQL Warehouses are relational compute resources with endpoints that enable client applications to connect to an Azure Databricks workspace and use SQL to work with data in tables. The results of SQL queries can be used to create data visualizations and dashboards to support business analytics and decision making. </p>
+</li>
+</ul>
+<h3 id="quiz_3">Quiz</h3>
+<p><img alt="Alt text" src="../image-27.png" /></p>
+<h3 id="achievement_3">Achievement</h3>
+<p><img alt="" src="../image-28.png" /></p>
+<h3 id="using-spark-in-databricks">Using Spark in Databricks</h3>
+<ul>
+<li>Describe key elements of the Apache Spark architecture.</li>
+<li>Create and configure a Spark cluster.</li>
+<li>Describe use cases for Spark.</li>
+<li>Use Spark to process and analyze data stored in files.</li>
+<li>Use Spark to visualize data.</li>
+</ul>
+<h3 id="high-level-overview">High Level Overview</h3>
+<ul>
+<li>
+<p>From a high level, the Azure Databricks service launches and manages Apache Spark clusters within your Azure subscription. Apache Spark clusters are groups of computers that are treated as a single computer and handle the execution of commands issued from notebooks. </p>
+</li>
+<li>
+<p>Clusters enable processing of data to be parallelized across many computers to improve scale and performance. They consist of a Spark driver and worker nodes. The driver node sends work to the worker nodes and instructs them to pull data from a specified data source.</p>
+</li>
+<li>
+<p>In Databricks, the notebook interface is typically the driver program. This driver program contains the main loop for the program and creates distributed datasets on the cluster, then applies operations to those datasets. Driver programs access Apache Spark through a SparkSession object regardless of deployment location.</p>
+</li>
+</ul>
+<p><img alt="Alt text" src="../image-29.png" /></p>
+<h3 id="how-does-spark-execute-jobs">How does spark execute jobs?</h3>
+<ul>
+<li>
+<p>Work submitted to the cluster is split into as many independent jobs as needed. This is how work is distributed across the Cluster's nodes. Jobs are further subdivided into tasks. The input to a job is partitioned into one or more partitions. These partitions are the unit of work for each slot.</p>
+</li>
+<li>
+<p>The secret to Spark's high performance is parallelism. Scaling vertically (by adding resources to a single computer) is limited to a finite amount of RAM, Threads and CPU speeds; but clusters scale horizontally, adding new nodes to the cluster as needed.</p>
+</li>
+</ul>
+<h4 id="parallelism-in-spark">Parallelism in Spark</h4>
+<ul>
+<li>
+<p>The first level of parallelization is the executor - a Java virtual machine (JVM) running on a worker node, typically, one instance per node.</p>
+</li>
+<li>
+<p>The second level of parallelization is the slot - the number of which is determined by the number of cores and CPUs of each node.</p>
+</li>
+<li>
+<p>Each executor has multiple slots to which parallelized tasks can be assigned.</p>
+</li>
+<li>
+<p>The JVM is naturally multi-threaded, but a single JVM, such as the one coordinating the work on the driver, has a finite upper limit. By splitting the work into tasks, the driver can assign units of work to *slots in the executors on worker nodes for parallel execution.</p>
+</li>
+<li>
+<p>Additionally, the driver determines how to partition the data so that it can be distributed for parallel processing. So, the driver assigns a partition of data to each task so that each task knows which piece of data it is to process. Once started, each task will fetch the partition of data assigned to it.</p>
+</li>
+</ul>
+<h4 id="jobs-and-stages">Jobs and Stages</h4>
+<p>Depending on the work being performed, multiple parallelized jobs may be required. Each job is broken down into stages. A useful analogy is to imagine that the job is to build a house:</p>
+<ul>
+<li>The first stage would be to lay the foundation.</li>
+<li>The second stage would be to erect the walls.</li>
+<li>The third stage would be to add the roof.</li>
+</ul>
+<p>Attempting to do any of these steps out of order just doesn't make sense, and may in fact be impossible. Similarly, Spark breaks each job into stages to ensure everything is done in the right order.</p>
+<h3 id="azure-cluster-architecture">Azure Cluster Architecture</h3>
+<p><img alt="Alt text" src="../image-30.png" /></p>
+<p>When you create an Azure Databricks workspace, a Databricks appliance is deployed as an Azure resource in your subscription. </p>
+<p>When you create a cluster in the workspace, you specify the types and sizes of the virtual machines (VMs) to use for both the driver and worker nodes, and some other configuration options, but Azure Databricks manages all other aspects of the cluster.</p>
+<p>The Databricks appliance is deployed into Azure as a managed resource group within your subscription. This resource group contains the driver and worker VMs for your clusters, along with other required resources, including a virtual network, a security group, and a storage account. </p>
+<p>All metadata for your cluster, such as scheduled jobs, is stored in an Azure Database with geo-replication for fault tolerance.</p>
+<p><img alt="Alt text" src="../image-31.png" /></p>
+<h3 id="pyspark-code-snippets">PySpark Code Snippets</h3>
+<h4 id="loading-data-into-dataframe">Loading Data into Dataframe</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/data/products.csv&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">header</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</code></pre></div>
+<h4 id="specifying-a-database-schema">Specifying a Database Schema</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">productSchema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ProductName&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ListPrice&quot;</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">())</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="p">])</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/data/product-data.csv&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">schema</span><span class="o">=</span><span class="n">productSchema</span><span class="p">,</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</code></pre></div>
+<h4 id="filter-and-group-columns">Filter and Group Columns</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">pricelist_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span> <span class="s2">&quot;ListPrice&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="chaining-operations">Chaining Operations</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">bikes_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductName&quot;</span><span class="p">,</span> <span class="s2">&quot;ListPrice&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Category&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Mountain Bikes&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Category&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Road Bikes&quot;</span><span class="p">))</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">display</span><span class="p">(</span><span class="n">bikes_df</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="group-by-aggregation">Group By + Aggregation</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">counts_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span> <span class="s2">&quot;Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">display</span><span class="p">(</span><span class="n">counts_df</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="sql-create-db-objects-in-catalog">SQL - Create db objects in catalog</h4>
+<p>The Spark catalog is a metastore for relational data objects such as views and tables. The Spark runtime can use the catalog to seamlessly integrate code written in any Spark-supported language with SQL expressions that may be more natural to some data analysts or developers.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;products&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="external-tables">External Tables</h4>
+<p><img alt="Alt text" src="../image-32.png" /></p>
+<h4 id="spark-api-to-access-data">Spark API to Access Data</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">bikes_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT ProductID, ProductName, ListPrice </span><span class="se">\</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s2">                      FROM products </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s2">                      WHERE Category IN (&#39;Mountain Bikes&#39;, &#39;Road Bikes&#39;)&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">display</span><span class="p">(</span><span class="n">bikes_df</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="use-sql-code-directly">Use SQL Code Directly</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">%</span><span class="k">sql</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">Category</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">ProductID</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ProductCount</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">products</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Category</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Category</span>
+</code></pre></div>
+<h3 id="visualizing-data">Visualizing Data</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># Get the data as a Pandas dataframe</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT Category, COUNT(ProductID) AS ProductCount </span><span class="se">\</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s2">                  FROM products </span><span class="se">\</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s2">                  GROUP BY Category </span><span class="se">\</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s2">                  ORDER BY Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="c1"># Clear the plot area</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1"># Create a Figure</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="c1"># Create a bar plot of product counts by category</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">],</span> <span class="n">height</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ProductCount&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="c1"># Customize the chart</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Product Counts by Category&#39;</span><span class="p">)</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Category&#39;</span><span class="p">)</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Products&#39;</span><span class="p">)</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#95a5a6&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="c1"># Show the plot area</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="Alt text" src="../image-33.png" /></p>
+<h3 id="exercise-exploring-spark">Exercise : Exploring Spark</h3>
+<p>Here is the <a href="https://adb-6109119110541327.7.azuredatabricks.net/?o=6109119110541327#notebook/366532548944596">link</a> for the Databricks workspace that has an introduction to spark.</p>
+<h3 id="achievement_4">Achievement</h3>
+<p><img alt="Alt text" src="../image-34.png" /></p>
+<h3 id="using-delta-lake-in-azure-databricks">Using Delta Lake in Azure Databricks</h3>
+<p>Linux foundation Delta Lake is an open-source storage layer for Spark that enables relational database capabilities for batch and streaming data. By using Delta Lake, you can implement a data lakehouse architecture in Spark to support SQL_based data manipulation semantics with support for transactions and schema enforcement.</p>
+<h4 id="benefits-of-delta-lake">Benefits of Delta Lake</h4>
+<p><strong>Relational tables that support querying and data modification</strong> - With Delta Lake, you can store data in tables that support CRUD (create, read, update, and delete) operations. In other words, you can select, insert, update, and delete rows of data in the same way you would in a relational database system.</p>
+<p><strong>Support for ACID transactions</strong> - Relational databases are designed to support transactional data modifications that provide atomicity (transactions complete as a single unit of work), consistency (transactions leave the database in a consistent state), isolation (in-process transactions can't interfere with one another), and durability (when a transaction completes, the changes it made are persisted). Delta Lake brings this same transactional support to Spark by implementing a transaction log and enforcing serializable isolation for concurrent operations.</p>
+<p><strong>Data versioning and time travel</strong> -  Because all transactions are logged in the transaction log, you can track multiple versions of each table row, and even use the time travel feature to retrieve a previous version of a row in a query.</p>
+<p><strong>Support for batch and streaming data</strong> - While most relational databases include tables that store static data, Spark includes native support for streaming data through the Spark Structured Streaming API. Delta Lake tables can be used as both sinks (destinations) and sources for streaming data.</p>
+<p><strong>Standard formats and interoperability</strong> - The underlying data for Delta Lake tables is stored in Parquet format, which is commonly used in data lake ingestion pipelines.</p>
+<h3 id="creating-delta-lake-tables">Creating Delta Lake Tables</h3>
+<h4 id="create-delta-lake-table-from-a-dataframe">Create Delta Lake Table From A Dataframe</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Load a file into a dataframe</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/data/mydata.csv&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Save the dataframe as a delta table</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">delta_table_path</span> <span class="o">=</span> <span class="s2">&quot;/delta/mydata&quot;</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">delta_table_path</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="making-conditional-updates">Making Conditional Updates</h3>
+<p>While you can make data modifications in a dataframe and then replace a Delta Lake table by overwriting it, a more common pattern in a database is to insert, update or delete rows in an existing table as discrete transactional operations. To make such modifications to a Delta Lake table, you can use the DeltaTable object in the Delta Lake API, which supports update, delete, and merge operations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">delta.tables</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Create a deltaTable object</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">deltaTable</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">delta_table_path</span><span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Update the table (reduce price of accessories by 10%)</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">deltaTable</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">condition</span> <span class="o">=</span> <span class="s2">&quot;Category == &#39;Accessories&#39;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="nb">set</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;Price&quot;</span><span class="p">:</span> <span class="s2">&quot;Price * 0.9&quot;</span> <span class="p">})</span>
+</code></pre></div>
+<p>The updates ae stored in the transaction log.</p>
+<h3 id="query-a-previous-version-of-the-table">Query a Previous Version of the table</h3>
+<p>Delta Lake tables support versioning through the transaction log. The transaction log records modifications made to the table, noting the timestamp and version number for each transaction. You can use this logged version data to view previous versions of the table - a feature known as time travel.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;timestampAsOf&quot;</span><span class="p">,</span> <span class="s1">&#39;2022-01-01&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">delta_table_path</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="catalog-tables">Catalog Tables</h3>
+<h4 id="external-vs-managed-tables">External vs Managed Tables</h4>
+<ul>
+<li>
+<p>A managed table is defined without a specified location, and the data files are stored within the storage used by the metastore. Dropping the table not only removes its metadata from the catalog, but also deletes the folder in which its data files are stored.</p>
+</li>
+<li>
+<p>An external table is defined for a custom file location, where the data for the table is stored. The metadata for the table is defined in the Spark catalog. Dropping the table deletes the metadata from the catalog, but doesn't affect the data files.</p>
+</li>
+</ul>
+<h4 id="creating-catalog-table-from-dataframe">Creating Catalog Table From Dataframe</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Save a dataframe as a managed table</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;MyManagedTable&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1">## specify a path option to save as an external table</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;/mydata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;MyExternalTable&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="creating-table-with-sql">Creating Table with SQL</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE MyExternalTable USING DELTA LOCATION &#39;/mydata&#39;&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="defining-the-table-schema">Defining the Table Schema</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="o">%</span><span class="k">sql</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ManagedSalesOrders</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">(</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="n">Orderid</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="n">OrderDate</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="n">CustomerName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="n">SalesTotal</span><span class="w"> </span><span class="nb">FLOAT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">)</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="k">USING</span><span class="w"> </span><span class="n">DELTA</span>
+</code></pre></div>
+<h4 id="how-to-use-catalog-tables">How to use catalog tables?</h4>
+<p>Catalog Tables can be used like the normal relational tables.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">%</span><span class="k">sql</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">orderid</span><span class="p">,</span><span class="w"> </span><span class="n">salestotal</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">ManagedSalesOrders</span>
+</code></pre></div>
+<h3 id="spark-structured-streaming">Spark Structured Streaming</h3>
+<p>A typical stream processing solution involves constantly reading a stream of data from a source, optionally processing it to select specific fields, aggregate and group values, or otherwise manipulate the data, and writing the results to a sink.</p>
+<p>Spark includes native support for streaming data through Spark Structured Streaming, an API that is based on a boundless dataframe in which streaming data is captured for processing. A Spark Structured Streaming dataframe can read data from many different kinds of streaming source, including network ports, real time message brokering services such as Azure Event Hubs or Kafka.</p>
+<h4 id="using-delta-lake-as-a-streaming-source">Using Delta Lake as a Streaming Source</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Load a streaming dataframe from the Delta Table</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">stream_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span> \
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;ignoreChanges&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span> \
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;/delta/internetorders&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># Now you can process the streaming data in the dataframe</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1"># for example, show it:</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="n">stream_df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>By default, when delta lake table is used as a streaming source, only append operations are allowed. </p>
+<h4 id="using-delta-table-as-streaming-sink">Using Delta Table as streaming sink</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Create a stream that reads JSON data from a folder</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">streamFolder</span> <span class="o">=</span> <span class="s1">&#39;/streamingdata/&#39;</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="n">jsonSchema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">])</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="n">stream_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span><span class="n">jsonSchema</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;maxFilesPerTrigger&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">inputPath</span><span class="p">)</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="c1"># Write the stream to a delta table</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="n">table_path</span> <span class="o">=</span> <span class="s1">&#39;/delta/devicetable&#39;</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;/delta/checkpoint&#39;</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="n">delta_stream</span> <span class="o">=</span> <span class="n">stream_df</span><span class="o">.</span><span class="n">writeStream</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="where-are-external-and-managed-tables-stored">Where are External and Managed Tables Stored?</h3>
+<ul>
+<li>External tables that are defined by the path to the parquet files containing the table data.</li>
+<li>Managed tables, that are defined in the Hive metastore for the Spark cluster.</li>
+</ul>
+<h3 id="exercise-delta-tables">Exercise : Delta Tables</h3>
+<p>Here is the <a href="https://microsoftlearning.github.io/mslearn-databricks/Instructions/Exercises/03-Delta-lake-in-Azure-Databricks.html#create-a-notebook-and-ingest-data">link</a> to the exercise </p>
+<p><strong>Didnt Understand : Streaming Data and Delta Tables</strong></p>
+<h3 id="quiz_4">Quiz</h3>
+<p><img alt="Alt text" src="../image-35.png" /></p>
+<h3 id="achievement_5">Achievement</h3>
+<p><img alt="Alt text" src="../image-36.png" /></p>
+<h3 id="sql-warehouse-in-databricks">SQL Warehouse in Databricks</h3>
+<h4 id="configurations-in-sql-warehouses">Configurations in SQL Warehouses</h4>
+<p><img alt="Alt text" src="../image-37.png" /></p>
+<h4 id="creating-tables-and-databases">Creating tables and databases</h4>
+<p>All SQL Warehouses contain a default database schema named default. You can use create tables in this schema in order to analyze data. However, if you need to work with multiple tables in a relational schema, or you have multiple analytical workloads where you want to manage the data (and access to it) separately, you can create custom database schema. To create a database, use the SQL editor to run a <code>CREATE DATABASE</code> or <code>CREATE SCHEMA</code> SQL statement.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">salesdata</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">salesdata</span><span class="p">.</span><span class="n">salesorders</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p">(</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="n">orderid</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="n">orderdate</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="n">customerid</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="n">ordertotal</span><span class="w"> </span><span class="nb">DECIMAL</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">)</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="k">USING</span><span class="w"> </span><span class="n">DELTA</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="k">LOCATION</span><span class="w"> </span><span class="s1">&#39;/data/sales/&#39;</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="exercise">Exercise</h3>
+<p><img alt="Alt text" src="../image-40.png" /></p>
+<p>Check out the complete exercise <a href="https://microsoftlearning.github.io/mslearn-databricks/Instructions/Exercises/04-Azure-Databricks-SQL.html">here</a></p>
+<h3 id="achievement_6">Achievement</h3>
+<p><img alt="Alt text" src="../image-39.png" /></p>
+<h3 id="running-azure-databricks-notebooks-in-azure-data-factory">Running Azure Databricks Notebooks in Azure Data Factory</h3>
+<p><img alt="Alt text" src="../image-41.png" /></p>
+<p>dapi2cb79aec4d38d78911008d521a5ecac3</p>
+<ol>
+<li>
+<p>Search for Data Factory and Create a new instance.</p>
+</li>
+<li>
+<p>Click on 'Launch Studio'</p>
+</li>
+<li>
+<p>Go to Databricks &gt; Notebook</p>
+</li>
+<li>
+<p>Under Azure Databricks &gt; Create Linked Service &gt; Enter all the parameters</p>
+</li>
+</ol>
+<h4 id="parameters-from-the-pipeline-to-notebook">Parameters from the Pipeline to Notebook</h4>
+<p>You can use parameters to pass variable values to a notebook from the pipeline. Parameterization enables greater flexibility than using hard-coded values in the notebook code.</p>
+<h5 id="below-code-passes-the-value-data-to-the-folder-variable">Below code passes the value data to the folder variable</h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">dbutils</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;folder&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="get-the-value-for-the-parameter">Get the value for the parameter</h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">folder</span> <span class="o">=</span> <span class="n">dbutils</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;folder&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="passing-output-values-in-a-notebook">Passing output values in a notebook</h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;dbfs:/</span><span class="si">{0}</span><span class="s2">/products.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">dbutils</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="exercise_1">Exercise</h3>
+<p>Here is the <a href="https://microsoftlearning.github.io/mslearn-databricks/Instructions/Exercises/05-Azure-Databricks-Data-Factory.html">link</a> to the exercise.</p>
+<p>I'm getting this error about not enough nodes to run the pipeline</p>
+<p><code>ADD_NODES_FAILED</code>
+<img alt="Alt text" src="../image-42.png" /></p>
+<p>The pipeline is running from the ADF Studio
+<img alt="Alt text" src="../image-43.png" /></p>
+<h3 id="achievement_7">Achievement</h3>
+<p><img alt="Alt text" src="../image-44.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

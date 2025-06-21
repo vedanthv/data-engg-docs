@@ -1,0 +1,934 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vedanthv.github.io/data-engg-docs/streaming/">
+      
+      
+        <link rel="prev" href="../Azure/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Streaming Architecture - Data Engineering Docs by Vedanth</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#streaming-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-header__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering Docs by Vedanth
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Streaming Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../astronomer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Astronomer and Airflow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../databricks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Azure Databricks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_Databricks_Course/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark Databricks Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_YT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark YouTube
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Azure/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Microsoft Azure - DP 203
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Streaming Architecture
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-nav__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Engineering Docs by Vedanth
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../astronomer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_Databricks_Course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_YT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Azure - DP 203
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#redpanda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redpanda
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redpanda">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#course-1-streaming-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Course 1 : Streaming fundamentals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Course 1 : Streaming fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#streaming-data-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Data Processing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Streaming Data Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-life-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Life Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#communication-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Communication Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Communication Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#queue-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Queue Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#landscape-of-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Landscape of Streaming
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Landscape of Streaming">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloud-provider-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud Provider Options
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-pulsar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Pulsar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Kafka
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redpanda_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redpanda
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redpanda-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redpanda Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="streaming-architecture">Streaming Architecture</h1>
+<h2 id="redpanda">Redpanda</h2>
+<h3 id="course-1-streaming-fundamentals">Course 1 : Streaming fundamentals</h3>
+<p><img alt="Alt text" src="../image-161.png" /></p>
+<p><img alt="Alt text" src="../image-162.png" /></p>
+<p><img alt="Alt text" src="../image-163.png" /></p>
+<p><img alt="Alt text" src="../image-164.png" /></p>
+<h4 id="streaming-data-processing">Streaming Data Processing</h4>
+<p><img alt="Alt text" src="../image-165.png" /></p>
+<p><img alt="Alt text" src="../image-166.png" /></p>
+<h5 id="real-life-example">Real Life Example</h5>
+<p><img alt="Alt text" src="../image-167.png" /></p>
+<p><img alt="Alt text" src="../image-168.png" /></p>
+<p><img alt="Alt text" src="../image-169.png" /></p>
+<p>Many traditional systems have taught us to think of data in its resting state. Relational databases, distributed file systems, data lakes and data warehouses, all store bounded sets of data that are typically accessed on an ad hoc or scheduled basis. We typically think of this data as just a pile of bytes, that we can query whenever we need to.</p>
+<p>The data in these systems are often modeled as objects or nouns, and these systems are good at certain tasks. For example, want to know how many users have signed up for your website? Well, you could run a query on the current snapshot of your users table to answer that question.</p>
+<p>But viewing data in a resting state has limitations. If we want to process the data continuously, we have to make several trips to the storage layer, usually at some fixed and arbitrary interval, to create a report, make a business decision, or simply retrieve the data. This is called batch processing, and it’s often associated with high latency and slow decision making.</p>
+<p>Also, these systems typically only concern themselves with the current state of the data, and lose track of the historical changes that took place beforehand. Extending our previous example - if you go to the users table, you’ll see the current snapshot or state of all the users in your system. But how did that state evolve overtime? And what intermediate state changes took place before we arrived at the current snapshot of our data? These questions are difficult to answer with traditional systems, hindering our ability to understand more complex behaviors in our data.</p>
+<p>But in recent years, as data has become more ubiquitous and as our ability to collect data has improved, data systems have evolved beyond the data at rest model. Today, new systems have been developed to handle data in motion.</p>
+<p>You see, more often than not, data is actually flowing in continuous and unbounded streams, and we need to process the data as soon as it becomes available.</p>
+<p>Some examples of continuous data streams include:</p>
+<ul>
+<li>IoT sensor data</li>
+<li>Financial transactions</li>
+<li>Social media feeds</li>
+<li>Website activity</li>
+<li>Infrastructure events</li>
+</ul>
+<p>Being able to process and store these kinds of infinite and fast-moving data streams has given rise to a new type of system: streaming data platforms.</p>
+<p>Streaming data platforms are optimized for low-latency and high throughput, allowing us to store and access data quickly and continuously. They also allow us to process data as soon as it becomes available; This is called stream processing. But there are some other differences between streaming data platforms and traditional storage systems, as well.</p>
+<p>First, instead of modeling data as nouns or things, event streaming involves the continuous collection, consumption, and processing of events. Events are exactly what they sound like. They describe something that occurs at a particular point in time.</p>
+<p>For example, do you remember that time on your birthday where you ate too much cake? Eating too much cake on your birthday is an event. It’s something that happened at a particular point in time.</p>
+<p>Organizations have events too. A marketplace like Etsy may have user_login events, add_to_cart events, and item_purchase events. A financial institution may have account_open events, funds_deposited and funds_withdrawn events. Video streaming services like Netflix may have events like video_watched, video_rated, or even events generated by machine learning models; for example - network_prediction events for adaptive video quality. Regardless of what industry you find yourself in, there are events all around you, you just have to know where to look.</p>
+<p>Events drive intelligence, analytics, and product features. And it’s not uncommon for even a moderately sized organization to generate thousands or even millions of events per second. And again, these event streams are continuously flowing and theoretically infinite.</p>
+<p>Another difference between traditional systems and streaming data platforms, is that instead of only being concerned with the current state of our data, streaming data platforms allow us to maintain the entire historical record of everything that happened beforehand. In other words - the intermediate state changes of our data. This pattern of capturing intermediate state changes using events is called event sourcing.</p>
+<p>This is made possible thanks to the way event streaming platforms like Redpanda model events: as immutable, timestamped facts.</p>
+<p>Now you may be asking, why are events immutable?</p>
+<p>Well, events are immutable because history is important, and event sourcing allows us to preserve the history of our data. Immutability respects a simple fact:  we can’t change something that happened in the past. We all know that you ate too much cake on your birthday, and even if you’re in a better state now, historical events still provide us with a lot of good context about the past. Without the historical record, we wouldn’t know about that weird cake phase you went through, we would just know about your current state.</p>
+<p>From an organizational perspective, the historical event record is important for a couple of reasons:</p>
+<p>Some of the most important data insights lie within the historical record of your data. How did the data change over time? What events preceded the current event? What behaviors are present in our data? These questions are much easier to answer in an event-driven system that maintains the complete historical record.</p>
+<p>Think about an ecommerce scenario. A user adds an item to their cart and then removes it. The current state shows an empty cart for this user. But knowing what happened before - i.e. that the user added a certain item to their cart, gives us some insight into what this user may be interested in. The current state doesn’t show that, but the historical state does.</p>
+<p>Also, there is a huge operational advantage to event sourcing: we can easily rebuild the state of our downstream systems by re-processing the historical sequence of events. To understand the value of this, consider another example. What if you realize that after a few weeks of running your awesome data processing application, there’s a bug in your system and the data needs to be reprocessed?</p>
+<p>This is extremely difficult and often impossible to do in traditional systems. But, with an event streaming platform like Redpanda, we have an immutable record of all the individual events that took place, which makes rebuilding the state much easier. But with an immutable record of all of the individual events that took place, it’s much easier with an event streaming platform like Redpanda.</p>
+<p>Now, immutability doesn’t prevent us from representing the current snapshot of our data. We can still do that with streaming data platforms, just like we can with more traditional systems, as well.</p>
+<p>Streaming data platforms just give a new capability, which is the ability to capture the current state of our data and the historical record of state changes.</p>
+<h4 id="communication-patterns">Communication Patterns</h4>
+<p><img alt="Alt text" src="../image-170.png" /></p>
+<p><img alt="Alt text" src="../image-171.png" /></p>
+<p><img alt="Alt text" src="../image-172.png" /></p>
+<p><img alt="Alt text" src="../image-173.png" /></p>
+<p><img alt="Alt text" src="../image-174.png" /></p>
+<p><img alt="Alt text" src="../image-175.png" /></p>
+<p><img alt="Alt text" src="../image-176.png" /></p>
+<p><img alt="Alt text" src="../image-177.png" /></p>
+<p><img alt="Alt text" src="../image-178.png" /></p>
+<p><img alt="Alt text" src="../image-179.png" /></p>
+<p>Perhaps the most common form of communication between systems is the client-server model. This form of point-to-point communication involves two parties talking directly to each other. In other words, a client sends a request to a server, and waits for a response. In order to talk to each other, the systems in a client-server architecture have to:</p>
+<p>Know about each other so that they can exchange information directly</p>
+<p>Anticipate and handle a wide range of errors that can occur when talking to each other</p>
+<p>And because the systems talk to each other directly, they are said to be tightly coupled.</p>
+<p>When the number of systems is small, this is somewhat manageable. However, it becomes difficult to scale as the number of systems begin to increase. As you can see in the following diagram, we can easily end up with complicated call chains or elaborate webs of communication.</p>
+<p>These issues have become even more pronounced over recent years, especially as organizations adopt microservice architectures, which involves standing up many separate and specialized services.</p>
+<p>And, while many service mesh technologies have been created to try to hide some of this complexity, they often add to the operational burden while only partially addressing the issues of point-to-point communication.</p>
+<p>Now, as we mentioned earlier, events are the centerpiece of event-driven architectures. But in client-server architectures, the data being communicated is less clear, and in fact, most of the attention has not been focused on the data itself, but on requests and responses. However, if we actually look at what data is being communicated,  we can see that they are usually generic messages, or commands. We’ll refer to these as commands going forward.</p>
+<p>As opposed to an event, which is just a simple, timestamped fact, commands are data packets that are intended to trigger some action. For example, Client A may tell a REST API to GET the items for a page, or PUT something in a database. Command-driven architectures reflect the tightly-coupled nature of the underlying systems, since you have one system telling another what to do, directly.</p>
+<p>Events, on the other hand, are just facts. Just like in the physical world, facts can be observed, reacted to, and processed by any number of systems. And this simple realization is the starting point for how event-driven systems communicate.</p>
+<p>The basic principle is that you can’t anticipate everything that downstream systems may want to do with your data, so why even try? It’s best to just publish the event somewhere, and allow any system that is interested in it to simply subscribe to the stream in order to read the data.</p>
+<p>This is called the publish-subscribe communication pattern, or pub/sub for short. In this form of communication, there are two main entities: producers, which are responsible for publishing messages to a stream, and consumers, which read the messages from any stream they happen to be interested in. We’ll go into more detail in the next video, but the key idea is that producers and consumers don’t talk to each other directly, and aren’t even aware of each other. This is a much more scalable form of communication, and it is leveraged by event streaming platforms like Redpanda.</p>
+<p>A user places an order. You may have one system that needs to process the order, a separate analytical system that enriches the data and makes it available for reporting, and a third system that acts as a product recommendation engine, which needs to consume orders so that it can make recommendations about different products.</p>
+<p>There’s one event and three different systems that need to process it. A command-driven approach would involve issuing a separate command to each system, which is error-prone and inefficient.</p>
+<p>It would be much better to represent the order as a simple event, and publish it somewhere that other systems can observe and process at will. The producing application shouldn’t need to know about each consumer application that needs to read the data.</p>
+<p>Event-driven systems are designed around this simple concept. When we begin to model data as pure events, this is called event-first thinking.</p>
+<p>There are a few other issues with point-to-point communication, as well. When systems talk to each other directly, receiving systems can easily get overwhelmed since they operate at the whims of whatever system is making a request. Therefore, high-volume or bursty traffic patterns can cause issues.</p>
+<p>It would be much better to have a communication buffer that allows downstream systems to react to data asynchronously and at their own pace. And this is exactly what event streaming platforms like Redpanda offer, and we’ll dig more into that in the next video.</p>
+<p>Finally,  point-to-point communication also comes with weaker delivery guarantees. If the receiving system is offline, the requesting system will need to retry and may eventually even give up. This is another problem that Redpanda addresses, which tolerates failures much better. We’ll see examples of this throughout this course.</p>
+<h5 id="queue-architecture">Queue Architecture</h5>
+<p>For example, RabbitMQ is often compared with pub/sub systems like Kafka. </p>
+<p>However, queuing systems are very different. They have a single-consumer model and destructive consumer semantics. So once a message is processed, it is “popped” off the queue and unavailable to other systems, unless you explicitly duplicate that data.</p>
+<p>Communication in queuing systems is similar to the command-driven approach we discussed earlier. Producers write messages to specific and sometimes separate locations to kick off specific tasks. Even though communication is asynchronous with queues, data producers and consumers are still tightly coupled, just like they are with the request-response pattern.</p>
+<p>Also, queues have traditionally been much more difficult to scale. The brokers in a queueing system often take on extra computational burdens, and are sometimes called “smart brokers” to reflect this. For example, these brokers often have to manage cursor positions for the queues, manage locks for the messages that are out for delivery, execute more complex routing logic, and more. These burdens require a greater number of resources to achieve the same kind of throughput as pub/sub systems with simpler broker models.</p>
+<p>Revisiting the previous Etsy example, a queuing system would not be appropriate since multiple systems need to process the event. Since queues have destructive consumer semantics and a single consumer model, you’d have to duplicate the event multiple times, in separate queues, for each downstream system that needs to read it. In this case, we’d need to duplicate the data in an order processing queue, an analytics queue, and finally in a recommendation queue. That’s inefficient.</p>
+<h4 id="landscape-of-streaming">Landscape of Streaming</h4>
+<h5 id="cloud-provider-options">Cloud Provider Options</h5>
+<p><img alt="Alt text" src="../image-180.png" /></p>
+<h5 id="apache-pulsar">Apache Pulsar</h5>
+<p><img alt="Alt text" src="../image-181.png" /></p>
+<p>One thing that is great about Pulsar though is that it has something called Pulsar functions, which allow you to run stream processing apps on the Pulsar cluster, without deploying a separate system. So despite being less battletested than some of the other options we'll cover, we do like that feature.</p>
+<p><img alt="Alt text" src="../image-182.png" /></p>
+<h5 id="apache-kafka">Apache Kafka</h5>
+<p><img alt="Alt text" src="../image-183.png" /></p>
+<p>Kafka is a dominating force in the event streaming space. It was developed at LinkedIn, has a pull-based pub/sub communication model that is optimized for low-latency and high throughput, has a great API, a huge ecosystem of integrations and tooling, and has been sufficiently battle tested.</p>
+<p>However, Kafka has a reputation for being complicated to manage, and its architecture, while less complex than Pulsar’s, is still somewhat complex. For example, it’s JVM-based, which often entails complex tuning, GC pauses, and low-level monitoring to make sure the systems and JVM processes are healthy. Also, while Zookeeper has been slated for removal, it was still recommended for production deployments of Kafka at the time of this recording, which adds to the operational overhead.</p>
+<p>Fully managed options are available to help alleviate the operational concerns, including Confluent Cloud, AWS MSK, and Aiven, to name a few. But they often come at a high cost, since at the end of the day, it is still difficult to manage, but you are paying someone else to take on this burden.</p>
+<p>Kafka also lacks Pulsar’s strongest feature, which is the ability to do stream processing and transformations where the data lives, instead of shipping large amounts of data to some separate system for processing. These network trips add up and can introduce undesirable latency when it comes time to process your event data.</p>
+<h5 id="redpanda_1">Redpanda</h5>
+<p><img alt="Alt text" src="../image-184.png" /></p>
+<h4 id="redpanda-overview">Redpanda Overview</h4>
+<p><img alt="Alt text" src="../image-185.png" /></p>
+<p><img alt="Alt text" src="../image-187.png" /></p>
+<p><img alt="Alt text" src="../image-188.png" /></p>
+<p><img alt="Alt text" src="../image-189.png" /></p>
+<p><img alt="Alt text" src="../image-190.png" /></p>
+<p><img alt="Alt text" src="../image-191.png" /></p>
+<p><img alt="Alt text" src="../image-192.png" /></p>
+<p><img alt="Alt text" src="../image-193.png" /></p>
+<p><img alt="Alt text" src="../image-194.png" /></p>
+<p><img alt="Alt text" src="../image-195.png" /></p>
+<p><img alt="Alt text" src="../image-196.png" /></p>
+<p><img alt="Alt text" src="../image-197.png" /></p>
+<p><img alt="Alt text" src="../image-198.png" /></p>
+<p><img alt="Alt text" src="../image-199.png" /></p>
+<p><img alt="Alt text" src="../image-201.png" /></p>
+<p><img alt="Alt text" src="../image-202.png" /></p>
+<p><img alt="Alt text" src="../image-203.png" /></p>
+<p>we learned how Redpanda, like many other data streaming platforms, leverages the pub/sub communication pattern. In other words, instead of two systems exchanging data directly, systems exchange data using a centralized communication hub. In the case of Redpanda, the communication hub is the Redpanda cluster.</p>
+<p>A Redpanda cluster is made up of one or more servers, called brokers. As their name suggests, brokers are responsible for mediating communication between systems that produce data and systems that consume data. This allows us to build systems that are completely decoupled from each other, since data producers and consumers don’t need to know about each other, much less worry about all of the pitfalls involved in direct communication. Instead, systems communicate with the brokers, and Redpanda makes sure the data is communicated to the correct parties.</p>
+<p>In addition to being the communication point for data producers and consumers, brokers are also responsible for storing data. This is different from more complex architectures, like what we find in Apache Pulsar, where brokers only handle communication and another set of servers is responsible for storing the data. Redpanda optimizes for operational simplicity, and this is apparent even in its broker model.</p>
+<p>Most of the time, you’ll usually have multiple brokers in a production Redpanda cluster. This will provide redundancy and improve performance by distributing the work across many servers. While it's possible to have a cluster with just a single broker, that's fairly unusual in production.</p>
+<p>The data that is stored on brokers is organized into topics. A topic is a named stream or channel where related events are published. For example, you might have a "payments" topic that contains the payment events for a given business. In general, a topic is a similar level of granularity to tables in a database. We can create any number of topics, which are identified by a human-readable name.</p>
+<p>Each record within a topic is represented as a key-value pair, with a timestamp and optional set of headers. The key of each record can be used to group related events, which we’ll see in the next video, and the value contains the payload (for example, a byte-encoded JSON string), with all of the details about the event.</p>
+<p>Topics can be configured in many different ways, and we’ll talk about this in more detail in the Redpanda Operations course, but they are usually distinguished by their data retention strategy. Compacted topics retain the latest record for each unique record key, while uncompacted topics delete data after a configurable retention period.</p>
+<p>As you might imagine, Redpanda topics can get very large, so we need some way of horizontally scaling topics across many brokers in a Redpanda cluster. Otherwise, if topics could only be stored on a single machine, their maximum size would be limited to the largest machine in the cluster. This wouldn’t be ideal. Instead, we need to leverage the power of multiple machines to handle large amounts of event data, and subsequently, large topics.</p>
+<p>But it’s hard to distribute and share just one of something, which is why topics are subdivided into smaller units, called partitions. Each topic partition contains a subset of the topic data (unless your topic was configured with just 1 partition, which isn’t recommended in production since it hinders scalability). We’ll get into more detail about the storage abstraction that partitions use in the next video, but for now, just know that the number of partitions is configurable when you create a topic, and generally a higher number of partitions improves our ability to scale.</p>
+<p>Since partitions only contain a subset of the topic data, we can easily distribute them across many different brokers, allowing our topics to grow freely. Data is also replicated at the partition level in a Redpanda cluster.</p>
+<p>So how does data actually make its way to a Redpanda topic? Well, in order to publish data to a topic, we use a producer. Producers don’t need to know who will come along to read the data they are producing, they simply publish the data to a topic, making it available to any downstream system that happens to be interested in it. Furthermore, the same Apache Kafka Producer API that is used to publish events to Kafka topics can be used to publish data to Redpanda topics. This allows Redpanda to work seamlessly with other tools and integrations in the Kafka ecosystem.</p>
+<p>Finally, to retrieve data from Redpanda, we use a consumer. Consumers read data from one or more topics using a sequential read pattern. In other words, they read messages in the order they were produced. More on this in a minute.</p>
+<p>But the really powerful thing about consumers is that they can work together to read data from a topic. This is really useful for large topics that require multiple consumers in order to keep up with the message volume.</p>
+<p>A group of cooperating consumers is called a consumer group, and this is a key component that allows us to parallelize work and build high-throughput systems that process data efficiently with minimal latency. It’s like the saying, “many hands make light work,” but in Redpanda’s case, “many consumers make light work.”</p>
+<p>Now, let’s take a minute to talk about how work is distributed across members of a consumer group. Each member of a consumer group is assigned one or more partitions in a Kafka topic. This is another important role of partitions - they not only allow us to scale from a storage perspective, but they also allow us to efficiently divide work across many consumers, and therefore scale our read workloads.</p>
+<p>A special consumer in each consumer group, called the group leader, will handle the partition assignments for each consumer. But consumers never read from the same partition as another member of the group, since this would lead to double-processing.</p>
+<p>However, consumers from different consumer groups can read from the same partition since they are working independently, and this is one of the main benefits of the pub/sub communication pattern that we discussed in the last chapter.</p>
+<p>Furthermore, partition assignment among consumers can change over time, depending on the health of each consumer in the group. If a consumer becomes unhealthy (for example, due to a bug in the code or hardware failure), its partitions will be revoked and reassigned to a healthy member of the group. This makes Redpanda consumers fault tolerant and highly available, since they can continue processing data even if some members of the group are unhealthy, or if consumers go offline for any reason (for example, during a rolling restart of your application).</p>
+<p>This brings us back to brokers. We already mentioned two roles of Redpanda brokers: storing data and mediating communication between producers and consumers. But brokers actually have another role, as well, which is monitoring the health of consumer groups. Consumers must heartbeat back to Redpanda brokers to prove that they are alive and well. If a consumer fails to heartbeat in time, the broker assigned to the consumer group, called the group coordinator, will trigger a rebalance, allowing the other consumers to cope with the failure and continue processing data. This involves sending a message to the group leader, who actually executes the rebalance.</p>
+<p>We’ve covered a good bit, so let's put everything together with an example. We'll use the same example from our previous course -- orders at Etsy. Let's say we have a set of microservices : </p>
+<p>Checkout Service, which is the service users interact with to place orders</p>
+<p>Order Service, which handles the backend processing of order events (payments, shipping, etc)</p>
+<p>Reporting Service, which transforms and enriches order data for analytic purposes</p>
+<p>Recommendations Service, which uses the order data to build recommendations for future orders </p>
+<p>To start, we'll have a Redpanda cluster with four brokers. Remember, multiple brokers are recommended for production clusters so that we can easily scale and replicate our data.</p>
+<p>Within our Redpanda cluster, we’ll have a topic named "orders". Like a table in a database, this topic allows us to group related records for easy storage and retrieval.</p>
+<p>Our topic has been configured with 32 partitions so that it can be split across multiple brokers, and so that we can split the read workloads across multiple consumers in each consumer group that needs to read from it.</p>
+<p>Every time a user places an order, CheckoutService publishes an event to the orders topic. The OrderService, ReportingService, and RecommendationsService, all have consumers listening to the orders topic. As orders come in, each service will process the order events for their unique business cases. Since each service is consuming from the orders topic using a unique consumer group, they can easily parallelize work and handle failures.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
