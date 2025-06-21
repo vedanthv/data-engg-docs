@@ -1,0 +1,78 @@
+{
+    "name": "ParameterisedPipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy data1",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "SqlServerSource",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "sink": {
+                        "type": "SqlServerSink",
+                        "writeBehavior": "insert",
+                        "sqlWriterUseTableLock": false
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "DatasetSQLTable",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "table_name": "table1",
+                            "DBNameDatasetScope": "testdb"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "DatasetSQLTable",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "table_name": {
+                                "value": "@pipeline().parameters.tableNamePipeline",
+                                "type": "Expression"
+                            },
+                            "DBNameDatasetScope": {
+                                "value": "@pipeline().parameters.DBScopePipeline",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            }
+        ],
+        "parameters": {
+            "tableNamePipeline": {
+                "type": "String"
+            },
+            "DBScopePipeline": {
+                "type": "String"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2025-06-17T18:51:22Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

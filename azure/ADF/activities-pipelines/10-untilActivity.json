@@ -1,0 +1,113 @@
+{
+    "name": "UntilConditionCheckFileExists",
+    "properties": {
+        "activities": [
+            {
+                "name": "LoopCheckFileExists",
+                "type": "Until",
+                "dependsOn": [],
+                "userProperties": [],
+                "typeProperties": {
+                    "expression": {
+                        "value": "@bool(pipeline().parameters.FileExists)",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "Get Metadata1",
+                            "type": "GetMetadata",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "dataset": {
+                                    "referenceName": "inputDataset",
+                                    "type": "DatasetReference"
+                                },
+                                "fieldList": [
+                                    "exists"
+                                ],
+                                "storeSettings": {
+                                    "type": "AzureBlobStorageReadSettings",
+                                    "recursive": true,
+                                    "enablePartitionDiscovery": false
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            }
+                        },
+                        {
+                            "name": "What_To_Do_When_Metadata_Comes",
+                            "type": "IfCondition",
+                            "dependsOn": [
+                                {
+                                    "activity": "Get Metadata1",
+                                    "dependencyConditions": [
+                                        "Succeeded"
+                                    ]
+                                }
+                            ],
+                            "userProperties": [],
+                            "typeProperties": {
+                                "expression": {
+                                    "value": "@bool(activity('Get Metadata1').output.exists)",
+                                    "type": "Expression"
+                                },
+                                "ifFalseActivities": [
+                                    {
+                                        "name": "Wait",
+                                        "type": "Wait",
+                                        "dependsOn": [],
+                                        "userProperties": [],
+                                        "typeProperties": {
+                                            "waitTimeInSeconds": 10
+                                        }
+                                    }
+                                ],
+                                "ifTrueActivities": [
+                                    {
+                                        "name": "Set variable1",
+                                        "type": "SetVariable",
+                                        "dependsOn": [],
+                                        "policy": {
+                                            "secureOutput": false,
+                                            "secureInput": false
+                                        },
+                                        "userProperties": [],
+                                        "typeProperties": {
+                                            "variableName": "FileAvailable",
+                                            "value": true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "timeout": "0.00:02:00"
+                }
+            }
+        ],
+        "parameters": {
+            "FileExists": {
+                "type": "string",
+                "defaultValue": "false"
+            }
+        },
+        "variables": {
+            "FileAvailable": {
+                "type": "Boolean",
+                "defaultValue": false
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2025-06-21T13:03:31Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,134 @@
+{
+    "name": "SwitchActivity",
+    "properties": {
+        "activities": [
+            {
+                "name": "SwitchOutputFolders",
+                "type": "Switch",
+                "dependsOn": [],
+                "userProperties": [],
+                "typeProperties": {
+                    "on": {
+                        "value": "@pipeline().parameters.FolderName",
+                        "type": "Expression"
+                    },
+                    "cases": [
+                        {
+                            "value": "Output1",
+                            "activities": [
+                                {
+                                    "name": "Copy data1",
+                                    "type": "Copy",
+                                    "dependsOn": [],
+                                    "policy": {
+                                        "timeout": "0.12:00:00",
+                                        "retry": 0,
+                                        "retryIntervalInSeconds": 30,
+                                        "secureOutput": false,
+                                        "secureInput": false
+                                    },
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "source": {
+                                            "type": "BinarySource",
+                                            "storeSettings": {
+                                                "type": "AzureBlobStorageReadSettings",
+                                                "recursive": true
+                                            },
+                                            "formatSettings": {
+                                                "type": "BinaryReadSettings"
+                                            }
+                                        },
+                                        "sink": {
+                                            "type": "BinarySink",
+                                            "storeSettings": {
+                                                "type": "AzureBlobStorageWriteSettings"
+                                            }
+                                        },
+                                        "enableStaging": false
+                                    },
+                                    "inputs": [
+                                        {
+                                            "referenceName": "inputDataset",
+                                            "type": "DatasetReference"
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "referenceName": "outputLocationDataset",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "Folder": "output1"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "value": "Output2",
+                            "activities": [
+                                {
+                                    "name": "Copy data2",
+                                    "type": "Copy",
+                                    "dependsOn": [],
+                                    "policy": {
+                                        "timeout": "0.12:00:00",
+                                        "retry": 0,
+                                        "retryIntervalInSeconds": 30,
+                                        "secureOutput": false,
+                                        "secureInput": false
+                                    },
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "source": {
+                                            "type": "BinarySource",
+                                            "storeSettings": {
+                                                "type": "AzureBlobStorageReadSettings",
+                                                "recursive": true
+                                            },
+                                            "formatSettings": {
+                                                "type": "BinaryReadSettings"
+                                            }
+                                        },
+                                        "sink": {
+                                            "type": "BinarySink",
+                                            "storeSettings": {
+                                                "type": "AzureBlobStorageWriteSettings"
+                                            }
+                                        },
+                                        "enableStaging": false
+                                    },
+                                    "inputs": [
+                                        {
+                                            "referenceName": "inputDataset",
+                                            "type": "DatasetReference"
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "referenceName": "outputLocationDataset",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "Folder": "Output2"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "parameters": {
+            "FolderName": {
+                "type": "string",
+                "defaultValue": "Output1"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2025-06-21T13:03:31Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

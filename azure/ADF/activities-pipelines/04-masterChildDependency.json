@@ -1,0 +1,32 @@
+{
+    "name": "masterPipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "Execute Pipeline1",
+                "type": "ExecutePipeline",
+                "dependsOn": [],
+                "policy": {
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "waitOnCompletion": true
+                }
+            }
+        ],
+        "parameters": {
+            "DBNAME": {
+                "type": "string",
+                "defaultValue": "ProdDB"
+            },
+            "TABLE": {
+                "type": "string",
+                "defaultValue": "trades"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2025-06-21T13:03:31Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

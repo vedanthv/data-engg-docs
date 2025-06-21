@@ -1,0 +1,61 @@
+{
+    "name": "SetVariablePipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "Set value for file type",
+                "type": "SetVariable",
+                "dependsOn": [],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "variableName": "FileType",
+                    "value": {
+                        "value": "@replace(pipeline().parameters.FileName,'Sales','')",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "Append list of Sales files",
+                "type": "AppendVariable",
+                "dependsOn": [],
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "ListOfFiles",
+                    "value": {
+                        "value": "@pipeline().parameters.FileSales",
+                        "type": "Expression"
+                    }
+                }
+            }
+        ],
+        "parameters": {
+            "FileName": {
+                "type": "string",
+                "defaultValue": "DailySales"
+            },
+            "FileSales": {
+                "type": "string",
+                "defaultValue": "Sales.txt"
+            }
+        },
+        "variables": {
+            "FileType": {
+                "type": "String"
+            },
+            "ListOfFiles": {
+                "type": "Array",
+                "defaultValue": [
+                    "SalesIndia",
+                    "SalesUK"
+                ]
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2025-06-21T13:03:31Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
