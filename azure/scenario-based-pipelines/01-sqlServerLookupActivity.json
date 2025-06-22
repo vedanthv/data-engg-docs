@@ -1,0 +1,66 @@
+{
+    "name": "LookupSQLTable",
+    "properties": {
+        "activities": [
+            {
+                "name": "LookupUsers",
+                "type": "Lookup",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "SqlServerSource",
+                        "sqlReaderQuery": "SELECT name FROM users WHERE id = 1\n",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "dataset": {
+                        "referenceName": "Users",
+                        "type": "DatasetReference"
+                    },
+                    "firstRowOnly": true
+                }
+            },
+            {
+                "name": "Email",
+                "type": "WebHook",
+                "dependsOn": [
+                    {
+                        "activity": "LookupUsers",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "url": "https://prod-23.northcentralus.logic.azure.com:443/workflows/05c5274bf4fb4badb35aacdd276de3e0/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=4PfS9rsVS3hxgHiemBPgN9R0tTGVL7SMX3HaCH0ka9k",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": {
+                        "email": "vedanthvbaliga@gmail.com",
+                        "name": "@activity('LookupUsers').output.firstRow.name"
+                    },
+                    "timeout": "00:10:00"
+                }
+            }
+        ],
+        "folder": {
+            "name": "00-Sample ADF Pipelines"
+        },
+        "annotations": []
+    }
+}
