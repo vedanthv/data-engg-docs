@@ -1,0 +1,73 @@
+{
+    "name": "StoredProcedureLookup",
+    "properties": {
+        "activities": [
+            {
+                "name": "Stored procedure1",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[LogPipelineActivity]",
+                    "storedProcedureParameters": {
+                        "PipelineName": {
+                            "value": {
+                                "value": "@pipeline().Pipeline",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "RunId": {
+                            "value": {
+                                "value": "@pipeline().RunId",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "ActivityName": {
+                            "value": "LogStart",
+                            "type": "String"
+                        },
+                        "Status": {
+                            "value": "Started",
+                            "type": "String"
+                        },
+                        "StartTime": {
+                            "value": {
+                                "value": "@pipeline().TriggerTime",
+                                "type": "Expression"
+                            },
+                            "type": "Datetime"
+                        },
+                        "EndTime": {
+                            "value": {
+                                "value": "@utcNow()",
+                                "type": "Expression"
+                            },
+                            "type": "Datetime"
+                        },
+                        "ErrorMessage": {
+                            "value": "\"\"",
+                            "type": "String"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "UsersDB",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "folder": {
+            "name": "00-Sample ADF Pipelines"
+        },
+        "annotations": []
+    }
+}
