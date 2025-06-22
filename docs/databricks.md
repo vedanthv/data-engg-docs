@@ -2787,3 +2787,99 @@ SELECT "SELECT ${DA.my_new_catalog}.example.mask('sensitive data') AS data" AS Q
 
 Now run the query in the SQL Editor you can see that the last two characters are redacted.
 
+# Data Engineering Professional Learning Pathway
+
+## Top Level Concepts
+
+This is the course material that's part of [Databricks AI Summit Learning Festival](https://community.databricks.com/t5/events/dais-2025-virtual-learning-festival-11-june-02-july-2025/ec-p/119323#M3413)
+
+![image](https://github.com/user-attachments/assets/9db72f39-b76b-4eb1-bebe-18d74491960c)
+
+### Advantages of Stream Processing
+
+![image](https://github.com/user-attachments/assets/7b7dd479-9fbc-498a-9afa-f3a2d946e212)
+
+### Stream Processing Architecture
+
+![image](https://github.com/user-attachments/assets/5769cb5d-a6af-410c-b200-4d0ff3480b1d)
+
+### Challenges with Streaming
+
+![image](https://github.com/user-attachments/assets/33886dbd-be99-49c4-82c6-35df5c388fce)
+
+## What is Structured Streaming?
+
+![image](https://github.com/user-attachments/assets/b032b0aa-9c6c-4129-a59d-f310472625f9)
+
+### Unbounded Tables For Streaming
+
+![image](https://github.com/user-attachments/assets/c601d348-2e8f-4cf2-954a-e064066f2c60)
+
+### Execution Mode in Streaming
+
+![image](https://github.com/user-attachments/assets/e2b89492-25d3-4433-89ce-c799ea0627a8)
+
+### Anatomy of a Streaming Query
+
+Source, Input Tables, Result tables and storage layer in streaming.
+![image](https://github.com/user-attachments/assets/e6f05ec0-f937-4fa2-9a63-0774e638d1e2)
+
+#### Step 1: Read data from any streaming source
+
+![image](https://github.com/user-attachments/assets/510359b0-66ee-473d-84d8-cdc2585ec936)
+
+#### Step 2 : Transform the data
+![image](https://github.com/user-attachments/assets/c4d80b0f-5f37-4a4b-8bfb-a8dffb9a86e9)
+
+#### Step 3 : Sink
+![image](https://github.com/user-attachments/assets/4b6231ed-736f-4387-91f3-9af9e842ad71)
+
+#### Step 4 : Trigger Mechanism
+
+Checkpoint is there to ensure fault tolerance.
+![image](https://github.com/user-attachments/assets/3372e246-1416-4909-918f-9f469a7348d7)
+
+The API definitions for batch and streaming is the same.
+
+### Types of Triggers
+
+![image](https://github.com/user-attachments/assets/6ecd865b-6aed-427d-8efa-26da07e8571f)
+
+### Output Modes
+
+![image](https://github.com/user-attachments/assets/c5107f77-ce18-40fd-86cb-d11e5f542d05)
+
+### Demo : Streaming Data Query
+
+"readStream" instead of "read" the tranformations are the same. 
+![image](https://github.com/user-attachments/assets/c2752817-db9e-43f7-be8f-4772f87cbdd4)
+
+**Data Metrics**
+![image](https://github.com/user-attachments/assets/0f0bae4a-56fd-4780-8310-4ed6ecca80db)
+
+#### Writing Data to a Delta Lake Sink
+
+![image](https://github.com/user-attachments/assets/8f40d051-220a-4452-9229-24fd3aa798e5)
+
+We can see the status of the query
+
+![image](https://github.com/user-attachments/assets/66e58b37-f031-4d01-b622-b6be7f2e618b)
+
+... and also see the metrics from the previous query
+
+![image](https://github.com/user-attachments/assets/53c1967b-ee45-4cd7-a137-845ca788127b)
+
+### Using Delta tables as a Streaming Source
+
+![image](https://github.com/user-attachments/assets/86878222-d4f1-4077-bc3c-8824a04bfc23)
+
+#### Tuning the parameters for a delta streaming source
+
+![image](https://github.com/user-attachments/assets/92aef855-c795-4803-aa7c-08625ef77e52)
+
+#### Streaming to a delta table
+
+For any arbitary aggregations on streaming data, use complete mode.
+![image](https://github.com/user-attachments/assets/9551b6a0-2f21-4881-a330-23921faac6e6)
+
+
