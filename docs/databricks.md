@@ -2882,4 +2882,219 @@ We can see the status of the query
 For any arbitary aggregations on streaming data, use complete mode.
 ![image](https://github.com/user-attachments/assets/9551b6a0-2f21-4881-a330-23921faac6e6)
 
+### Aggregations, Time Windows and Watermark
+
+#### Types of Stream Processing
+
+There are two types of Stream Processing
+
+- Stateless
+- Stateful
+  
+![image](https://github.com/user-attachments/assets/2d4c7d03-acae-4eea-9bea-87488e902a7e)
+
+#### Intermediate State to Keep Track
+
+![image](https://github.com/user-attachments/assets/dbeb035d-1d1b-4e7c-b31e-13435fc39690)
+
+### Aggregations over Time Windows
+
+### Event Time vs Processing Time
+
+The unbounded tables must always be processed in order.
+![image](https://github.com/user-attachments/assets/d68631dc-08cb-4912-8cdb-cd6dcfb49484)
+
+### Tumbling Window vs Sliding Window
+
+![image](https://github.com/user-attachments/assets/f1357050-dd4b-4282-b03e-205b55b6b1a8)
+
+### Sliding Window Example
+
+Here is a 10 min window with 5 min overlap
+![image](https://github.com/user-attachments/assets/8b0cd55f-c545-41b7-a27d-3f6340ea16e2)
+
+### Challenges with Sliding Window
+
+There is a lot of Memory Pressure with using sliding window because all the data is stored in executor memory.
+
+![image](https://github.com/user-attachments/assets/6af17385-c2f2-487c-b354-4d07d871ce9c)
+
+We can tackle this by storing the data off heap
+![image](https://github.com/user-attachments/assets/f7fc27e9-82fc-4f70-972d-b035b028c654)
+
+### Watermarking / Late Threshold
+
+![image](https://github.com/user-attachments/assets/ec6db226-7ac3-45df-9bc6-34368a305819)
+
+Watermarking is a technique that basically tells how long is too late?
+
+For example if data record with id = 100 came in now at 12:05am then if we keep window as 10 min then we will wait until 12:15am and if no data arrives for that id we purge the state.
+
+The dog record in the below pic has eventTime of 12:04 but its beyond our 10 min window (12:05 - 12:15) so we dont consider that record and miss the count.
+![image](https://github.com/user-attachments/assets/1c7fddee-b7db-4bfd-953f-71a149973afb)
+
+**Late arriving data state is dropped and we save memory**
+
+![image](https://github.com/user-attachments/assets/de5ddea3-59df-4070-a38c-82330041d451)
+
+### Demo : Time window aggregations with Watermarking
+
+![image](https://github.com/user-attachments/assets/a53bb105-5743-4d68-bda7-1f6ab8ebd795)
+
+#### Read and Process Streaming Source
+
+![image](https://github.com/user-attachments/assets/4d8dd3de-7f8c-481d-a16e-34ffafb550fe)
+
+Output
+![image](https://github.com/user-attachments/assets/a7e550d7-0e65-42d4-8e8f-7e5cbbb047ee)
+
+**Windowing**
+
+Goal is to find the revenue in USD in a 60 min time window.
+
+![image](https://github.com/user-attachments/assets/4d559d9e-2133-4794-9edd-b4bf41b8c1f6)
+
+- Here the window is of 60 min but we add a watermark of 90 min to cater to any late arriving data.
+- Then we group by both eventTimestamp and the city to find the revenue.
+
+Output
+![image](https://github.com/user-attachments/assets/2ab92ade-ca5f-4b4a-9a7d-96339434ff72)
+
+### Writing Data in Append Mode
+
+![image](https://github.com/user-attachments/assets/63927321-dc13-46b9-a791-d06f1d5c9423)
+
+The catch with append mode is that the data is not going to be written into the sink until and unless we finish the hour (window duration)
+
+The **availableNow** trigger processes all the data currently available in the source and then stops. It’s like a one-time cleanup of everything in your inbox.
+
+```python
+writeStreamAvailableNow = (
+    df.writeStream.format("delta")
+    .option("checkpointLocation", f"{checkpoint_location}")
+    .trigger(availableNow=True)
+    .outputMode("append")
+    .queryName("AvailableNow")
+    .toTable("default.streaming_circuits")
+)
+```
+![image](https://github.com/user-attachments/assets/867c6d62-ba3e-4a4f-b702-4822de3918e2)
+
+Result: here, the query processes all data available in the source and then terminates. This is a great choice when you want to process data in a “stream-like” fashion but only once.
+
+There is always some delay between creating streaming table and the commits happening to it.
+
+![image](https://github.com/user-attachments/assets/bca915cf-eff7-4f2f-84b5-7b75d67bc0b2)
+
+### Writing Data in update mode
+
+![image](https://github.com/user-attachments/assets/774d0912-8320-4cf6-8661-69aff779da2e)
+
+#### Step 1 : Create a table
+![image](https://github.com/user-attachments/assets/15fc2eb0-fa1b-4f5a-bd3b-db8168656f68)
+
+#### Step 2 : Write a MERGE Query to merge the data based on start and end time
+
+![image](https://github.com/user-attachments/assets/5e3b04ba-c384-4063-b3cf-e6e9c2e46d6f)
+
+![image](https://github.com/user-attachments/assets/88cb0e0c-5ab8-42ff-a824-42798ea5fb83)
+
+### Data Ingestion Patterns
+
+![image](https://github.com/user-attachments/assets/5d535e77-888a-4270-b76f-1954fa2d9f2d)
+
+#### How to deal with ephemeral data?
+
+We can deal with transient data by creating STREAMING LIVE tables that contain raw data from source.
+
+![image](https://github.com/user-attachments/assets/4abf68eb-00ad-4454-a41e-ae7c395c3432)
+
+Then we can update other tables like silver tables (also live) with transformations.
+
+#### Simplex vs Multiplex Ingestion
+
+![image](https://github.com/user-attachments/assets/c9875de5-0eeb-4237-b7cd-6a2c2c7935bc)
+
+#### Dont use Kafka as bronze table
+
+![image](https://github.com/user-attachments/assets/41493a40-8c3b-4377-9b80-a5f3e7197662)
+
+#### Solution
+
+- First simplex and store data in bronze
+- Then multiplex it and transform into multiple silver tables.
+![image](https://github.com/user-attachments/assets/08ccbccb-7a75-49b4-9876-a1b6fdff0af1)
+
+### DLT Demo
+
+#### Autoloader for bronze ingestion
+
+![image](https://github.com/user-attachments/assets/7bf2daae-d9d8-48d6-8c2b-c99dd5a47ba7)
+
+![image](https://github.com/user-attachments/assets/a332af9c-3c77-4a48-883b-3b927313183c)
+
+Here are the conf parameters
+
+![image](https://github.com/user-attachments/assets/4d25b2f0-a7e9-4977-bd68-199d1bbd2eff)
+
+This is the syntax of a dlt table.
+
+- we first define the parameters of the table and dont allow reset on it.
+  
+![image](https://github.com/user-attachments/assets/9a3e2e31-0236-49dc-b6e9-6f06de503777)
+
+- now we stream data from cloud files using autoloader.
+![image](https://github.com/user-attachments/assets/751a3a97-a4f5-4fd0-9394-121b0913d077)
+
+Final dlt pipeline
+
+![image](https://github.com/user-attachments/assets/1d04b4d9-907f-486b-be91-039f463c9c3e)
+
+#### Transforming the data
+
+![image](https://github.com/user-attachments/assets/7fdb48ce-cbb9-4dda-b5b6-3f3dae99427f)
+
+![image](https://github.com/user-attachments/assets/0a3af94c-5f8a-4d3d-8ca5-7a30379d88eb)
+
+### Quality Enforcement in DLT
+
+#### Quality enforcement in Bronze
+
+![image](https://github.com/user-attachments/assets/12f6f1eb-b6f0-4a9c-bf33-ed8750a71fd8)
+
+#### Quality enforcement in Silver
+
+![image](https://github.com/user-attachments/assets/891c851d-f559-4ff2-938a-0ab23e403862)
+
+#### Schema Enforcement Patterns
+
+![image](https://github.com/user-attachments/assets/3a195349-fa93-4a4b-ab4f-7d7f271472e3)
+
+#### Alternate Enforcement Methods
+![image](https://github.com/user-attachments/assets/7cb727c7-3f13-4fcc-8b82-cce7dfaff70e)
+
+![image](https://github.com/user-attachments/assets/a8c16656-851f-4e89-89ea-c7da544c9662)
+
+#### Defining Expectations in DLT
+
+![image](https://github.com/user-attachments/assets/cdc05986-babf-4fdc-9941-433bfba5aa45)
+
+![image](https://github.com/user-attachments/assets/b5dc377a-57e0-45fa-a13d-a8254dd525fe)
+
+### Demo: Enforcing Validations on the Data
+
+![image](https://github.com/user-attachments/assets/b90e16fe-3a9b-4c4a-828e-7f841fdf9879)
+
+#### Quarantining Records
+
+We say expect all or drop which indicates that all rules must pass else drop records.
+![image](https://github.com/user-attachments/assets/e1185b24-6610-411c-8030-794f5ac39ea5)
+
+Now we can use those rules
+
+![image](https://github.com/user-attachments/assets/a3f5f19f-ca61-46d9-b57a-8439f68e5513)
+
+**The Data Quality metrics in the UI**
+
+![image](https://github.com/user-attachments/assets/c55d1c20-70c7-47bf-b3a8-241b9ee6f842)
 
