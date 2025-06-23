@@ -3098,3 +3098,177 @@ Now we can use those rules
 
 ![image](https://github.com/user-attachments/assets/c55d1c20-70c7-47bf-b3a8-241b9ee6f842)
 
+## Databricks Data Privacy
+
+![image](https://github.com/user-attachments/assets/070b162e-72fd-4467-b647-996c39b37ce8)
+
+### Storing Data Securely
+
+![image](https://github.com/user-attachments/assets/8fedd040-0992-4103-ab5a-d1c186ba06b2)
+
+#### Regulatory Compliance
+
+**GDPR and CCPA**
+
+![image](https://github.com/user-attachments/assets/1529b46b-a014-4060-ac9e-40b18d3a2ef1)
+
+#### Databricks Simplifying Compliance
+
+![image](https://github.com/user-attachments/assets/0d42b54c-e211-4818-a52e-410bbac31c22)
+
+#### 3 Key Aspects of Data Privacy
+
+![image](https://github.com/user-attachments/assets/e3503526-a754-4ea1-a68a-2320b4d29d46)
+
+### Advanced Unity Catalog Concepts
+
+![image](https://github.com/user-attachments/assets/74acae4c-6eb1-4a02-afb8-5c026ebf3f01)
+
+#### Components of Unity Catalog
+
+![image](https://github.com/user-attachments/assets/1636cd76-8685-41af-94bb-69b3ab7aea5f)
+
+How unity catalog provides single governance model?
+![image](https://github.com/user-attachments/assets/60021532-9034-4dac-9978-ff21c781f15d)
+
+#### Access Control Lists
+
+![image](https://github.com/user-attachments/assets/4dabbbe3-3831-4163-9268-e29b3dd695e7)
+
+#### Managing ACLs
+
+![image](https://github.com/user-attachments/assets/63d763a9-6f2a-477f-9cc8-ba692e12b4fe)
+
+#### Tagging and AI Docs
+
+![image](https://github.com/user-attachments/assets/105c4fb1-e466-41a5-aae8-38e3e2b43ba4)
+
+#### Search objects with tags
+
+![image](https://github.com/user-attachments/assets/1c60f6ad-a7bb-4ec7-a4ed-64e888b2ed29)
+
+#### Fine Grained Access Control
+
+![image](https://github.com/user-attachments/assets/02f5bd04-d1b0-44aa-8b51-26ca48e2d48d)
+
+**Dynamic Views Fine Grained Access Control**
+
+![image](https://github.com/user-attachments/assets/757568fd-e13b-4bf6-b221-9a74e0f0db6e)
+
+``current_user`` 
+
+![image](https://github.com/user-attachments/assets/f59dce91-85ff-4df9-abf0-374add83b8b0)
+
+``is_member()``
+
+![image](https://github.com/user-attachments/assets/aa94a9e0-b603-428f-9e27-ec18d578c3df)
+
+### Row level security and Column Masking
+
+![image](https://github.com/user-attachments/assets/5a9680ca-d8c7-4eb3-b6ba-5aebcfc2a615)
+
+**What are row filters?**
+
+Row filters allow you to apply a filter to a table so that queries return only rows that meet the filter criteria. You implement a row filter as a SQL user-defined function (UDF). Python and Scala UDFs are also supported, but only when they are wrapped in SQL UDFs.
+
+**What are column masks?**
+Column masks let you apply a masking function to a table column. The masking function evaluates at query runtime, substituting each reference of the target column with the results of the masking function. For most use cases, column masks determine whether to return the original column value or redact it based on the identity of the invoking user. Column masks are expressions written as SQL UDFs or as Python or Scala UDFs wrapped in SQL UDFs.
+
+Each table column can have only one masking function applied to it. The masking function takes the unmasked value of the column as input and returns the masked value as its result. The return value of the masking function should be the same type as the column being masked. The masking function can also take additional columns as input parameters and use those in its masking logic.
+
+#### Examples
+
+This example creates a SQL user-defined function that applies to members of the group admin in the region US.
+
+When this sample function is applied to the sales table, members of the admin group can access all records in the table. If the function is called by a non-admin, the RETURN_IF condition fails and the region='US' expression is evaluated, filtering the table to only show records in the US region.
+
+```sql
+CREATE FUNCTION us_filter(region STRING)
+RETURN IF(IS_ACCOUNT_GROUP_MEMBER('admin'), true, region='US');
+```
+Use it on a table
+
+```sql
+CREATE TABLE sales (region STRING, id INT);
+ALTER TABLE sales SET ROW FILTER us_filter ON (region);
+```
+
+### Column Mask Examples
+
+```sql
+CREATE FUNCTION ssn_mask(ssn STRING)
+  RETURN CASE WHEN is_account_group_member('HumanResourceDept') THEN ssn ELSE '***-**-****' END;
+```
+
+```sql
+--Create the `users` table and apply the column mask in a single step:
+
+CREATE TABLE users (
+  name STRING,
+  ssn STRING MASK ssn_mask);
+```
+
+### Filtering on unspecified columns
+
+```sql
+DROP FUNCTION IF EXISTS row_filter;
+
+CREATE FUNCTION row_filter()
+  RETURN EXISTS(
+    SELECT 1 FROM valid_users v
+    WHERE v.username = CURRENT_USER()
+);
+```
+
+```sql
+DROP TABLE IF EXISTS data_table;
+
+CREATE TABLE data_table
+  (x INT, y INT, z INT)
+  WITH ROW FILTER row_filter ON ();
+
+INSERT INTO data_table VALUES
+  (1, 2, 3),
+  (4, 5, 6),
+  (7, 8, 9);
+```
+
+### Performance Considerations
+
+![image](https://github.com/user-attachments/assets/1aa032e5-8f19-4d52-883f-f3539bc53846)
+
+### Auditing Data
+
+#### Table Level Data
+
+What was the last updated time?
+![image](https://github.com/user-attachments/assets/81e240df-e74f-4cc2-a294-31cff01aa0ea)
+
+#### User Level Data
+
+Who used which tables?
+![image](https://github.com/user-attachments/assets/bc14a1bd-896a-44ef-a5d8-1f8047721acf)
+
+#### Lineage Data
+
+What is the lineage of the tables?
+![image](https://github.com/user-attachments/assets/9514444a-47d4-4671-955f-f2422fc43277)
+
+#### Data Isolation
+
+![image](https://github.com/user-attachments/assets/b6d37361-dd6e-49e5-9f92-e4ad3b6d9bfe)
+
+![image](https://github.com/user-attachments/assets/ca5ce0d4-b9c0-4321-a8ab-d6a8c67f90ed)
+
+![image](https://github.com/user-attachments/assets/18c1dbbe-b351-4874-aaca-ed1d3625aec9)
+
+#### Centralized and Distributed Metastore Models
+
+**Centralized**
+
+The metastore owners govern all the objects.
+![image](https://github.com/user-attachments/assets/030a303e-f33e-4610-859d-da54e6febdd6)
+
+**Distributed**
+
+The governance is at the catalog level.
