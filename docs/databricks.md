@@ -3473,6 +3473,7 @@ If multiple updates come in one micro batch we need to select 1 of them.
 ![image](https://github.com/user-attachments/assets/06b3ba80-03bc-4c93-bec3-27712325d9f1)
 
 Materialized views cannot be used for DML ops, we need to REFRESH manually
+
 ![image](https://github.com/user-attachments/assets/abcced24-8205-4f83-811d-733ecd926fe0)
 
 ### CDF Demo
@@ -3553,3 +3554,230 @@ Are deletes fully commited?
 No, we can see them in previous versions of the data.
 
 ![image](https://github.com/user-attachments/assets/cd48eb47-d44a-4c00-b442-accd3b64d867)
+
+## Performance Optimization in Databricks
+
+Some common problems
+
+![image](https://github.com/user-attachments/assets/ab027890-e70a-4c8f-b1ef-0f14426c5943)
+
+Avoiding small files problem
+
+![image](https://github.com/user-attachments/assets/530b1b7b-df5e-4d42-8948-3d622167d705)
+
+### Demo : File Explosion
+
+![image](https://github.com/user-attachments/assets/9bac5ef3-ce31-4764-92cf-0b2d274efb06)
+
+Partitioning by Id
+
+![image](https://github.com/user-attachments/assets/ace2cd16-1152-484e-9412-31b117d637c1)
+
+Now we do some aggregation on non partitioned columns. It takes 7 seconds to compute.
+
+![image](https://github.com/user-attachments/assets/49dfd811-7c49-447e-a31d-152520442f7e)
+
+Because we partitioned by Id the query is looking into 2500 files
+
+![image](https://github.com/user-attachments/assets/04f62386-fd3b-4dcd-b31e-4c74b082c3da)
+
+Instead if we dont add partitioning then the reads are much faster.
+
+### Data Skipping
+
+#### Z-Ordering
+
+We have stored data in min and max column basis.
+
+![image](https://github.com/user-attachments/assets/c5ad3219-06e5-47cf-ac4e-9e775512ad5d)
+
+![image](https://github.com/user-attachments/assets/8cef39dd-dbed-4bff-9597-2b1f4d99cc4f)
+
+#### Some Considerations
+
+![image](https://github.com/user-attachments/assets/a3344680-0d51-4e29-933f-31a259f26795)
+
+![image](https://github.com/user-attachments/assets/44ea568f-0d75-4cd6-957b-2237bf973fb5)
+
+![image](https://github.com/user-attachments/assets/5a24c2c4-b21f-48f4-8094-d850ba3c0e31)
+
+#### Liquid Clustering
+
+![image](https://github.com/user-attachments/assets/26a57521-5120-4109-9de5-094401d06e35)
+
+🧱 **Partitioning**
+Partitioning physically organizes data into separate folders on storage based on the values of one or more columns. For example, partitioning a sales table by region and year results in directories like /region=US/year=2024/. This allows partition pruning: when queries filter on those columns, Databricks reads only relevant partitions, improving performance.
+
+Partitioning works best when:
+
+- You have low-cardinality columns (few unique values).
+
+- You know the access patterns ahead of time.
+
+- You want predictable file organization.
+
+However, partitioning becomes problematic with high-cardinality columns (e.g., user_id or product_id) because it creates too many folders. This is called partition explosion, which leads to small files, slow queries, and high metadata overhead.
+
+🌊 **Liquid Clustering**
+Liquid Clustering is a newer, automatic file organization technique that clusters data logically, not physically. Instead of creating folders, it reorganizes data within Delta files based on specified columns (like user_id, timestamp). It improves filtering performance without the downsides of static partitioning.
+
+- It works incrementally—Databricks automatically reclusters the data in the background using OPTIMIZE jobs. This makes it ideal for:
+
+- High-cardinality columns.
+
+- Streaming or frequently updated datasets.
+
+- Situations where partitioning would be too rigid or hard to manage.
+
+With Liquid Clustering, you just define the clustering columns using table properties, and Databricks takes care of the rest. It’s flexible, scalable, and low-maintenance.
+
+If we want to change liquid clustering columns, we dont need to rewrite whole table.
+
+Liquid clustering intelligently makes sure the files are of same size.
+
+![image](https://github.com/user-attachments/assets/ff77944e-8802-4d4e-aecb-96984714139d)
+
+![image](https://github.com/user-attachments/assets/a3ed0d5b-f98f-488a-aa99-5d75a43e6128)
+
+### Predictive Optimization
+![image](https://github.com/user-attachments/assets/e8f50298-f3e6-44c5-ada9-b2b1c229517c)
+
+### Code Optimizations
+
+#### Data Skew
+
+![image](https://github.com/user-attachments/assets/80fba07d-d6ab-44fd-99fd-fdd730afb451)
+
+Salting approach by adding some suffix to each key
+
+![image](https://github.com/user-attachments/assets/58c34045-1691-4921-a970-2b45b84d65dc)
+
+#### Data Shuffling
+
+![image](https://github.com/user-attachments/assets/216049d2-6c0e-4b5a-b03d-fb1ef49900ad)
+
+Mitigate Shuffling
+
+![image](https://github.com/user-attachments/assets/5d475878-5192-42db-879a-2ccea870a2cf)
+
+### Demo of Shuffling
+
+![image](https://github.com/user-attachments/assets/69218692-d222-4fb1-b449-6564760385cd)
+
+This data shows the shuffling of data, we can see that around 1.5 G of shuffling happenend.
+![image](https://github.com/user-attachments/assets/3100b6d3-0dd5-4874-b058-4e7f5aa02744)
+
+#### Broadcast Join
+
+![image](https://github.com/user-attachments/assets/907c03a6-4c8b-4f6f-99a3-40eaf15c94fb)
+
+After enabling broadcast join there are only few Kb worth of shuffling
+![image](https://github.com/user-attachments/assets/c5dd8fd4-7363-4c8e-85a2-16fdbe9f8aac)
+
+### Spill
+
+![image](https://github.com/user-attachments/assets/a38e5bf1-a223-49f0-8522-e3e72b3d3c8b)
+
+When does skew occur
+
+![image](https://github.com/user-attachments/assets/cf4757a7-901b-41fe-9086-a93ee8eeebb5)
+
+Spilling to memory and disk
+
+![image](https://github.com/user-attachments/assets/d569c1c0-b917-4c18-9413-996d083df408)
+
+![image](https://github.com/user-attachments/assets/93084d07-2943-4b2b-bef2-e2139cc84979)
+
+#### Mitigating Serialization Issues
+
+![image](https://github.com/user-attachments/assets/84c86f53-21b0-4e4f-a6d0-65d27d2fbaff)
+
+![image](https://github.com/user-attachments/assets/850455a3-da3c-4412-87dc-a2d97749c306)
+
+#### Demo : UDF
+
+![image](https://github.com/user-attachments/assets/9d88fc47-0985-40bb-84a3-4b26c25da1c1)
+
+For 60 records it takes one minute because the data is not being run on diff cores, its being run one after another.
+
+Solution: We repartition the data
+
+![image](https://github.com/user-attachments/assets/303bebf8-250a-495c-be5f-246c36bdc3d2)
+
+#### How SQL UDF is better?
+
+![image](https://github.com/user-attachments/assets/24b8b526-5c82-48c5-bfce-90c8d2de3bd9)
+
+![image](https://github.com/user-attachments/assets/5892e02a-dd60-4aef-a4e2-98a0756c90c4)
+
+Query is supported by Photon
+![image](https://github.com/user-attachments/assets/c175a88d-4be8-4ea3-a8e3-ce6663abc40b)
+
+### Cluster Optimization
+
+![image](https://github.com/user-attachments/assets/4484eb70-c258-4f59-bf9e-dffdd3643b1e)
+
+![image](https://github.com/user-attachments/assets/1e68a793-9501-43d8-b239-1e10e72a4afd)
+
+![image](https://github.com/user-attachments/assets/c1f164fd-b5e1-4231-9933-5013753302cc)
+
+#### Photon
+
+![image](https://github.com/user-attachments/assets/0e34471f-e119-4281-9e38-c588506ee4fd)
+
+#### Cluster Optimization Techniques
+
+![image](https://github.com/user-attachments/assets/7558639d-b779-4ab8-af77-9d66677dbc03)
+
+![image](https://github.com/user-attachments/assets/17b4eeeb-c877-4871-b06a-b45fd9a0960c)
+
+![image](https://github.com/user-attachments/assets/a377a5fd-a854-4084-a4e7-f9043fec1659)
+
+![image](https://github.com/user-attachments/assets/f5393b71-c294-4fcc-b661-14c5539b20f7)
+
+🎈 Imagine you're at a birthday party...
+
+There are 200 kids playing a game where they all have to sort their candies by color. But there’s a rule:
+All the red candies go to one basket, all the green to another, and so on.
+
+Now, to do this, the kids need to share and move candies around — this is like a shuffle in Spark. It’s when data (candies) gets moved around to be grouped or sorted.
+
+🧺 Now, what is spark.sql.shuffle.partitions?
+
+It’s like saying:
+
+“How many baskets should we use to sort all the candies?”
+
+So if we set:
+
+spark.sql.shuffle.partitions = 200 → Spark uses 200 baskets
+
+spark.sql.shuffle.partitions = 50 → Uses 50 baskets
+
+🎨 Why it matters:
+
+Too many baskets (e.g. 1000): Some baskets might only get 1 candy, but the kids still have to carry them — too much work!
+
+Too few baskets (e.g. 5): Baskets get too full, hard to carry — some kids may drop candies 😬
+
+So we need a good number of baskets so all the kids can sort fast, without making a mess!
+
+🧠 What Spark does:
+
+When Spark runs a big job (like sorting, grouping, or joining), it shuffles data. Then it needs to know:
+
+“Into how many parts (baskets) should I split the shuffled data?”
+
+That’s what spark.sql.shuffle.partitions controls.
+
+🧁 In short:
+
+It's like how many baskets Spark uses to sort data after mixing it.
+
+Default is 200 baskets.
+
+If your job is small → use fewer baskets.
+
+If your job is huge → maybe more baskets help.
+
+Or better yet, let Spark decide by itself using Adaptive Query Execution — like having a smart friend who picks the perfect number of baskets for each game 🎯
