@@ -3272,3 +3272,284 @@ The metastore owners govern all the objects.
 **Distributed**
 
 The governance is at the catalog level.
+
+### External Locations and Storage Credentials
+
+![image](https://github.com/user-attachments/assets/f20d648b-1d31-4a7e-8f71-2611daaa27da)
+
+### Unity Catalog Model to Access data
+
+![image](https://github.com/user-attachments/assets/df8afbbd-b936-4afc-90c8-6e8e551562f0)
+
+- The data comes from the cloud storage to the user, not from the table. Unity catalog only checks the permissions and audit log.
+
+### Encryption by Default
+
+![image](https://github.com/user-attachments/assets/5c50d189-1bff-430c-a725-8b870dc0d8c2)
+
+### Managing Access to PII
+
+![image](https://github.com/user-attachments/assets/9f10da3b-f2bd-44a3-b70d-159181c54e26)
+
+### Best Practices
+
+![image](https://github.com/user-attachments/assets/3b2eb9be-233a-4e51-b0f6-efb0e930b5d8)
+
+![image](https://github.com/user-attachments/assets/2c6a4fc6-51cb-4495-a43a-52499aa40c1e)
+
+### Demo
+
+![image](https://github.com/user-attachments/assets/263f67f0-0dfd-491f-9d90-f051a10ef6fb)
+
+#### Protecting Columns and Rows
+
+![image](https://github.com/user-attachments/assets/62f6f009-ddc0-4056-babf-3cb81fa61906)
+
+#### Dynamic Views
+
+![image](https://github.com/user-attachments/assets/c6f970da-65e0-4a8a-b9db-8a27189970b8)
+
+#### Example
+
+![image](https://github.com/user-attachments/assets/4c98f1bc-c2d4-4b4f-9f81-b017da46adfa)
+
+![image](https://github.com/user-attachments/assets/a15ecb9f-61ca-46f2-8879-061bce5f47ed)
+
+#### Row filters and Column Mask
+
+![image](https://github.com/user-attachments/assets/5c6256a8-4415-4832-9f35-75056a6e3775)
+
+![image](https://github.com/user-attachments/assets/54a04825-efda-46d9-ab5b-5363c2ed31c5)
+
+**Applying the filter**
+
+![image](https://github.com/user-attachments/assets/70bee76e-16de-4638-a543-c64121bda8d3)
+
+**Creating Column Mask**
+
+![image](https://github.com/user-attachments/assets/441284a7-d308-4a01-8f9a-8007b52a78e1)
+
+![image](https://github.com/user-attachments/assets/b1784190-14b6-4b7a-b420-126a5dfcd487)
+
+**Table Tags**
+![image](https://github.com/user-attachments/assets/cb106ba9-40d4-4b8a-a9e8-7b096418fc92)
+
+### PII Data security
+
+![image](https://github.com/user-attachments/assets/e3eb60ce-1f49-4bbd-9c25-3b3261114a06)
+
+#### Pseudonymization
+
+![image](https://github.com/user-attachments/assets/d1686fb8-2c05-44db-9b38-d97ec1cf5188)
+
+##### Hashing
+
+![image](https://github.com/user-attachments/assets/e11e3829-c2b2-4eeb-91d5-59773eb08bf0)
+
+##### Tokenization
+
+![image](https://github.com/user-attachments/assets/aacc1dca-6278-42a7-97ac-1a7e69eae745)
+
+#### Anonymization
+
+![image](https://github.com/user-attachments/assets/bb0e0707-e787-4a72-b6c8-b1cb2564cfaf)
+
+![image](https://github.com/user-attachments/assets/8fcfa59d-6b5e-4f94-83d3-a63a0d1e3a95)
+
+![image](https://github.com/user-attachments/assets/07e3288b-e548-47e7-8d9b-909001f179e0)
+
+![image](https://github.com/user-attachments/assets/2054c309-964a-411b-93c0-46b6c94c2067)
+
+![image](https://github.com/user-attachments/assets/de10d8e8-c0ab-44ed-b55c-89985dfa2d48)
+
+![image](https://github.com/user-attachments/assets/d07338eb-650d-4100-a6a3-5968ec4b13f0)
+
+### PII Data Security : Demo
+
+![image](https://github.com/user-attachments/assets/8d770564-597d-47e8-9edd-941f5ccc2b52)
+
+![image](https://github.com/user-attachments/assets/683c5b83-f065-4dd2-b7a2-9cc036065c05)
+
+Two methods hashing and tokenization.
+
+#### Hashing
+
+![image](https://github.com/user-attachments/assets/c363833d-d5c9-4f11-aea6-57052f393967)
+
+Create a dlt table
+![image](https://github.com/user-attachments/assets/ff1eb5c3-bd53-4359-99e6-74bd88c6a627)
+
+Create a salt and hash
+![image](https://github.com/user-attachments/assets/0f769c0b-19e2-4757-8674-d5715ec87b5e)
+
+Create user lookup table with alt id generated from above.
+
+![image](https://github.com/user-attachments/assets/cb5532bc-f1a7-4d21-8c5b-e4d83ef51fe6)
+
+Now check user_id_hashed table
+
+![image](https://github.com/user-attachments/assets/2703663f-02d3-42b0-a099-3031450be8b4)
+
+#### Tokenization
+
+![image](https://github.com/user-attachments/assets/6ed1200d-ab1c-48a4-ace3-b02c4cdbf0c1)
+
+![image](https://github.com/user-attachments/assets/e59ee9f8-85a5-47c6-9b7d-c17ab1766906)
+
+Create a join with real and pseudo lookup table.
+
+![image](https://github.com/user-attachments/assets/1cccb1d9-385e-4e62-bf26-cf9aebdbf422)
+
+The lookup table
+![image](https://github.com/user-attachments/assets/35a1c0c0-45cf-45b9-9dfe-fd55e271115d)
+
+The tokennized joined table
+![image](https://github.com/user-attachments/assets/dc976954-17a5-4476-bc92-6c4e364705f9)
+
+#### Anonymization 
+
+Irreversible 
+
+![image](https://github.com/user-attachments/assets/22997ad6-5dce-47ee-bf07-81e70002f113)
+
+Setting up tables
+
+![image](https://github.com/user-attachments/assets/e1404394-b31f-4ad2-9d6f-687353a0fe84)
+
+![image](https://github.com/user-attachments/assets/47c63253-d576-48ce-b651-3d976c63250a)
+
+#### Schema for users bronze table
+
+![image](https://github.com/user-attachments/assets/8baf8aba-aede-4df2-96e3-d9d6ba0413aa)
+
+Age bins function
+
+![image](https://github.com/user-attachments/assets/1055dff2-ac20-4962-b0b0-46644c79bd09)
+
+![image](https://github.com/user-attachments/assets/ddea3155-a97a-4d7a-8b37-673f4e171c62)
+
+### Change Data Feed
+
+![image](https://github.com/user-attachments/assets/5b476a51-ce25-4ea1-9640-9591e00e7217)
+
+#### Solution I : Ignore deletes and updates
+
+![image](https://github.com/user-attachments/assets/8eca1d9c-0dc7-4308-bec1-53cf558dae19)
+
+#### Benefits of Change Data Feed
+
+![image](https://github.com/user-attachments/assets/6ede58fd-cb8b-4055-92e3-11cac49f9d28)
+
+#### CDC vs CDF
+
+![image](https://github.com/user-attachments/assets/cbeabc31-0509-441f-a1e4-c99fcc39de71)
+
+#### How CDF works?
+
+![image](https://github.com/user-attachments/assets/d96a48d9-4d7a-42a8-87ee-5f2a2e05ecc5)
+
+#### Consuming Delta CDF
+
+![image](https://github.com/user-attachments/assets/c230ae8c-e6b7-41ce-9fef-2b0860a86228)
+
+If multiple updates come in one micro batch we need to select 1 of them.
+
+![image](https://github.com/user-attachments/assets/8df258aa-56f8-4316-88e4-54e60f4b802e)
+
+#### How to collect changes?
+
+![image](https://github.com/user-attachments/assets/d3464e27-80c2-4b67-8c13-acc5ea450e9c)
+
+### Deleting PII data
+
+![image](https://github.com/user-attachments/assets/710cebd9-30e4-4ea2-93be-b29b37b767e9)
+
+#### Data Vacuuming 
+
+![image](https://github.com/user-attachments/assets/3b82b950-a44e-46db-9df5-678f2b7debc3)
+
+![image](https://github.com/user-attachments/assets/75574df8-fb68-4f6b-9ee9-edf4d20d473c)
+
+![image](https://github.com/user-attachments/assets/06b3ba80-03bc-4c93-bec3-27712325d9f1)
+
+Materialized views cannot be used for DML ops, we need to REFRESH manually
+![image](https://github.com/user-attachments/assets/abcced24-8205-4f83-811d-733ecd926fe0)
+
+### CDF Demo
+
+![image](https://github.com/user-attachments/assets/63cea16e-db43-4b9f-86ea-b9258e329ce0)
+
+Step 1 : Create stream from source
+
+![image](https://github.com/user-attachments/assets/f67b83a7-53c3-4866-855b-73932f78bf73)
+
+![image](https://github.com/user-attachments/assets/1a36268b-c0c3-4464-951d-bc4be78aaa9f)
+
+Step 2 : Create silver and upsert_to_delta function
+
+![image](https://github.com/user-attachments/assets/745e89bb-5864-4566-a245-f7f68323a79d)
+
+![image](https://github.com/user-attachments/assets/7ad38ea2-230f-4252-8ea1-0aa1c7c98172)
+
+![image](https://github.com/user-attachments/assets/96a281ec-2ea4-4f03-86cf-b4daa7454ef6)
+
+Step 3 : Initiate the stream and check history
+
+![image](https://github.com/user-attachments/assets/f18150d2-faea-4019-9815-9463314235d5)
+
+![image](https://github.com/user-attachments/assets/d20e3b22-e61d-4faf-bc54-5a161e71abff)
+
+We will have two images for any updates
+![image](https://github.com/user-attachments/assets/6b6b7c05-8cad-4d10-bc0b-bd6591a0bf75)
+
+Step 4 : Insert New data
+
+![image](https://github.com/user-attachments/assets/2bf361d0-408d-42ee-a293-3aba7f0b69ed)
+
+Step 5 : Check what is changed
+
+![image](https://github.com/user-attachments/assets/dbf81f81-b893-4a2a-aaa1-f0b96082a118)
+
+We can get operational metrics also
+
+![image](https://github.com/user-attachments/assets/319fe9ce-3213-42ca-9e21-a40167531dac)
+
+![image](https://github.com/user-attachments/assets/a2871164-b988-4184-a674-775cbdedb537)
+
+Check all rows that were updated
+
+![image](https://github.com/user-attachments/assets/e9f2d4c6-ab55-4b71-bd70-46d774e7794f)
+
+![image](https://github.com/user-attachments/assets/ef66e6ad-7906-4592-8553-4857df330b9d)
+
+Adding commit messages in history
+
+![image](https://github.com/user-attachments/assets/7a25c178-f99d-4599-a322-e820d2fbac12)
+
+Create a table called delete_requests
+
+![image](https://github.com/user-attachments/assets/3f3d8058-c8fc-4ec2-8df6-3df673a76c0a)
+
+How to process delete requests?
+
+![image](https://github.com/user-attachments/assets/04bc5b7f-17c9-4a46-8d95-d31c32c4da84)
+
+![image](https://github.com/user-attachments/assets/7db97a05-4814-4783-8d3a-ebb769f95e30)
+
+![image](https://github.com/user-attachments/assets/2fb73671-71a1-474a-9258-663bcc6d1440)
+
+Collect Deleted silver users to process with CDF
+
+![image](https://github.com/user-attachments/assets/fd0ef6ce-8554-4917-8804-173e10617079)
+
+Propogate deletes to gold tables
+
+![image](https://github.com/user-attachments/assets/d9b58a0e-966e-4254-8ecc-daa9a8ce6160)
+
+![image](https://github.com/user-attachments/assets/94fc9f47-7566-4627-9209-494c872b1269)
+
+Are deletes fully commited?
+
+No, we can see them in previous versions of the data.
+
+![image](https://github.com/user-attachments/assets/cd48eb47-d44a-4c00-b442-accd3b64d867)
