@@ -3781,3 +3781,150 @@ If your job is small → use fewer baskets.
 If your job is huge → maybe more baskets help.
 
 Or better yet, let Spark decide by itself using Adaptive Query Execution — like having a smart friend who picks the perfect number of baskets for each game 🎯
+
+### Databricks CI / CD
+
+![image](https://github.com/user-attachments/assets/82563c16-8480-4c2b-90bd-f2c1874b0bd0)
+
+#### Databricks Asset Bundles
+
+![image](https://github.com/user-attachments/assets/5d78774b-c68a-4e2a-9a25-b21a2e9f8242)
+
+![image](https://github.com/user-attachments/assets/915a2a8f-6731-4811-a17a-4133370ec03f)
+
+#### Typical CI CD Overview
+
+![image](https://github.com/user-attachments/assets/133e07e0-7044-4dda-8adc-621b35d7b049)
+
+#### How are DAB's structured?
+
+![image](https://github.com/user-attachments/assets/4ae022d9-460f-4b9f-976d-4274557599d9)
+
+![image](https://github.com/user-attachments/assets/8ec783b4-6b26-4b2b-9787-61d81750624f)
+
+#### Keys in the Mapping yaml file
+
+![image](https://github.com/user-attachments/assets/6153b152-1e29-49f3-b1f6-7aa446cffa6e)
+
+```target``` keys
+
+![image](https://github.com/user-attachments/assets/968e5712-a4e2-444f-9bcb-7473911eeaed)
+
+#### Steps to Deploy
+
+![image](https://github.com/user-attachments/assets/d17bd19a-c192-47a9-bfdf-f8e3a09cc0d5)
+
+![image](https://github.com/user-attachments/assets/c1489a87-5438-4ab2-b1bb-eb92223df621)
+
+![image](https://github.com/user-attachments/assets/30c07bb2-eee3-4ae2-a384-a2946668dab9)
+
+#### Variables in DABs
+
+![image](https://github.com/user-attachments/assets/7d41aa8f-c64d-44e1-bb4e-3c0ec9f59709)
+
+![image](https://github.com/user-attachments/assets/9e1f7324-323d-4ade-b021-42fb7f6e9683)
+
+Lookup Variables
+
+![image](https://github.com/user-attachments/assets/25ef969a-e14c-4d6f-bcba-4cfa11fd5122)
+
+![image](https://github.com/user-attachments/assets/fb728ade-dd3a-4b52-9abc-d13bf9373489)
+
+By default the DAB deployed jobs will have this name in dev
+
+![image](https://github.com/user-attachments/assets/f3b5772f-af73-4d1d-98b9-ecdd52001fd3)
+
+#### Defining the DAB
+
+![image](https://github.com/user-attachments/assets/484a232f-887f-40be-86a3-3ea8ce424f86)
+
+#### Running the job from the DAB
+
+```databricks bundle run -t development demo01_simple_dab```
+
+#### Destryoing the Bundle
+
+```databricks bundle destory --auto-approve```
+
+#### Modularizing the code
+
+- In the resources folder we can keep the config for the jobs and use it as an include in ```databricks.yml```
+
+![image](https://github.com/user-attachments/assets/691c66ab-5be4-4048-ae84-776e2e209bbd)
+
+![image](https://github.com/user-attachments/assets/e583e70a-fdd1-4e9d-ae03-cc72c4a8a929)
+
+Using lookup variable for cluster
+
+```
+	my-cluster-id:
+		description: Get lab user id using lookup variable
+		lookup:
+			cluster: vedanth
+```
+The above code will fetch the cluster_id automatically
+
+Now remember we have defined our job yml in the resources folder, we are going to add existing_cluster_id (override) it using our lookup variable
+
+![image](https://github.com/user-attachments/assets/8452100e-0f68-4bc8-bf92-2c22da6f9c3a)
+
+For production we want to use serverless so we dont override.
+
+![image](https://github.com/user-attachments/assets/6b1ebcc5-8c34-4579-8a33-f3e6e3674154)
+
+How to check json version?
+
+```databricks bundle validate --output json```
+
+Each environment will have separate folder in ```.bundle``` folder.
+
+![image](https://github.com/user-attachments/assets/3686eaf7-05dc-4921-857a-eca55d5cae70)
+
+### DAB Project Templates
+
+![image](https://github.com/user-attachments/assets/9854fe15-d1a3-4e83-9c0e-cbdc85ff64ac)
+
+![image](https://github.com/user-attachments/assets/4dbb35fc-ddeb-42b1-8500-01bcf6ba9467)
+
+### CI CD with Databricks Asset Bundles
+
+![image](https://github.com/user-attachments/assets/2dfc77e4-3e91-43d9-9c3c-a3f5f4beef96)
+
+### Expectations for Integration Tests
+
+![image](https://github.com/user-attachments/assets/be381db3-a728-4ad5-ae04-5e19e2ba4369)
+
+### Demo : Full Project with DAB
+
+![image](https://github.com/user-attachments/assets/e3f94f54-6f34-4bd8-ab4d-2561c49c328c)
+
+Project Architecture
+
+![image](https://github.com/user-attachments/assets/4c71f5ff-5a6a-4081-8bb9-7911a2c54076)
+
+Folder Structure
+
+Top Level structure
+
+![image](https://github.com/user-attachments/assets/03b4131f-d1d1-412e-914c-e8dc7fcc28a6)
+
+![image](https://github.com/user-attachments/assets/99986a4f-8259-4347-a8b8-9d220d1db702)
+
+![image](https://github.com/user-attachments/assets/7e0db6f0-5812-450e-b53b-ef98d6973ee2)
+
+```variables.yaml```
+
+![image](https://github.com/user-attachments/assets/42ec2d25-0d1a-4d93-911d-52344a9ea9d2)
+
+```workflow_job.yaml```
+
+![image](https://github.com/user-attachments/assets/de29e1bf-fe4a-49d2-b2f1-7e1f5c013ecd)
+
+```health_etl_pipeline.yml```
+
+![image](https://github.com/user-attachments/assets/51540fde-9a83-4301-b444-690727ad9563)
+
+#### Deployment with GitHub Actions
+
+![image](https://github.com/user-attachments/assets/e490fb6f-cec0-4348-b289-a052c7e2267b)
+
