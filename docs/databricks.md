@@ -298,6 +298,62 @@ Configure permissions in Unity Catalog to ensure that users have proper access t
 
 - The clusters live in the data plane in the org cloud account but cluster mgmt is fn of control plane.
 
+🧭 Simple Analogy
+Imagine a restaurant:
+
+The control plane is the manager’s office — taking orders, scheduling, planning.
+
+The data plane is the kitchen — where the food (your data) is actually cooked and served.
+
+🧠 In Databricks Terms:
+Term	Meaning
+Control Plane	The brains of the platform — manages jobs, notebooks, users, UI, APIs
+Data Plane	The muscles — where your code runs and your data is processed
+
+🔧 Control Plane
+Hosted by Databricks (in their cloud)
+
+Handles:
+
+Notebooks, jobs, clusters UI
+
+User authentication & access control
+
+Job scheduling, monitoring, logging
+
+No access to your data
+
+Think of it as a remote command center
+
+✅ Always outside your VPC
+
+💽 Data Plane
+Runs inside your cloud (VPC) — AWS, Azure, or GCP
+
+Handles:
+
+Spark cluster workers
+
+Data access from S3/Blob/GCS
+
+UDFs, jobs, pipelines
+
+✅ This is where your actual data lives and is processed
+
+🛡️ Security Separation
+Databricks control plane never sees your actual data.
+
+You can even encrypt traffic between planes or use PrivateLink to limit internet exposure.
+
+🧪 Example:
+You submit a notebook in Databricks:
+
+Request hits the control plane (UI/API layer)
+
+The control plane tells the data plane to spin up a cluster
+
+Your code runs on executors in the data plane, accessing your data securely
+
 #### Compute Resources
 
 ##### Overview
