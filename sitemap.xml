@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/Azure/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/Spark_Databricks_Course/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/Spark_YT/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/astronomer/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/databricks/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+    <url>
+         <loc>https://vedanthv.github.io/data-engg-docs/streaming/</loc>
+         <lastmod>2025-06-29</lastmod>
+    </url>
+</urlset>
