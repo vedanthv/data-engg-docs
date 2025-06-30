@@ -1,4 +1,4 @@
-## Spark Concepts and Code
+## Spark Concepts and Code.
 
 ### Lecture 1 : What is Apache Spark
 
