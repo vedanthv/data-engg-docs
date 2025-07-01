@@ -1,5 +1,5 @@
-site_name: Data Engineering Docs by Vedanth
-site_url: https://vedanthv.github.io/data-engg-docs/
+site_name: Data Engineering Docs by Rajeeva
+site_url: https://RajeevaPoornaChandraHS.github.io/data-engg-docs/
 theme:
   name: material
   features:
@@ -24,7 +24,7 @@ theme:
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode    
-      primary: teal
+      primary: light blue
       accent: lime
 
 nav:
@@ -54,5 +54,5 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
 copyright: |
-  &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+  &copy; 2023 <a href="https://github.com/RajeevaPoornaChandraHS"  target="_blank" rel="noopener">Rajeeva</a>
 
