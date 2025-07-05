@@ -376,6 +376,36 @@ Your code runs on executors in the data plane, accessing your data securely
 Specifies overall security model of the cluster.
 ![Alt text](image-53.png)
 
+🚦 What is “No Isolation Shared” Cluster Mode?
+It’s a multi-tenant cluster mode in Databricks where multiple users share the same Spark driver and executors, without any isolation between their code or environments.
+
+🧠 What Does "No Isolation Shared" Mean?
+Term	What It Means
+No Isolation	User code runs in the same JVM process, not sandboxed
+Shared	Multiple users (or notebooks/jobs) share the same cluster (driver + executors)
+
+🧪 What Happens in This Mode?
+All notebooks on the cluster share memory, execution environment, and classpath
+
+If one user runs a huge job, it may slow down or crash other users’ jobs
+
+A bad UDF or error in one notebook can affect others
+
+There’s no separation between environments
+
+💥 Risks
+Security risk: Malicious or accidental code can access or interfere with another user’s variables or data
+
+Stability risk: One user's heavy workload can cause OOM or slowdown for all others
+
+Debugging becomes hard if multiple users are running code at the same time
+
+✅ When Is It Used?
+Used When...	                           Why
+Small teams or sandbox testing	           Cheap, fast, collaborative
+Collaborative notebooks in dev	           Easy to share without waiting for cluster
+Learning and training environments	   Cost-effective, lower setup
+
 - DBFS mounts are supported by single user clusters.
 
 ##### Cluster Policies
@@ -572,6 +602,61 @@ We **can** manually refresh the cache of our data by running the **`REFRESH TABL
 
 Note that refreshing the table will invalidate out cache so it needs to be rescanned again. 
 
+This is about the limitations of using external data sources (like CSV, Parquet, etc.) in Spark as tables, compared to using Delta Lake, which is built for up-to-date, reliable data handling.
+
+📦 Context: External Data Source (CSV)
+You're reading and writing data to a table backed by a CSV file, like this:
+
+```
+(spark.read
+      .option("header", "true")
+      .option("delimiter", "|")
+      .csv(DA.paths.sales_csv)  # read a CSV file
+      .write.mode("append")     # add new rows
+      .format("csv")
+      .save(DA.paths.sales_csv, header="true"))  # save back to same path
+Then you run:
+```
+
+```
+spark.table("sales_csv").count()
+```
+
+But… it doesn’t reflect the new rows you just added. Why?
+
+🤔 Why Doesn’t the Count Change?
+
+Because Spark is caching the result from the previous read.
+
+🔍 What Actually Happened:
+
+Spark reads the CSV the first time.
+
+It caches the result in memory or local disk, for performance.
+
+Later queries reuse this cached data, even if the file has changed.
+
+So, new rows in the CSV don’t show up in your queries.
+
+🚫 What’s the Problem?
+
+CSV (and other non-Delta formats) don’t have transaction logs or built-in ways to tell Spark:
+
+“Hey! The file has changed! Refresh your data.”
+
+So Spark has no idea it needs to re-read the file.
+
+✅ How to Fix It?
+You need to manually tell Spark to reload the data:
+
+```
+REFRESH TABLE sales_csv
+```
+
+This command tells Spark:
+
+“Forget your cached version — go back to storage and re-read everything.”
+
 #### Using JDBC to extract data from SQL Databases
 
 SQL databases are an extremely common data source, and Databricks has a standard JDBC driver for connecting with many flavors of SQL.
@@ -605,11 +690,12 @@ print(f"Found {len(files)} files"
 
 #### How does Spark Interact with External Databases
 
-- Move the entire database to Databricks and then execute logic on the currently active cluster.
+- Spark doesn't move or copy the entire database into Databricks. It reads data on-demand from the external location — unless you explicitly write/save it somewhere else.
 
 - Pushing the query to an external database and only transfer results back to Databricks.
 
 - There will be network transfer latency while moving data back and forth between databricks and DWH.
+  
 - Queries will not run well on big tables. 
 
 ### Cleaning Data using Spark
@@ -762,6 +848,17 @@ FROM (
 		CAST(user_first_touch_timestamp/1e6 AS time_stamp) AS first_touch
 	FROM deduped_users
 )
+```
+
+The pattern:
+
+```regex
+?<=@.+
+Is intended to be a lookbehind:
+
+?<=@ — look for text that comes after an @
+
+.+ — match everything after @ (the domain)
 ```
 
 [Why divide by 1e6 to convert timestamp to a date?](https://stackoverflow.com/questions/65124408/pyspark-convert-bigint-to-timestamp-with-microseconds#:~:text=Divide%20your%20timestamp%20by%201e6,units%20of%20second%2C%20not%20microsecond.)
@@ -998,6 +1095,47 @@ A custom column transformation function
 
 - For Python UDFs, additional interprocess communication overhead between the executor and a Python interpreter running on each worker node
 
+🚫 “Can’t be optimized by Catalyst Optimizer”
+
+Spark has a super-smart engine called the Catalyst Optimizer. It makes your SQL or DataFrame code run faster by:
+
+- Reordering operations
+- Skipping unnecessary steps
+- Pushing filters early
+- Avoiding expensive tasks
+
+❌ But when you use a UDF:
+
+Spark can’t understand what your custom code is doing inside the UDF.
+So it treats it like a black box and skips all optimizations.
+
+📦 “Function is serialized and sent to executors”
+
+Your UDF function (in Python) has to be:
+
+- Packaged up (serialized)
+- Sent over the network to the Spark executors (the worker nodes that run the code)
+- Just like sending a zip file to your friend before they can open it.
+
+🔁 “Row data is deserialized… and then serialized again”
+
+Each row of your Spark DataFrame is:
+
+- Taken out of Spark’s fast internal format
+- Passed to your UDF
+- The result is then converted back into Spark’s format again
+- This conversion process takes time for every single row.
+
+🐍 “Python UDFs = Extra Overhead (Interprocess Communication)”
+Spark executors run in JVM (Java Virtual Machine), but your UDF is written in Python.
+
+So for every row:
+
+- Spark (JVM) has to talk to a separate Python process running on the same machine
+- This is called interprocess communication (IPC)
+- It’s like two apps on your computer passing messages back and forth through a pipe
+- This adds latency and memory cost.
+
 **Define a Function**
 
 ```python
@@ -1051,9 +1189,10 @@ Pandas UDFs are available in Python to improve the efficiency of UDFs. Pandas UD
 
 <img src="https://databricks.com/wp-content/uploads/2017/10/image1-4.png" alt="Benchmark" width ="500" height="1500">
 
-The user-defined functions are executed using: 
-* <a href="https://arrow.apache.org/" target="_blank">Apache Arrow</a>, an in-memory columnar data format that is used in Spark to efficiently transfer data between JVM and Python processes with near-zero (de)serialization cost
-* Pandas inside the function, to work with Pandas instances and APIs
+The user-defined functions are executed using:
+
+- <a href="https://arrow.apache.org/" target="_blank">Apache Arrow</a>, an in-memory columnar data format that is used in Spark to efficiently transfer data between JVM and Python processes with near-zero (de)serialization cost
+- Pandas inside the function, to work with Pandas instances and APIs
 
 Normal Python UDF
 
@@ -1068,7 +1207,7 @@ def plus_one(v):
 
 df.withColumn('v2', plus_one(df.v))
 ```
-Pandas UDFs : Row at a time
+Pandas UDFs : Multiple rows processed as a series at once.
 
 ```python
 from pyspark.sql.functions import pandas_udf, PandasUDFType
@@ -1092,6 +1231,68 @@ def vectorized_udf(email: pd.Series) -> pd.Series:
     return email.str[0]
 ```
 
+Another example:
+
+```
+from pyspark.sql import SparkSession
+import pyspark.sql.functions as F
+
+spark = SparkSession.builder.getOrCreate()
+
+df = spark.createDataFrame([
+    (1, "Alice", 100),
+    (2, "Bob", 200),
+    (3, "Charlie", 300)
+], ["id", "name", "score"])
+```
+
+#### Python UDF
+
+```python
+from pyspark.sql.functions import udf
+from pyspark.sql.types import IntegerType
+
+# Define a simple UDF to double the score
+def double_score(score):
+    return score * 2
+
+double_udf = udf(double_score, IntegerType())
+
+df.withColumn("double_score", double_udf("score")).show()
+```
+
+What happens?
+
+🔍 What happens:
+
+Each score value is passed row by row to your Python function
+
+Spark has to go JVM → Python → JVM every time
+
+⛔ This is slow, especially on large datasets
+
+**Pandas UDF**
+
+```
+from pyspark.sql.functions import pandas_udf
+import pandas as pd
+
+# Define a vectorized function
+@pandas_udf(IntegerType())
+def double_score_pandas(scores: pd.Series) -> pd.Series:
+    return scores * 2
+
+df.withColumn("double_score", double_score_pandas("score")).show()
+```
+
+✅ What happens:
+
+- Spark passes the entire "score" column (or chunks of it) as a Pandas Series
+
+- Processing happens in batches, not row-by-row
+
+- Uses Apache Arrow under the hood for speed
+  
 **Registering UDF for usage in SQL Namespace**
 
 ```sql
@@ -1563,6 +1764,44 @@ FROM "${da.paths.datasets}/ecommerce/raw/sales-30m"
 FILEFORMAT = PARQUET
 ```
 
+COPY INTO is a SQL command used to incrementally load new data into a Delta table from external sources (like S3, ADLS, etc.).
+
+It’s perfect when:
+
+You’re getting new files regularly (like daily data dumps)
+
+You don’t want to re-read everything every time
+
+You want to avoid duplicates and ensure predictable ingestion
+
+✅ Key Benefits
+1. Idempotent (Fancy Word, Simple Meaning)
+   
+You can run it again and again, and it won’t reload the same data twice.
+
+It keeps track of what files have already been loaded using a load history stored in the Delta table's metadata.
+
+2. Incremental
+   
+Instead of doing a full refresh or scan every time, it:
+
+- Only reads new files
+- Only processes what hasn’t been loaded yet
+
+👉 That makes it much cheaper and faster than reading the whole folder again and again.
+
+3. Schema Should Be Consistent
+   
+The structure of your incoming files (columns, types) should match the target Delta table.
+If not, the copy might fail or load incorrectly.
+
+5. Handle Duplicates
+   
+COPY INTO doesn’t deduplicate rows.
+
+It avoids loading the same file twice, but…
+If a file has duplicate records inside, it’s up to you to handle them after loading (e.g., via ROW_NUMBER() or MERGE)
+
 ### Versioning, Optimizing and Vacuuming
 
 Create an example table with operations
@@ -1752,6 +1991,8 @@ Usually the bronze, silver and gold layers will not be in a linear dependency fo
 
 #### Development Vs Production pipelines
 ![Alt text](image-111.png)
+
+![image](https://github.com/user-attachments/assets/4116a272-3cb3-40a7-af88-876c0914e0f9)
 
 We use job clusters in prod pipelines.
 
