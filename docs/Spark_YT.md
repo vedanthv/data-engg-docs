@@ -1804,3 +1804,65 @@ This leads to OOM error.
 AQE has ShuffleReader, it has statistics on the memory and size of each partition. This parttion gets automatically split in both tables.
 
 ![image](https://github.com/user-attachments/assets/77e35131-03a6-4ad0-898f-b705f935d2e4)
+
+### Lecture 30 : Cache vs Persist
+
+![image](https://github.com/user-attachments/assets/05c58f62-ef62-4736-a11b-01f4846176f0)
+
+#### Spark Memory Management
+
+![image](https://github.com/user-attachments/assets/df790f28-9d34-4cfd-9c20-20243300046a)
+
+The Spark Memory is further expanded into Storage Memory Pool and Executor Memory Pool.
+
+![image](https://github.com/user-attachments/assets/729e1214-7dac-48fe-98f8-2341192d7b42)
+
+The cache is stored in Storage Memory Pool.
+
+![image](https://github.com/user-attachments/assets/592f8810-e785-485f-8810-14f4e56e918d)
+
+Not all the memory is stored in the executor. When df line code is run, df is removed from the executor, but in the subsequent step df is used to calculate df2. So in this case ideally df should be computed again, but if we have cache memory we can directly fetch from there.
+
+![image](https://github.com/user-attachments/assets/fc019da5-0f98-47b4-9351-099ee4cecb42)
+
+When we cache the data goes from executor short lived memory to the storage pool. The cache is based on LRU mechanism.
+
+![image](https://github.com/user-attachments/assets/4534d33f-ccf1-49cd-ac1a-992ada1f26fd)
+
+Now let's day we have 15 partitions but only 14.5 fit in storage memory, 1 partition does not get stored.
+
+By default storage_level for ```df.cache()``` is ```MEMORY_AND_DISK``` if the data does not fit in MEMORY move it to disk, but the data takes time to read from disk so its not recommended.
+
+If the partition gets lost during IO, the DAG will recalculate that.
+
+```persist()``` gives us more flexibility.
+
+![image](https://github.com/user-attachments/assets/d6ea7a42-f104-4710-a66a-148ab389de35)
+
+```persist()``` -> when we pass MEMORY_AND_DISK to persist it becomes cache(). Cache is just a wrapper class on persist().
+
+#### How many partitions get stored in cache?
+
+When we use ```show()``` just one partition gets cached.
+
+![image](https://github.com/user-attachments/assets/35cd42ac-f7e5-4d16-9180-ead9dcf3e5d4)
+
+When we use ```count()``` all partitions get cached.
+
+![image](https://github.com/user-attachments/assets/c57e9075-91ae-4454-bb8d-4a5452044652)
+
+#### Storage Level in Persist
+
+![image](https://github.com/user-attachments/assets/21a8e1cc-8eaa-4a90-b7ab-9d51594b02e1)
+
+In ```MEMORY_AND_DISK``` the data is stored in disk after memory is full but its stored in serialized form, it should be deserialized before spark can process it and hence CPU utilization is high here.
+
+![image](https://github.com/user-attachments/assets/b1127097-c5fa-4bdd-8095-338a24b5df71)
+
+![image](https://github.com/user-attachments/assets/c6319ddf-79d8-4f39-9bba-ac6949c671f6)
+
+**MEMORY_ONLY_2**
+
+This data is replicated twice. Just to ensure that if we have complex computations and things fail, we dont need to do computations again.
+
+```MEMORY_ONLY_SER``` and ```MEMORY_AND_DISK_SER``` works only in Scala and Java.
