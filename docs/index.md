@@ -10,5 +10,7 @@ Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/vedanthba
 | :---:   | :---: | :---: |
 | Airflow Astronomer | Data Orchestration | [Astronomer](https://vedanthv.github.io/data-engg-docs/astronomer/)|
 | Azure Databricks | Data Processing | [Databricks](https://vedanthv.github.io/data-engg-docs/databricks/)|
-| Pyspark Databricks Course | Data Processing | [PySpark Databricks](https://github.com/vedanthv/data-engg-docs/blob/main/docs/Spark_Databricks_Course)|
-| Spark YouTube Stuff | Data Processing | [PySpark YouTube](https://github.com/vedanthv/data-engg-docs/blob/main/docs/Spark_YT)|
+| Pyspark Databricks Course | Data Processing | [PySpark Databricks](https://vedanthv.github.io/data-engg-docs/Spark_Databricks_Course/)|
+| Spark YouTube Stuff | Data Processing | [PySpark YouTube]([https://github.com/vedanthv/data-engg-docs/blob/main/docs/Spark_YT](https://vedanthv.github.io/data-engg-docs/Spark_YT/))|
+| Microsoft Azure Fabric|Data Lakehouse and Data Processing| [Microsoft Fabric](https://vedanthv.github.io/data-engg-docs/MSFabric/)|
+| Redpanda Kafka Streaming|Streaming and Realtime| [Redpanda](https://vedanthv.github.io/data-engg-docs/MSFabric/)|
