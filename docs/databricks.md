@@ -3084,7 +3084,7 @@ SELECT "SELECT ${DA.my_new_catalog}.example.mask('sensitive data') AS data" AS Q
 
 Now run the query in the SQL Editor you can see that the last two characters are redacted.
 
-# Data Engineering Professional Learning Pathway
+## Data Engineering Professional Learning Pathway
 
 ## Top Level Concepts
 
