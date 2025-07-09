@@ -250,3 +250,132 @@ Destination : Our Onelake data lakehouse
 ### 24. Dataflow Gen2
 
 ![image](https://github.com/user-attachments/assets/75c29c43-44aa-4e96-ae2d-508d1339bd54)
+
+Adding Data Source to Dataflow Gen 2
+
+![image](https://github.com/user-attachments/assets/c3ba3e23-5d04-46d2-b13d-a578b1910943)
+
+Alice here has Blob Storage Contributor role that can be granted in container screen.
+
+![image](https://github.com/user-attachments/assets/8a361494-7f49-4199-86f2-ef467da1ba5e)
+
+Click Combine
+
+![image](https://github.com/user-attachments/assets/8e675945-0ff9-441c-b99d-54e22a159da7)
+
+Click Add Column -> Custom Column
+
+![image](https://github.com/user-attachments/assets/0aba5b70-e335-4cf5-8ddd-91fde9de6c69)
+
+```
+if [State] = "CA" then "California" else if 
+[State] = "NJ" then "New Jersey" else if
+[State] = "FL" then "Florida"
+else [State]
+```
+
+Click Add Destination -> Lakehouse
+
+![image](https://github.com/user-attachments/assets/20c35d27-bfad-43fe-8b91-ae238d6a03b4)
+
+Next Go to Home -> Save and Run, refresh should automatically start
+
+We should be able to see the data once refresh is completed.
+
+![image](https://github.com/user-attachments/assets/7d0f6ce2-87f1-4e29-b85b-3ce3a1c72007)
+
+## Section 5 : Fabric One Lake
+
+### 25. Shortcuts in Fabric
+
+Shortcuts can be created only at OneLake level.
+
+Let's say finance team wants data from marketing lakehouse.
+
+They can create a shortcut to the marketing lakehouse without copying the data.
+
+The data is refreshed/updated automatically.
+
+![image](https://github.com/user-attachments/assets/40a74d56-44f7-40dc-9789-f24c00a283f7)
+
+No need to copy data while loading from Amazon S3.
+
+### 26. How to create a shortcut?
+
+![image](https://github.com/user-attachments/assets/ba78245f-adc9-44ac-acba-1e560ba6e26a)
+
+![image](https://github.com/user-attachments/assets/1587635a-96c5-4c4b-b651-ab7673725d40)
+
+![image](https://github.com/user-attachments/assets/c05f2eee-c38a-424d-9ceb-20eeb1cb8438)
+
+### 27. Creating Files Shortcut
+
+![image](https://github.com/user-attachments/assets/2da99e53-201c-4205-8bc9-81e89d9a3147)
+
+![image](https://github.com/user-attachments/assets/8b9854d5-139e-4414-bd47-5e054b31749c)
+
+Deleting file at Azure Data Lake Storage
+
+![image](https://github.com/user-attachments/assets/382fd180-449d-4900-b7c4-53288ec10a95)
+
+Data gets deleted here in fabric also.
+
+Deleting data in Fabric
+
+![image](https://github.com/user-attachments/assets/187153da-94a5-445f-a2e1-637c5f0be97d)
+
+Data gets deleted in Azure Blob also.
+
+![image](https://github.com/user-attachments/assets/404e7e6f-2193-41b7-b463-d098d583d0b5)
+
+### 28. Creating Table Shortcut
+
+![image](https://github.com/user-attachments/assets/7e4b97d3-3ad0-4a9d-a936-9556e7230ef9)
+
+We can see that this table is in unmanaged section
+
+![image](https://github.com/user-attachments/assets/d01ea0dc-ac71-4b27-b2f8-7b7a9582e5d7)
+
+![image](https://github.com/user-attachments/assets/fb8e7b20-0322-45f4-aaa7-b7d0dedb3a1e)
+
+In Microsoft Fabric, unidentified tables are entries displayed in the managed section of your data environment that lack associated metadata or table references. Here’s a breakdown of the concept:
+
+Managed vs. Unmanaged: In Fabric, the managed section refers to tables that have both metadata and data managed by the Fabric engine. In contrast, the unmanaged section allows you to upload files in any format, which do not have the same management.
+
+Unidentified Tables: If you create a table that is not in the delta format, it will be saved in the unidentified folder. This often occurs when files, such as CSVs, are included without a defined table structure, leading Fabric to categorize them as unidentified.
+
+Purpose: The main goal of the unidentified prompt is to alert users that these files do not conform to the required structure for the managed section and do not support any tables. Essentially, it indicates that there are files present that need to be reviewed and potentially removed.
+
+If we want files from sub folder we cant create shortcut.
+
+When we create shortcut from files it can be from sub directories also.
+
+Now I dropped a parquet file in adls and there is no unmanaged error.
+
+![image](https://github.com/user-attachments/assets/6d3e2d24-c452-493c-b8b6-7458d7bcf4d8)
+
+### 29. Creating Delta from Parquet
+
+![image](https://github.com/user-attachments/assets/59169588-f362-46d6-8747-f9480166873f)
+
+![image](https://github.com/user-attachments/assets/4441ee78-c523-4868-b976-04c6b367284c)
+
+1. Go to synapse workspace
+
+2. Create new notebook.
+
+```
+df = spark.read.format("parquet").load('abfss://containername@storageaccountname.dfs.core.windows.net/UnEmployment.parquet')
+```
+
+```
+df.write.format('delta').save('abfss://shortcutdelta@msfabriclakehousevedanth.dfs.core.windows.net/')
+```
+
+### 30. Creating Shortcut in Fabric
+
+Just execute above code and create a table level shortcut.
+
+![image](https://github.com/user-attachments/assets/c9a202b3-40c2-44f4-ae0f-780c58925f04)
+
+![image](https://github.com/user-attachments/assets/8ba09a68-687f-4cd9-ae9d-85d2dc7c471f)
