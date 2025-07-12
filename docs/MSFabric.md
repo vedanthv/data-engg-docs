@@ -379,3 +379,144 @@ Just execute above code and create a table level shortcut.
 ![image](https://github.com/user-attachments/assets/c9a202b3-40c2-44f4-ae0f-780c58925f04)
 
 ![image](https://github.com/user-attachments/assets/8ba09a68-687f-4cd9-ae9d-85d2dc7c471f)
+
+### 31. Shortcut from a subfolder in Fabric
+
+We cannot create a delta table / shortcut from a sub folder in ADLS Gen2.
+
+![image](https://github.com/user-attachments/assets/1abe0218-6d77-41b8-bc60-dc44942d079c)
+
+### 32. Creating Shortcut from Parquet file
+
+![image](https://github.com/user-attachments/assets/ff3f611e-ff3d-4757-8a10-3064e72b0ae5)
+
+```
+df.write.format('parquet').mode('append').save('abfss://shortcutparquet@msfabriclakehousevedanth.dfs.core.windows.net/')
+```
+
+We cannot create shortcut from parquet files as well, it lands in unidentified folder.
+
+![image](https://github.com/user-attachments/assets/1e93fa3c-e7c6-4d07-8805-c19c1f429187)
+
+### 33. Summary of Shortcuts
+
+![image](https://github.com/user-attachments/assets/3793b0e3-f30c-4666-8a6a-1c4ce2cd050e)
+
+![image](https://github.com/user-attachments/assets/4bf77b56-c305-476f-b3f2-bf34397880ff)
+
+### 34. Update Scenarios Using Shortcuts : Lakehouse to Datalake
+
+![image](https://github.com/user-attachments/assets/e77d7a15-2485-4a6d-a9bd-e577ea0a59ed)
+
+What effects on table and file when either is updated?
+
+![image](https://github.com/user-attachments/assets/7c3633d9-e9ca-434c-95f4-1003ceea776b)
+
+We cannot update using SQL editor in fabric so let's use notebook.
+
+Code:
+
+```
+df = spark.sql("SELECT * FROM demo_lakehouse.Unemployment LIMIT 1000")
+display(df)
+```
+
+We can see that the session is created in 11s, much faster than synapse
+
+![image](https://github.com/user-attachments/assets/33cf2a32-4f6b-4219-b8bc-09c922d7235c)
+
+```
+df_updated = spark.sql("UPDATE demo_lakehouse.Unemployment SET Industry = 'Healthcare Updated' WHERE Industry = 'Healthcare'")
+display(df_updated)
+```
+
+If we have only reader access then this operation will fail.
+
+This update also reflects on the file in delta lake.
+
+### 35. Storage to Data Lake Shortcut Updates
+
+1st Version
+
+![image](https://github.com/user-attachments/assets/baa995dc-f6f8-482b-b989-4fdfa901e7bb)
+
+Update Code
+
+```
+spark.sql('''update vw_unemployment_new set Industry = 'Retail' where Industry = 'Retail Trade' ''')
+```
+
+The Industry has changed from Retail Trade to Retail
+
+![image](https://github.com/user-attachments/assets/21111470-00b6-4905-afc4-dbc93492de53)
+
+Update Operation Delta Log
+
+```
+{"commitInfo":{"timestamp":1752330893911,"operation":"UPDATE","operationParameters":{"predicate":"[\"(Industry#761 = Retail Trade)\"]"},"readVersion":0,"isolationLevel":"Serializable","isBlindAppend":false,"operationMetrics":{"numRemovedFiles":"1","numRemovedBytes":"39721","numCopiedRows":"1510","numAddedChangeFiles":"0","executionTimeMs":"10094","scanTimeMs":"9455","numAddedFiles":"1","numUpdatedRows":"14","numAddedBytes":"39715","rewriteTimeMs":"635"},"engineInfo":"Apache-Spark/3.4.3.5.3.20250511.1 Delta-Lake/2.4.0.24","txnId":"6ae56a22-9ff9-4b9a-aec1-d7ab21bb57e8"}}
+{"remove":{"path":"part-00000-33b67e12-a6d1-40de-86ac-20a6843bdc2a-c000.snappy.parquet","deletionTimestamp":1752330893906,"dataChange":true,"extendedFileMetadata":true,"partitionValues":{},"size":39721,"tags":{}}}
+```
+
+### 36. Deleting File Data in Fabric Lake House or ADLS
+
+Deleting any record / file itself from Data Lake deletes it from storage also.
+
+Reverse scenario is also same.
+
+### 37. Deleting Data from Tables in Lake House
+
+![image](https://github.com/user-attachments/assets/a45b3876-c314-4f88-bed9-3007509c08c1)
+
+Reflected in Storage file also, we see 1428 records.
+
+![image](https://github.com/user-attachments/assets/1978e485-c1cc-4bf8-95aa-c7d920a81831)
+
+The reverse is also same scenario, deleting from storage reflects in data lakehouse table also.
+
+### 38. Deleting Shortcut
+
+Deleting the entire shortcut does not delete data in storage.
+
+## Section 7 : Fabric Synapse Data Engineering
+
+### 39. Spark Pools
+
+![image](https://github.com/user-attachments/assets/71ec8d45-f08e-4e57-a17c-a1460577b7f8)
+
+#### Starter Pools in Spark
+
+Spark Starter Pools are machines that are ready and can be spun up anytime.
+
+![image](https://github.com/user-attachments/assets/0cffbf40-6b5d-4d20-98e8-bc3247769492)
+
+Billing time doesnt include the idle time to initialize the spark session.
+
+### 40. Spark Pool Node Size (Starter Pool)
+
+![image](https://github.com/user-attachments/assets/1c150949-30ac-4f5e-bed6-25160188aa4f)
+
+![image](https://github.com/user-attachments/assets/1014fb02-47e0-4951-a265-95416848fe7a)
+
+If Starter Pool is not used for 20 min then session expires
+
+Only the min and max number of nodes can be changed in starter pools, its always going to be medium node.
+
+### 41. Custom Pools
+
+![image](https://github.com/user-attachments/assets/ffc4bb17-7602-4be8-86b2-309e4b6af3ea)
+
+We can adjust the node family and number of nodes but caveat is that it will not give the same instant start time as starter pools, Fabric needs to allocate the resources.
+
+### 42. Standard vs High Concurrency Sessions
+
+It acts like shared cluster in Databricks
+
+![image](https://github.com/user-attachments/assets/c044cf1c-0dd8-4301-99a7-21569879eef6)
+
+### 43. Custom Magic Commands
+
+![image](https://github.com/user-attachments/assets/bbd62f74-8a8e-43f4-bfb9-8740006e60ab)
+
+### 44. MSSparkUtils
+
+![image](https://github.com/user-attachments/assets/87dbaf2c-bff0-4497-aceb-7aa6e5941c2e)
