@@ -588,3 +588,177 @@ We can assign workspaces to each domain.
 <img width="1836" height="257" alt="image" src="https://github.com/user-attachments/assets/69fc1793-5b80-448a-8585-3616ee873465" />
 
 <img width="902" height="453" alt="image" src="https://github.com/user-attachments/assets/f5b1df47-a1ed-4e30-a897-326b44fd392f" />
+
+## Section 6 : Synapse to Fabric Migration
+
+### 49. Migrating notebooks from Synapse to Fabric
+
+<img width="884" height="348" alt="image" src="https://github.com/user-attachments/assets/c4f96e49-baab-466f-aa0a-7dc1a85929b4" />
+
+First Create Service Principal using App Registration.
+
+Then enter credentials.
+
+```
+azure_client_id  = ""
+azure_tenant_id  = ""
+azure_client_secret  = ""
+synapse_workspace_name  = "synapseprojectvedanth"
+```
+
+Go to Synapse workspace and add role assignment.
+
+<img width="1662" height="532" alt="image" src="https://github.com/user-attachments/assets/2a0747f1-ef6e-459f-8269-77ce0a808f47" />
+
+Give Synapse Admin role to the SP.
+
+Go to any table in lakehouse, click properties and get this abfss path
+
+```
+abfss://264d9187-xxxx-yyyy-zzzz-aaaaa@onelake.dfs.fabric.microsoft.com/46d6a3de-xxxx-xxxx-xxxx-xxxxxxx/
+```
+
+Now configure fabric details this way
+
+```
+workspace_id  = "Data_Engineering_Workspace"
+xlakehouse_id = "46d6a3de-fc48-4a41-xxx-xxxxxx"
+export_folder_name = f"export/{synapse_workspace_name}"
+prefix = "mig"
+
+output_folder = f"abfss://{workspace_guid}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Files/{export_folder_name}"
+print(output_folder)
+```
+
+Import utility file
+
+```
+sc.addPyFile('https://raw.githubusercontent.com/microsoft/fabric-migration/main/data-engineering/utils/util.py')
+```
+
+Export notebooks from synapse to fabric
+
+```
+Utils.export_notebooks(azure_client_id, azure_tenant_id, azure_client_secret, synapse_workspace_name, output_folder)
+```
+
+Import everything as notebooks in fabric
+
+```
+Utils.import_notebooks(f"/lakehouse/default/Files/{export_folder_name}", workspace_guid, prefix)
+```
+
+### 50. Migrating / Running Pipelines from Synapse in Fabric
+
+[Lecture Link](https://www.udemy.com/course/master-microsoft-fabric-a-complete-end-to-end-project-cicd/learn/lecture/46196271#overview)
+
+[ADF Pipeline Migration Docs](https://learn.microsoft.com/en-us/fabric/data-factory/migrate-planning-azure-data-factory#migrate-from-azure-data-factory-adf)
+
+### 51. Migrating ADLS DataLake Gen2 to Fabric OneLake
+
+<img width="803" height="352" alt="image" src="https://github.com/user-attachments/assets/2c4b6eee-aea9-4707-8153-13bf88e1f5b3" />
+
+#### Using FastCP - Best Way
+```
+# Azure storage access info
+blob_account_name = "azureopendatastorage"
+blob_container_name = "nyctlc"
+blob_relative_path = "green"
+blob_sas_token = r""
+
+# Allow SPARK to read from Blob remotely
+wasbs_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (blob_container_name, blob_account_name, blob_relative_path)
+spark.conf.set(
+  'fs.azure.sas.%s.%s.blob.core.windows.net' % (blob_container_name, blob_account_name),
+  blob_sas_token)
+print('Remote blob path: ' + wasbs_path)
+
+# SPARK read parquet, note that it won't load any data yet by now
+df = spark.read.parquet(wasbs_path)
+```
+
+```
+wasbs_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (blob_container_name, blob_account_name, blob_relative_path)
+NYDestinationCPPath =  'abfss://Fabric_trail@onelake.dfs.fabric.microsoft.com/LH_Fabric.Lakehouse/Files/NYDestinationCP'
+NYDestinationFSPath =  'abfss://Fabric_trail@onelake.dfs.fabric.microsoft.com/LH_Fabric.Lakehouse/Files/NYDestinationFS'
+```
+
+```
+mssparkutils.fs.fastcp(wasbs_path,NYDestinationFSPath,True)
+```
+
+## Section 7 : Capacity Metrics App
+
+<img width="906" height="355" alt="image" src="https://github.com/user-attachments/assets/9254d049-b8e1-4f67-bf61-0d58fcf24ff4" />
+
+### 51. UI of the App
+
+<img width="1343" height="768" alt="image" src="https://github.com/user-attachments/assets/ba3f9ad2-bc6a-46fb-aba3-f9c7c4a43765" />
+
+### 52. Capacity Metrics and Units in Fabrics
+
+<img width="967" height="649" alt="image" src="https://github.com/user-attachments/assets/681b5aaa-45c6-46ec-a8a1-d735a3c2979c" />
+
+If we are using F64 mode, then we will have max of 64*30 = 1920 CU capacity.
+
+Out of this whatever we see in blue (29.99 units) is used for background processes like refresh of reports etc...
+
+Whatever we see in red are the interactive unit consumption that we users use.
+
+#### Throttling
+
+Throttling occurs when the tenant consumes more capacity units that it has purchased.
+
+<img width="903" height="479" alt="image" src="https://github.com/user-attachments/assets/beb1b9db-cce7-4963-9d65-00a75eabc304" />
+
+Smoothing creates capacity balance
+
+<img width="925" height="457" alt="image" src="https://github.com/user-attachments/assets/83783140-771d-4425-82cd-85822a192ee1" />
+
+<img width="895" height="463" alt="image" src="https://github.com/user-attachments/assets/a20b5f2b-393e-4a18-a0f0-57d6adbb2204" />
+
+Overage is the capacity beyond 100%
+
+<img width="974" height="713" alt="image" src="https://github.com/user-attachments/assets/371efc4d-202a-4c39-be8e-f0289609281c" />
+
+If we overuse for less than 10 min Fabric will not charge us anything
+
+<img width="1293" height="682" alt="image" src="https://github.com/user-attachments/assets/23650d27-7765-440f-a58d-cd1e77fb352e" />
+
+The overage capacity units will be compensated to run background processes for next 24 hours.
+
+<img width="1033" height="777" alt="image" src="https://github.com/user-attachments/assets/59efe334-f5e0-4ec9-aefd-32c6cff9d09c" />
+
+### 53. Interactive Delay
+
+If our workload exceeds 100% for more than 10 min, then there will be some delay for a person running notebooks / SQL queries
+
+<img width="1150" height="777" alt="image" src="https://github.com/user-attachments/assets/9da6d138-61e1-4f7a-b7c6-9a7d51664c9c" />
+
+If we are over utilizing for more than 10 min less than 60 min there will be 5 seconds delay
+
+### 53. Interactive Rejection
+
+We get Interactive Rejection if the over utilization exceed 100 % for more than 1 hour and less than 24 hours interactive queries are rejected but pipelines keep running.
+
+<img width="1190" height="746" alt="image" src="https://github.com/user-attachments/assets/d11c3088-a3d3-42a8-9a18-13eb3a0debc1" />
+
+### 54. Background Rejection
+
+We get background / pipeline failures when the over utilization exceeds 24 hours.
+
+<img width="1006" height="702" alt="image" src="https://github.com/user-attachments/assets/882fda5e-95c7-46af-950a-da0032bf07db" />
+
+<img width="803" height="451" alt="image" src="https://github.com/user-attachments/assets/d316f4f6-5f15-420c-ba7f-0af64e6fff09" />
+
+Imagine you have a toy box, and you can fit 10 toys inside. If you add 12 toys, you have 2 extra toys that don't have a place. This is like an 'overage'—you are over the limit!
+
+Now, let's break down the terms:
+
+**Add % (Added Percentage)**: This is like saying, "How many new toys did you put in the box?" For example, if you added 2 more toys, the added percentage would show that you've put in more than what fits.
+
+**Burndown %:** Imagine playing with your toys. As you play, you may give some away or remove them. The burndown percentage is like counting how many toys you no longer have because you've given or taken them out of the box.
+
+**Cumulative % (Cumulative Percentage):** This is like keeping track of all the toys that you didn't have space for but still remember they were there. If your toy box is overflowing for a few days, you add each extra toy to a list, showing how many toys you owe the box over time—it's the total amount of toys that you've added and not yet managed!
+
+So, when you look at how many toys you have in the box and how many more you need to fit, you're really keeping track of your 'add %', 'burndown %', and 'cumulative %' to make sure you know how many you can play with without going over!
