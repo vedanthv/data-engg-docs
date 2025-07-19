@@ -543,3 +543,48 @@ We cannot use keyvault at the moment
 
 <img width="1042" height="408" alt="image" src="https://github.com/user-attachments/assets/58b277cd-de84-48dc-af5e-1f91c90d1a06" />
 
+### 46. Managed Vs External Table
+
+<img width="1473" height="649" alt="image" src="https://github.com/user-attachments/assets/074a4df3-af71-444e-9845-e0783cc24fb0" />
+
+<img width="946" height="449" alt="image" src="https://github.com/user-attachments/assets/906c9d3e-f9fd-494e-959c-38f20d0db62e" />
+
+Shortcut tables are managed because we are storing the data in the tables section and its coming from root level folder, the data is being managed by the Fabric Engine.
+
+The changes of data on the table are replicated on the data lake.
+
+### 47. Environments in Fabric
+
+<img width="917" height="376" alt="image" src="https://github.com/user-attachments/assets/376c3cbf-1963-4ac7-be90-cd447dae44e4" />
+
+<img width="902" height="750" alt="image" src="https://github.com/user-attachments/assets/3f6dfdeb-0175-47e6-8044-01cfba4b43d1" />
+
+We cannot change the node family since its a default pool.
+
+<img width="865" height="412" alt="image" src="https://github.com/user-attachments/assets/5784ac2d-1104-448d-b548-ea377681c26d" />
+
+### 48. V Order in Fabric
+
+<img width="865" height="412" alt="image" src="https://github.com/user-attachments/assets/bcf2c7ad-ae8c-4f85-9b0d-623b64b40959" />
+
+```
+spark.conf.get("spark.sql.parquet.vorder.enabled")
+```
+
+### 48. Domains in Fabric
+
+We can isolate data to create a data mesh using domains. One for IT, one for HR and so on.
+
+Go to settings -> then click 'Create Domain'
+
+<img width="1835" height="562" alt="image" src="https://github.com/user-attachments/assets/696c23ba-776f-4aea-af6b-673b62ced649" />
+
+We can assign workspaces to each domain.
+
+<img width="1847" height="739" alt="image" src="https://github.com/user-attachments/assets/dc584bf3-2794-4116-a800-a907a2dfe7f8" />
+
+<img width="1837" height="160" alt="image" src="https://github.com/user-attachments/assets/94008f1b-d3ee-4388-9309-4ac80a18c665" />
+
+<img width="1836" height="257" alt="image" src="https://github.com/user-attachments/assets/69fc1793-5b80-448a-8585-3616ee873465" />
+
+<img width="902" height="453" alt="image" src="https://github.com/user-attachments/assets/f5b1df47-a1ed-4e30-a897-326b44fd392f" />
