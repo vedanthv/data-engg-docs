@@ -520,3 +520,26 @@ It acts like shared cluster in Databricks
 ### 44. MSSparkUtils
 
 ![image](https://github.com/user-attachments/assets/87dbaf2c-bff0-4497-aceb-7aa6e5941c2e)
+
+For using Azure Key vault : mssparkutils.credentials.help
+
+<img width="1239" height="397" alt="image" src="https://github.com/user-attachments/assets/4a15e157-0d16-42d0-9a89-2abf3f5bcb54" />
+
+<img width="1289" height="160" alt="image" src="https://github.com/user-attachments/assets/61b6c590-7b97-496b-ac87-fa3c5dc0ae28" />
+
+The Key Vault Secret Officer role will allow creation of secrets and using it in notebook.
+
+### 45. Call Fabric Notebook from Fabric Pipeline
+
+Create New cloud connection
+
+<img width="1843" height="768" alt="image" src="https://github.com/user-attachments/assets/f85c2fdf-c258-42c1-8cf1-890f2da5487d" />
+
+<img width="485" height="351" alt="image" src="https://github.com/user-attachments/assets/d93cbd62-7b3c-4492-a527-e483f0fe2ace" />
+
+We cannot use keyvault at the moment
+
+<img width="486" height="646" alt="image" src="https://github.com/user-attachments/assets/19b920ab-cc0a-4c6f-9251-a1033773267d" />
+
+<img width="1042" height="408" alt="image" src="https://github.com/user-attachments/assets/58b277cd-de84-48dc-af5e-1f91c90d1a06" />
+
