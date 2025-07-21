@@ -762,3 +762,26 @@ Now, let's break down the terms:
 **Cumulative % (Cumulative Percentage):** This is like keeping track of all the toys that you didn't have space for but still remember they were there. If your toy box is overflowing for a few days, you add each extra toy to a list, showing how many toys you owe the box over time—it's the total amount of toys that you've added and not yet managed!
 
 So, when you look at how many toys you have in the box and how many more you need to fit, you're really keeping track of your 'add %', 'burndown %', and 'cumulative %' to make sure you know how many you can play with without going over!
+
+## Section 8 : Synapse Data Warehouse
+
+<img width="879" height="334" alt="image" src="https://github.com/user-attachments/assets/0b5654d7-8ee4-4909-b83a-1002b7414f81" />
+
+There is no SQL Analytics Endpoint in Warehouse.
+
+<img width="1563" height="755" alt="image" src="https://github.com/user-attachments/assets/d5fbe07e-41fa-4c43-b19b-614f54f193a1" />
+
+### 55. Limitations of Tables in SQL Warehouse
+
+1. Both table and column names are case sensitive.
+   
+<img width="1511" height="453" alt="image" src="https://github.com/user-attachments/assets/d5b14a38-a0e3-4c22-a65e-90053f598518" />
+
+2. No support for Primary Keys.
+
+3. No support for unique constraint.
+
+### 56. Loading Data In Warehouse
+
+<img width="898" height="429" alt="image" src="https://github.com/user-attachments/assets/45015641-773b-4f82-a17a-887c7c67bafd" />
+
