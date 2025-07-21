@@ -1,0 +1,1835 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vedanthv.github.io/data-engg-docs/MSFabric/">
+      
+      
+        <link rel="prev" href="../streaming/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>Microsoft Fabric - Data Engineering Docs by Vedanth</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#microsoft-fabric" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-header__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering Docs by Vedanth
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Microsoft Fabric
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../astronomer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Astronomer and Airflow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../databricks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Azure Databricks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_Databricks_Course/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark Databricks Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_YT/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark YouTube
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../streaming/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Streaming Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Microsoft Fabric
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-nav__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Engineering Docs by Vedanth
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../astronomer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_Databricks_Course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_YT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Fabric
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Fabric
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#microsoft-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microsoft Fabric
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-1-introduction-and-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 1 : Introduction and Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 1 : Introduction and Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pre-requisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Pre Requisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-project-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Project Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-spark-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Spark Pool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-2-understanding-microsoft-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 2 : Understanding Microsoft Fabric
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 2 : Understanding Microsoft Fabric">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5-evolution-of-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Evolution of Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-delta-lake-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Delta Lake Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-why-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Why Fabric?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-starting-up-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Starting Up Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-licensing-and-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Licensing and Costs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-fabric-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Fabric Terms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-onelake-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. OneLake in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-one-copy-for-all-computes" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. One Copy for all computes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-3-fabric-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 3 : Fabric Lakehouse
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 3 : Fabric Lakehouse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13-microsoft-fabric-workspaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Microsoft Fabric Workspaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-workspace-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Workspace Roles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-creating-a-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Creating a Lakehouse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-lakehouse-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Lakehouse Explorer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-sql-analytics-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. SQL Analytics Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-default-semantic-model-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Default Semantic Model View
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-4-data-factory-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 4 : Data Factory in Fabric
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 4 : Data Factory in Fabric">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#19-how-to-load-data-in-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. How to Load data in Lakehouse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-fabric-vs-azure-data-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Fabric vs Azure Data Factory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-data-gateway-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. Data Gateway Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. Connections
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-creating-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      23. Creating Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-dataflow-gen2" class="md-nav__link">
+    <span class="md-ellipsis">
+      24. Dataflow Gen2
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-5-fabric-one-lake" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 5 : Fabric One Lake
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 5 : Fabric One Lake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#25-shortcuts-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      25. Shortcuts in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-how-to-create-a-shortcut" class="md-nav__link">
+    <span class="md-ellipsis">
+      26. How to create a shortcut?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-creating-files-shortcut" class="md-nav__link">
+    <span class="md-ellipsis">
+      27. Creating Files Shortcut
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-creating-table-shortcut" class="md-nav__link">
+    <span class="md-ellipsis">
+      28. Creating Table Shortcut
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-creating-delta-from-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      29. Creating Delta from Parquet
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#30-creating-shortcut-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      30. Creating Shortcut in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-shortcut-from-a-subfolder-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      31. Shortcut from a subfolder in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-creating-shortcut-from-parquet-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      32. Creating Shortcut from Parquet file
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-summary-of-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      33. Summary of Shortcuts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-update-scenarios-using-shortcuts-lakehouse-to-datalake" class="md-nav__link">
+    <span class="md-ellipsis">
+      34. Update Scenarios Using Shortcuts : Lakehouse to Datalake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-storage-to-data-lake-shortcut-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      35. Storage to Data Lake Shortcut Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-deleting-file-data-in-fabric-lake-house-or-adls" class="md-nav__link">
+    <span class="md-ellipsis">
+      36. Deleting File Data in Fabric Lake House or ADLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-deleting-data-from-tables-in-lake-house" class="md-nav__link">
+    <span class="md-ellipsis">
+      37. Deleting Data from Tables in Lake House
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-deleting-shortcut" class="md-nav__link">
+    <span class="md-ellipsis">
+      38. Deleting Shortcut
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-7-fabric-synapse-data-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 7 : Fabric Synapse Data Engineering
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 7 : Fabric Synapse Data Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#39-spark-pools" class="md-nav__link">
+    <span class="md-ellipsis">
+      39. Spark Pools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="39. Spark Pools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starter-pools-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starter Pools in Spark
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#40-spark-pool-node-size-starter-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      40. Spark Pool Node Size (Starter Pool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41-custom-pools" class="md-nav__link">
+    <span class="md-ellipsis">
+      41. Custom Pools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-standard-vs-high-concurrency-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      42. Standard vs High Concurrency Sessions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-custom-magic-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      43. Custom Magic Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-mssparkutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      44. MSSparkUtils
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-call-fabric-notebook-from-fabric-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      45. Call Fabric Notebook from Fabric Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-managed-vs-external-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      46. Managed Vs External Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-environments-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      47. Environments in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-v-order-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      48. V Order in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-domains-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      48. Domains in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-6-synapse-to-fabric-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 6 : Synapse to Fabric Migration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 6 : Synapse to Fabric Migration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#49-migrating-notebooks-from-synapse-to-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      49. Migrating notebooks from Synapse to Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#50-migrating-running-pipelines-from-synapse-in-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      50. Migrating / Running Pipelines from Synapse in Fabric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#51-migrating-adls-datalake-gen2-to-fabric-onelake" class="md-nav__link">
+    <span class="md-ellipsis">
+      51. Migrating ADLS DataLake Gen2 to Fabric OneLake
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="51. Migrating ADLS DataLake Gen2 to Fabric OneLake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-fastcp-best-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using FastCP - Best Way
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-7-capacity-metrics-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 7 : Capacity Metrics App
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 7 : Capacity Metrics App">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-ui-of-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      51. UI of the App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-capacity-metrics-and-units-in-fabrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      52. Capacity Metrics and Units in Fabrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="52. Capacity Metrics and Units in Fabrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Throttling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-interactive-delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      53. Interactive Delay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-interactive-rejection" class="md-nav__link">
+    <span class="md-ellipsis">
+      53. Interactive Rejection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-background-rejection" class="md-nav__link">
+    <span class="md-ellipsis">
+      54. Background Rejection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-8-synapse-data-warehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 8 : Synapse Data Warehouse
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Section 8 : Synapse Data Warehouse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#55-limitations-of-tables-in-sql-warehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      55. Limitations of Tables in SQL Warehouse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-loading-data-in-warehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      56. Loading Data In Warehouse
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Microsoft Fabric</h1>
+
+<h2 id="microsoft-fabric">Microsoft Fabric</h2>
+<h2 id="section-1-introduction-and-installation">Section 1 : Introduction and Installation</h2>
+<h3 id="1-introduction">1. Introduction</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7c34baaa-fe51-4d01-b47e-34a19eb573e0" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0bf7b0ad-55f1-4744-a6d9-98bdfb9ac455" /></p>
+<h3 id="2-pre-requisites">2. Pre Requisites</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7eb5d4bc-accd-44f9-a276-11acfb8a3f5b" /></p>
+<h3 id="3-project-architecture">3. Project Architecture</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/10271b70-df84-4690-a1ac-1d0b823aca45" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/73e21ba7-23e7-4d80-ba87-617384b8de4f" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/39a6f9d6-7842-4401-8f02-486ea80b82ce" /></p>
+<h3 id="4-installation">4. Installation</h3>
+<ul>
+<li>Ensure Hierarchial namespace enabled to create Azure Data Lake Storage Gen2 resource.</li>
+<li>We dont get charged for Synapse Analytics until we create compute.</li>
+</ul>
+<h4 id="create-spark-pool">Create Spark Pool</h4>
+<p>Spark Pool Settings</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/047a5c38-a11d-45d4-bf17-dd8330253305" /></p>
+<h2 id="section-2-understanding-microsoft-fabric">Section 2 : Understanding Microsoft Fabric</h2>
+<h3 id="5-evolution-of-architecture">5. Evolution of Architecture</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/155a9882-97a7-4cbd-a37b-720b8b04e2fb" /></p>
+<p>Metadata caching layer brings ACID properties.</p>
+<h3 id="6-delta-lake-structure">6. Delta Lake Structure</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/5103715a-10a1-483c-a784-b02d0932867d" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c9d5b8eb-e2b9-4d2d-a202-3406834797c4" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/259e096d-ebe7-49ba-9547-9a9749b7ad6c" /></p>
+<p><strong>What happens under the hood?</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/cf9707b4-395e-40cd-b714-17ea79e1bab2" /></p>
+<h3 id="7-why-fabric">7. Why Fabric?</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b226825b-0465-45e6-81f4-18a1ac18b586" /></p>
+<p>Lot of services need to be created individually.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/617423df-80b0-4979-ab03-b15a142df5a9" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/91ef44d2-1b7a-4312-96f7-0e9b1a7ecd1e" /></p>
+<h3 id="8-starting-up-fabric">8. Starting Up Fabric</h3>
+<ul>
+<li>Login to fabric with Microsoft entra id account for free trial.</li>
+<li>Go to Settings -&gt; Admin Portal -&gt; enable fabric</li>
+</ul>
+<h3 id="9-licensing-and-costs">9. Licensing and Costs</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fbadcf29-9e2c-4ec0-8aa7-d47596d1563f" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f936326d-f986-4073-88fc-42bb49f488c5" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d8eb0744-db7f-435a-a934-b9ecf9b41d4a" /></p>
+<p>Creating Azure Capacity</p>
+<p><a href="https://learn.microsoft.com/en-gb/fabric/enterprise/buy-subscription">Microsoft Official Link</a></p>
+<p>If you are not able to select subscription follow these steps</p>
+<ul>
+<li>
+<p>If you can open the subscription but not perform actions:</p>
+</li>
+<li>
+<p>Go to Azure Portal &gt; Subscriptions</p>
+</li>
+<li>
+<p>Click on the subscription</p>
+</li>
+<li>
+<p>Go to Access Control (IAM) &gt; Role Assignments</p>
+</li>
+<li>
+<p>Filter by Role = Owner</p>
+</li>
+<li>
+<p>You’ll see a list of users, groups, or service principals who are assigned the “Owner” role.</p>
+</li>
+</ul>
+<h3 id="10-fabric-terms">10. Fabric Terms</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6b106735-7552-40e4-92c6-981799188b78" /></p>
+<p>Example</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ea624065-8cf1-4ae6-a52e-e6a49016b0ac" /></p>
+<h3 id="11-onelake-in-fabric">11. OneLake in Fabric</h3>
+<p>Data is stored in One data lake based on the workspace names.</p>
+<p>There is only one storage point.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7de4af18-ffee-4349-81e5-077ea964aaeb" /></p>
+<p>We will have only one copy of data and nothing is duplicated.</p>
+<p>The files are stored in parquet metadata powered by delta lake.</p>
+<h3 id="12-one-copy-for-all-computes">12. One Copy for all computes</h3>
+<p>All engines store data in One Lake.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8d81d3e9-9b42-4806-9ad6-b137c84579f9" /></p>
+<p>All data stored in delta parquet format.</p>
+<h2 id="section-3-fabric-lakehouse">Section 3 : Fabric Lakehouse</h2>
+<h3 id="13-microsoft-fabric-workspaces">13. Microsoft Fabric Workspaces</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/af9bbffc-13bf-468a-b512-1116a40bbc9f" /></p>
+<h3 id="14-workspace-roles">14. Workspace Roles</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a9947c7c-7a84-427f-ad55-c3ef9d26544b" /></p>
+<h3 id="15-creating-a-lakehouse">15. Creating a Lakehouse</h3>
+<p>When we create a Lakehouse there are three things:</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b728c87a-6d3c-44c1-ae1a-5a463a5ce73c" /></p>
+<p>Lakehouse - data platform to store the data.</p>
+<p>Semantic Model - Dataset to present to powerbi.</p>
+<p>SQL Endpoint - we can run queries.</p>
+<h3 id="16-lakehouse-explorer">16. Lakehouse Explorer</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ee727432-a078-47a8-9703-585519e4b696" /></p>
+<p>Data Uploaded to table</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/18d37644-fba7-4b13-8464-08ddf8d88496" /></p>
+<p>Table created from the file</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bf739a69-0d03-473a-bab5-a40308ba275f" /></p>
+<p>Files are stored in parquet with delta log</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6a48dcb6-d2ab-4fcc-b095-c8764f92a49e" /></p>
+<p>Here is delta log info
+<img alt="image" src="https://github.com/user-attachments/assets/c9441de4-89cd-407c-a2ad-1f433abf438e" /></p>
+<p>On clicking properties we can see if its managed or not.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ecb5ea00-99f2-4774-a51a-07e99a0d410a" /></p>
+<h3 id="17-sql-analytics-endpoint">17. SQL Analytics Endpoint</h3>
+<p>We can only read data from this enpoint not write / update.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/477346d2-6a2c-4349-aee2-508b41531770" /></p>
+<p>We can create views</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a7d64053-b50a-4eb8-8f36-e366462bc167" /></p>
+<h3 id="18-default-semantic-model-view">18. Default Semantic Model View</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a3689d2c-eada-4cb7-8944-8dfe5fa1728c" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/5e9409fe-741c-43cf-a325-16597edb3782" /></p>
+<p>In the context of the semantic model in Microsoft Fabric lakehouse, the semantic model itself doesn't directly store raw data. Instead, it provides a logical, structured view of the data stored in the underlying data lake or warehouse.</p>
+<p>The semantic model acts as an abstraction layer that organizes and simplifies access to the data, making it easier for reporting and analysis tools to query the data efficiently. The raw data is stored in the data lake or data warehouse, and the semantic model helps to structure and shape this data into meaningful formats suitable for analysis and reporting.</p>
+<h2 id="section-4-data-factory-in-fabric">Section 4 : Data Factory in Fabric</h2>
+<h3 id="19-how-to-load-data-in-lakehouse">19. How to Load data in Lakehouse</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c6ffa031-73fc-41d3-9c90-55af9b85cf3a" /></p>
+<h3 id="20-fabric-vs-azure-data-factory">20. Fabric vs Azure Data Factory</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/73beab74-d8a7-4968-a734-5ab28f81b536" /></p>
+<h3 id="21-data-gateway-types">21. Data Gateway Types</h3>
+<ul>
+<li>Gateway connects two networks</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fdcb28e4-76c0-45ac-a248-f3c15d3a2708" /></p>
+<p>Imagine you have a big box of toys at home, and you want to show them to your friends who live far away. You have two ways to show them: one way is through a special window, and the other way is to use a delivery truck.</p>
+<p><strong>On-Premise Data Gateway (like a special window):</strong></p>
+<p>This is like a window that you open to let your friends see your toys without taking them out of the box. It connects your toys (data) at home to an online game or app that your friends are using. You can think of this as a way to share data that's stored in your house but don't let your friends take it out or change it. It keeps your toys safe inside but lets you show them off.</p>
+<p><strong>VNet Data Gateway (like a delivery truck):</strong></p>
+<p>This method is like using a delivery truck to send some of your toys to your friends' houses. The VNet (Virtual Network) is a big, secure road that connects your house and your friends' houses. When you use this truck, you're moving data across this secure road, allowing your friends to actually play with the toys (data) over at their place, but still keeping it safe and controlled.
+So, in simple terms, the on-premise data gateway lets you show your toys to friends securely while they are still at home, and the VNet data gateway lets you share some toys by sending them out safely to your friend's houses.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c42ed06c-7d4a-4d4e-bbf3-603290e4e1cc" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7d38f9d9-f925-4b43-9280-8d582acb5db0" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/2873af2a-5ef8-48ef-a7de-ecd16bff993d" /></p>
+<h3 id="22-connections">22. Connections</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/35031f0b-a5a4-4c43-80fd-e48b8d1705a3" /></p>
+<p>Click Gear Icon -&gt; Manage Connections and Gateways</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/78e1c5f4-cad0-4c81-af0f-75ff4c2f179a" /></p>
+<ul>
+<li>Gateway : Equivalent to Integration Runtime in ADF</li>
+<li>Connection : Similar to Linked Service in ADF</li>
+</ul>
+<h3 id="23-creating-pipeline">23. Creating Pipeline</h3>
+<p>Step 1 : Lookup Activity to query the SQL connecte ddatabase</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/55a1c0f3-ed62-48b8-aea9-edb3b214f13a" /></p>
+<p>Step 2 : Foreach activity to go over both tables</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/36095c7e-d67b-40d7-8d43-5389fcab9604" /></p>
+<p>Step 3 : For each iteration run copy data activity</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/53246f88-ec3d-476e-9cca-a34f89c2e5dd" /></p>
+<p>Destination : Our Onelake data lakehouse</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c1bb5fa8-4e6a-4838-be3d-9fdd20962072" /></p>
+<h3 id="24-dataflow-gen2">24. Dataflow Gen2</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/75c29c43-44aa-4e96-ae2d-508d1339bd54" /></p>
+<p>Adding Data Source to Dataflow Gen 2</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c3ba3e23-5d04-46d2-b13d-a578b1910943" /></p>
+<p>Alice here has Blob Storage Contributor role that can be granted in container screen.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8a361494-7f49-4199-86f2-ef467da1ba5e" /></p>
+<p>Click Combine</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8e675945-0ff9-441c-b99d-54e22a159da7" /></p>
+<p>Click Add Column -&gt; Custom Column</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0aba5b70-e335-4cf5-8ddd-91fde9de6c69" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>if [State] = &quot;CA&quot; then &quot;California&quot; else if 
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[State] = &quot;NJ&quot; then &quot;New Jersey&quot; else if
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[State] = &quot;FL&quot; then &quot;Florida&quot;
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>else [State]
+</code></pre></div>
+<p>Click Add Destination -&gt; Lakehouse</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/20c35d27-bfad-43fe-8b91-ae238d6a03b4" /></p>
+<p>Next Go to Home -&gt; Save and Run, refresh should automatically start</p>
+<p>We should be able to see the data once refresh is completed.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7d0f6ce2-87f1-4e29-b85b-3ce3a1c72007" /></p>
+<h2 id="section-5-fabric-one-lake">Section 5 : Fabric One Lake</h2>
+<h3 id="25-shortcuts-in-fabric">25. Shortcuts in Fabric</h3>
+<p>Shortcuts can be created only at OneLake level.</p>
+<p>Let's say finance team wants data from marketing lakehouse.</p>
+<p>They can create a shortcut to the marketing lakehouse without copying the data.</p>
+<p>The data is refreshed/updated automatically.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/40a74d56-44f7-40dc-9789-f24c00a283f7" /></p>
+<p>No need to copy data while loading from Amazon S3.</p>
+<h3 id="26-how-to-create-a-shortcut">26. How to create a shortcut?</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ba78245f-adc9-44ac-acba-1e560ba6e26a" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1587635a-96c5-4c4b-b651-ab7673725d40" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c05f2eee-c38a-424d-9ceb-20eeb1cb8438" /></p>
+<h3 id="27-creating-files-shortcut">27. Creating Files Shortcut</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/2da99e53-201c-4205-8bc9-81e89d9a3147" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8b9854d5-139e-4414-bd47-5e054b31749c" /></p>
+<p>Deleting file at Azure Data Lake Storage</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/382fd180-449d-4900-b7c4-53288ec10a95" /></p>
+<p>Data gets deleted here in fabric also.</p>
+<p>Deleting data in Fabric</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/187153da-94a5-445f-a2e1-637c5f0be97d" /></p>
+<p>Data gets deleted in Azure Blob also.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/404e7e6f-2193-41b7-b463-d098d583d0b5" /></p>
+<h3 id="28-creating-table-shortcut">28. Creating Table Shortcut</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7e4b97d3-3ad0-4a9d-a936-9556e7230ef9" /></p>
+<p>We can see that this table is in unmanaged section</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d01ea0dc-ac71-4b27-b2f8-7b7a9582e5d7" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fb8e7b20-0322-45f4-aaa7-b7d0dedb3a1e" /></p>
+<p>In Microsoft Fabric, unidentified tables are entries displayed in the managed section of your data environment that lack associated metadata or table references. Here’s a breakdown of the concept:</p>
+<p>Managed vs. Unmanaged: In Fabric, the managed section refers to tables that have both metadata and data managed by the Fabric engine. In contrast, the unmanaged section allows you to upload files in any format, which do not have the same management.</p>
+<p>Unidentified Tables: If you create a table that is not in the delta format, it will be saved in the unidentified folder. This often occurs when files, such as CSVs, are included without a defined table structure, leading Fabric to categorize them as unidentified.</p>
+<p>Purpose: The main goal of the unidentified prompt is to alert users that these files do not conform to the required structure for the managed section and do not support any tables. Essentially, it indicates that there are files present that need to be reviewed and potentially removed.</p>
+<p>If we want files from sub folder we cant create shortcut.</p>
+<p>When we create shortcut from files it can be from sub directories also.</p>
+<p>Now I dropped a parquet file in adls and there is no unmanaged error.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6d3e2d24-c452-493c-b8b6-7458d7bcf4d8" /></p>
+<h3 id="29-creating-delta-from-parquet">29. Creating Delta from Parquet</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/59169588-f362-46d6-8747-f9480166873f" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4441ee78-c523-4868-b976-04c6b367284c" /></p>
+<ol>
+<li>
+<p>Go to synapse workspace</p>
+</li>
+<li>
+<p>Create new notebook.</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>df = spark.read.format(&quot;parquet&quot;).load(&#39;abfss://containername@storageaccountname.dfs.core.windows.net/UnEmployment.parquet&#39;)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>df.write.format(&#39;delta&#39;).save(&#39;abfss://shortcutdelta@msfabriclakehousevedanth.dfs.core.windows.net/&#39;)
+</code></pre></div>
+<h3 id="30-creating-shortcut-in-fabric">30. Creating Shortcut in Fabric</h3>
+<p>Just execute above code and create a table level shortcut.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c9a202b3-40c2-44f4-ae0f-780c58925f04" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8ba09a68-687f-4cd9-ae9d-85d2dc7c471f" /></p>
+<h3 id="31-shortcut-from-a-subfolder-in-fabric">31. Shortcut from a subfolder in Fabric</h3>
+<p>We cannot create a delta table / shortcut from a sub folder in ADLS Gen2.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1abe0218-6d77-41b8-bc60-dc44942d079c" /></p>
+<h3 id="32-creating-shortcut-from-parquet-file">32. Creating Shortcut from Parquet file</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ff3f611e-ff3d-4757-8a10-3064e72b0ae5" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>df.write.format(&#39;parquet&#39;).mode(&#39;append&#39;).save(&#39;abfss://shortcutparquet@msfabriclakehousevedanth.dfs.core.windows.net/&#39;)
+</code></pre></div>
+<p>We cannot create shortcut from parquet files as well, it lands in unidentified folder.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1e93fa3c-e7c6-4d07-8805-c19c1f429187" /></p>
+<h3 id="33-summary-of-shortcuts">33. Summary of Shortcuts</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/3793b0e3-f30c-4666-8a6a-1c4ce2cd050e" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4bf77b56-c305-476f-b3f2-bf34397880ff" /></p>
+<h3 id="34-update-scenarios-using-shortcuts-lakehouse-to-datalake">34. Update Scenarios Using Shortcuts : Lakehouse to Datalake</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e77d7a15-2485-4a6d-a9bd-e577ea0a59ed" /></p>
+<p>What effects on table and file when either is updated?</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7c3633d9-e9ca-434c-95f4-1003ceea776b" /></p>
+<p>We cannot update using SQL editor in fabric so let's use notebook.</p>
+<p>Code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>df = spark.sql(&quot;SELECT * FROM demo_lakehouse.Unemployment LIMIT 1000&quot;)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>display(df)
+</code></pre></div>
+<p>We can see that the session is created in 11s, much faster than synapse</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/33cf2a32-4f6b-4219-b8bc-09c922d7235c" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>df_updated = spark.sql(&quot;UPDATE demo_lakehouse.Unemployment SET Industry = &#39;Healthcare Updated&#39; WHERE Industry = &#39;Healthcare&#39;&quot;)
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>display(df_updated)
+</code></pre></div>
+<p>If we have only reader access then this operation will fail.</p>
+<p>This update also reflects on the file in delta lake.</p>
+<h3 id="35-storage-to-data-lake-shortcut-updates">35. Storage to Data Lake Shortcut Updates</h3>
+<p>1st Version</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/baa995dc-f6f8-482b-b989-4fdfa901e7bb" /></p>
+<p>Update Code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>spark.sql(&#39;&#39;&#39;update vw_unemployment_new set Industry = &#39;Retail&#39; where Industry = &#39;Retail Trade&#39; &#39;&#39;&#39;)
+</code></pre></div>
+<p>The Industry has changed from Retail Trade to Retail</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/21111470-00b6-4905-afc4-dbc93492de53" /></p>
+<p>Update Operation Delta Log</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>{&quot;commitInfo&quot;:{&quot;timestamp&quot;:1752330893911,&quot;operation&quot;:&quot;UPDATE&quot;,&quot;operationParameters&quot;:{&quot;predicate&quot;:&quot;[\&quot;(Industry#761 = Retail Trade)\&quot;]&quot;},&quot;readVersion&quot;:0,&quot;isolationLevel&quot;:&quot;Serializable&quot;,&quot;isBlindAppend&quot;:false,&quot;operationMetrics&quot;:{&quot;numRemovedFiles&quot;:&quot;1&quot;,&quot;numRemovedBytes&quot;:&quot;39721&quot;,&quot;numCopiedRows&quot;:&quot;1510&quot;,&quot;numAddedChangeFiles&quot;:&quot;0&quot;,&quot;executionTimeMs&quot;:&quot;10094&quot;,&quot;scanTimeMs&quot;:&quot;9455&quot;,&quot;numAddedFiles&quot;:&quot;1&quot;,&quot;numUpdatedRows&quot;:&quot;14&quot;,&quot;numAddedBytes&quot;:&quot;39715&quot;,&quot;rewriteTimeMs&quot;:&quot;635&quot;},&quot;engineInfo&quot;:&quot;Apache-Spark/3.4.3.5.3.20250511.1 Delta-Lake/2.4.0.24&quot;,&quot;txnId&quot;:&quot;6ae56a22-9ff9-4b9a-aec1-d7ab21bb57e8&quot;}}
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>{&quot;remove&quot;:{&quot;path&quot;:&quot;part-00000-33b67e12-a6d1-40de-86ac-20a6843bdc2a-c000.snappy.parquet&quot;,&quot;deletionTimestamp&quot;:1752330893906,&quot;dataChange&quot;:true,&quot;extendedFileMetadata&quot;:true,&quot;partitionValues&quot;:{},&quot;size&quot;:39721,&quot;tags&quot;:{}}}
+</code></pre></div>
+<h3 id="36-deleting-file-data-in-fabric-lake-house-or-adls">36. Deleting File Data in Fabric Lake House or ADLS</h3>
+<p>Deleting any record / file itself from Data Lake deletes it from storage also.</p>
+<p>Reverse scenario is also same.</p>
+<h3 id="37-deleting-data-from-tables-in-lake-house">37. Deleting Data from Tables in Lake House</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a45b3876-c314-4f88-bed9-3007509c08c1" /></p>
+<p>Reflected in Storage file also, we see 1428 records.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1978e485-c1cc-4bf8-95aa-c7d920a81831" /></p>
+<p>The reverse is also same scenario, deleting from storage reflects in data lakehouse table also.</p>
+<h3 id="38-deleting-shortcut">38. Deleting Shortcut</h3>
+<p>Deleting the entire shortcut does not delete data in storage.</p>
+<h2 id="section-7-fabric-synapse-data-engineering">Section 7 : Fabric Synapse Data Engineering</h2>
+<h3 id="39-spark-pools">39. Spark Pools</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/71ec8d45-f08e-4e57-a17c-a1460577b7f8" /></p>
+<h4 id="starter-pools-in-spark">Starter Pools in Spark</h4>
+<p>Spark Starter Pools are machines that are ready and can be spun up anytime.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0cffbf40-6b5d-4d20-98e8-bc3247769492" /></p>
+<p>Billing time doesnt include the idle time to initialize the spark session.</p>
+<h3 id="40-spark-pool-node-size-starter-pool">40. Spark Pool Node Size (Starter Pool)</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1c150949-30ac-4f5e-bed6-25160188aa4f" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1014fb02-47e0-4951-a265-95416848fe7a" /></p>
+<p>If Starter Pool is not used for 20 min then session expires</p>
+<p>Only the min and max number of nodes can be changed in starter pools, its always going to be medium node.</p>
+<h3 id="41-custom-pools">41. Custom Pools</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ffc4bb17-7602-4be8-86b2-309e4b6af3ea" /></p>
+<p>We can adjust the node family and number of nodes but caveat is that it will not give the same instant start time as starter pools, Fabric needs to allocate the resources.</p>
+<h3 id="42-standard-vs-high-concurrency-sessions">42. Standard vs High Concurrency Sessions</h3>
+<p>It acts like shared cluster in Databricks</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c044cf1c-0dd8-4301-99a7-21569879eef6" /></p>
+<h3 id="43-custom-magic-commands">43. Custom Magic Commands</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bbd62f74-8a8e-43f4-bfb9-8740006e60ab" /></p>
+<h3 id="44-mssparkutils">44. MSSparkUtils</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/87dbaf2c-bff0-4497-aceb-7aa6e5941c2e" /></p>
+<p>For using Azure Key vault : mssparkutils.credentials.help</p>
+<p><img width="1239" height="397" alt="image" src="https://github.com/user-attachments/assets/4a15e157-0d16-42d0-9a89-2abf3f5bcb54" /></p>
+<p><img width="1289" height="160" alt="image" src="https://github.com/user-attachments/assets/61b6c590-7b97-496b-ac87-fa3c5dc0ae28" /></p>
+<p>The Key Vault Secret Officer role will allow creation of secrets and using it in notebook.</p>
+<h3 id="45-call-fabric-notebook-from-fabric-pipeline">45. Call Fabric Notebook from Fabric Pipeline</h3>
+<p>Create New cloud connection</p>
+<p><img width="1843" height="768" alt="image" src="https://github.com/user-attachments/assets/f85c2fdf-c258-42c1-8cf1-890f2da5487d" /></p>
+<p><img width="485" height="351" alt="image" src="https://github.com/user-attachments/assets/d93cbd62-7b3c-4492-a527-e483f0fe2ace" /></p>
+<p>We cannot use keyvault at the moment</p>
+<p><img width="486" height="646" alt="image" src="https://github.com/user-attachments/assets/19b920ab-cc0a-4c6f-9251-a1033773267d" /></p>
+<p><img width="1042" height="408" alt="image" src="https://github.com/user-attachments/assets/58b277cd-de84-48dc-af5e-1f91c90d1a06" /></p>
+<h3 id="46-managed-vs-external-table">46. Managed Vs External Table</h3>
+<p><img width="1473" height="649" alt="image" src="https://github.com/user-attachments/assets/074a4df3-af71-444e-9845-e0783cc24fb0" /></p>
+<p><img width="946" height="449" alt="image" src="https://github.com/user-attachments/assets/906c9d3e-f9fd-494e-959c-38f20d0db62e" /></p>
+<p>Shortcut tables are managed because we are storing the data in the tables section and its coming from root level folder, the data is being managed by the Fabric Engine.</p>
+<p>The changes of data on the table are replicated on the data lake.</p>
+<h3 id="47-environments-in-fabric">47. Environments in Fabric</h3>
+<p><img width="917" height="376" alt="image" src="https://github.com/user-attachments/assets/376c3cbf-1963-4ac7-be90-cd447dae44e4" /></p>
+<p><img width="902" height="750" alt="image" src="https://github.com/user-attachments/assets/3f6dfdeb-0175-47e6-8044-01cfba4b43d1" /></p>
+<p>We cannot change the node family since its a default pool.</p>
+<p><img width="865" height="412" alt="image" src="https://github.com/user-attachments/assets/5784ac2d-1104-448d-b548-ea377681c26d" /></p>
+<h3 id="48-v-order-in-fabric">48. V Order in Fabric</h3>
+<p><img width="865" height="412" alt="image" src="https://github.com/user-attachments/assets/bcf2c7ad-ae8c-4f85-9b0d-623b64b40959" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>spark.conf.get(&quot;spark.sql.parquet.vorder.enabled&quot;)
+</code></pre></div>
+<h3 id="48-domains-in-fabric">48. Domains in Fabric</h3>
+<p>We can isolate data to create a data mesh using domains. One for IT, one for HR and so on.</p>
+<p>Go to settings -&gt; then click 'Create Domain'</p>
+<p><img width="1835" height="562" alt="image" src="https://github.com/user-attachments/assets/696c23ba-776f-4aea-af6b-673b62ced649" /></p>
+<p>We can assign workspaces to each domain.</p>
+<p><img width="1847" height="739" alt="image" src="https://github.com/user-attachments/assets/dc584bf3-2794-4116-a800-a907a2dfe7f8" /></p>
+<p><img width="1837" height="160" alt="image" src="https://github.com/user-attachments/assets/94008f1b-d3ee-4388-9309-4ac80a18c665" /></p>
+<p><img width="1836" height="257" alt="image" src="https://github.com/user-attachments/assets/69fc1793-5b80-448a-8585-3616ee873465" /></p>
+<p><img width="902" height="453" alt="image" src="https://github.com/user-attachments/assets/f5b1df47-a1ed-4e30-a897-326b44fd392f" /></p>
+<h2 id="section-6-synapse-to-fabric-migration">Section 6 : Synapse to Fabric Migration</h2>
+<h3 id="49-migrating-notebooks-from-synapse-to-fabric">49. Migrating notebooks from Synapse to Fabric</h3>
+<p><img width="884" height="348" alt="image" src="https://github.com/user-attachments/assets/c4f96e49-baab-466f-aa0a-7dc1a85929b4" /></p>
+<p>First Create Service Principal using App Registration.</p>
+<p>Then enter credentials.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>azure_client_id  = &quot;&quot;
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>azure_tenant_id  = &quot;&quot;
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>azure_client_secret  = &quot;&quot;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>synapse_workspace_name  = &quot;synapseprojectvedanth&quot;
+</code></pre></div>
+<p>Go to Synapse workspace and add role assignment.</p>
+<p><img width="1662" height="532" alt="image" src="https://github.com/user-attachments/assets/2a0747f1-ef6e-459f-8269-77ce0a808f47" /></p>
+<p>Give Synapse Admin role to the SP.</p>
+<p>Go to any table in lakehouse, click properties and get this abfss path</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>abfss://264d9187-xxxx-yyyy-zzzz-aaaaa@onelake.dfs.fabric.microsoft.com/46d6a3de-xxxx-xxxx-xxxx-xxxxxxx/
+</code></pre></div>
+<p>Now configure fabric details this way</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>workspace_id  = &quot;Data_Engineering_Workspace&quot;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>xlakehouse_id = &quot;46d6a3de-fc48-4a41-xxx-xxxxxx&quot;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>export_folder_name = f&quot;export/{synapse_workspace_name}&quot;
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>prefix = &quot;mig&quot;
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>output_folder = f&quot;abfss://{workspace_guid}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Files/{export_folder_name}&quot;
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>print(output_folder)
+</code></pre></div>
+<p>Import utility file</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sc.addPyFile(&#39;https://raw.githubusercontent.com/microsoft/fabric-migration/main/data-engineering/utils/util.py&#39;)
+</code></pre></div>
+<p>Export notebooks from synapse to fabric</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Utils.export_notebooks(azure_client_id, azure_tenant_id, azure_client_secret, synapse_workspace_name, output_folder)
+</code></pre></div>
+<p>Import everything as notebooks in fabric</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Utils.import_notebooks(f&quot;/lakehouse/default/Files/{export_folder_name}&quot;, workspace_guid, prefix)
+</code></pre></div>
+<h3 id="50-migrating-running-pipelines-from-synapse-in-fabric">50. Migrating / Running Pipelines from Synapse in Fabric</h3>
+<p><a href="https://www.udemy.com/course/master-microsoft-fabric-a-complete-end-to-end-project-cicd/learn/lecture/46196271#overview">Lecture Link</a></p>
+<p><a href="https://learn.microsoft.com/en-us/fabric/data-factory/migrate-planning-azure-data-factory#migrate-from-azure-data-factory-adf">ADF Pipeline Migration Docs</a></p>
+<h3 id="51-migrating-adls-datalake-gen2-to-fabric-onelake">51. Migrating ADLS DataLake Gen2 to Fabric OneLake</h3>
+<p><img width="803" height="352" alt="image" src="https://github.com/user-attachments/assets/2c4b6eee-aea9-4707-8153-13bf88e1f5b3" /></p>
+<h4 id="using-fastcp-best-way">Using FastCP - Best Way</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a># Azure storage access info
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>blob_account_name = &quot;azureopendatastorage&quot;
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>blob_container_name = &quot;nyctlc&quot;
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>blob_relative_path = &quot;green&quot;
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>blob_sas_token = r&quot;&quot;
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a># Allow SPARK to read from Blob remotely
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>wasbs_path = &#39;wasbs://%s@%s.blob.core.windows.net/%s&#39; % (blob_container_name, blob_account_name, blob_relative_path)
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>spark.conf.set(
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>  &#39;fs.azure.sas.%s.%s.blob.core.windows.net&#39; % (blob_container_name, blob_account_name),
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>  blob_sas_token)
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>print(&#39;Remote blob path: &#39; + wasbs_path)
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a># SPARK read parquet, note that it won&#39;t load any data yet by now
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>df = spark.read.parquet(wasbs_path)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>wasbs_path = &#39;wasbs://%s@%s.blob.core.windows.net/%s&#39; % (blob_container_name, blob_account_name, blob_relative_path)
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>NYDestinationCPPath =  &#39;abfss://Fabric_trail@onelake.dfs.fabric.microsoft.com/LH_Fabric.Lakehouse/Files/NYDestinationCP&#39;
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>NYDestinationFSPath =  &#39;abfss://Fabric_trail@onelake.dfs.fabric.microsoft.com/LH_Fabric.Lakehouse/Files/NYDestinationFS&#39;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>mssparkutils.fs.fastcp(wasbs_path,NYDestinationFSPath,True)
+</code></pre></div>
+<h2 id="section-7-capacity-metrics-app">Section 7 : Capacity Metrics App</h2>
+<p><img width="906" height="355" alt="image" src="https://github.com/user-attachments/assets/9254d049-b8e1-4f67-bf61-0d58fcf24ff4" /></p>
+<h3 id="51-ui-of-the-app">51. UI of the App</h3>
+<p><img width="1343" height="768" alt="image" src="https://github.com/user-attachments/assets/ba3f9ad2-bc6a-46fb-aba3-f9c7c4a43765" /></p>
+<h3 id="52-capacity-metrics-and-units-in-fabrics">52. Capacity Metrics and Units in Fabrics</h3>
+<p><img width="967" height="649" alt="image" src="https://github.com/user-attachments/assets/681b5aaa-45c6-46ec-a8a1-d735a3c2979c" /></p>
+<p>If we are using F64 mode, then we will have max of 64*30 = 1920 CU capacity.</p>
+<p>Out of this whatever we see in blue (29.99 units) is used for background processes like refresh of reports etc...</p>
+<p>Whatever we see in red are the interactive unit consumption that we users use.</p>
+<h4 id="throttling">Throttling</h4>
+<p>Throttling occurs when the tenant consumes more capacity units that it has purchased.</p>
+<p><img width="903" height="479" alt="image" src="https://github.com/user-attachments/assets/beb1b9db-cce7-4963-9d65-00a75eabc304" /></p>
+<p>Smoothing creates capacity balance</p>
+<p><img width="925" height="457" alt="image" src="https://github.com/user-attachments/assets/83783140-771d-4425-82cd-85822a192ee1" /></p>
+<p><img width="895" height="463" alt="image" src="https://github.com/user-attachments/assets/a20b5f2b-393e-4a18-a0f0-57d6adbb2204" /></p>
+<p>Overage is the capacity beyond 100%</p>
+<p><img width="974" height="713" alt="image" src="https://github.com/user-attachments/assets/371efc4d-202a-4c39-be8e-f0289609281c" /></p>
+<p>If we overuse for less than 10 min Fabric will not charge us anything</p>
+<p><img width="1293" height="682" alt="image" src="https://github.com/user-attachments/assets/23650d27-7765-440f-a58d-cd1e77fb352e" /></p>
+<p>The overage capacity units will be compensated to run background processes for next 24 hours.</p>
+<p><img width="1033" height="777" alt="image" src="https://github.com/user-attachments/assets/59efe334-f5e0-4ec9-aefd-32c6cff9d09c" /></p>
+<h3 id="53-interactive-delay">53. Interactive Delay</h3>
+<p>If our workload exceeds 100% for more than 10 min, then there will be some delay for a person running notebooks / SQL queries</p>
+<p><img width="1150" height="777" alt="image" src="https://github.com/user-attachments/assets/9da6d138-61e1-4f7a-b7c6-9a7d51664c9c" /></p>
+<p>If we are over utilizing for more than 10 min less than 60 min there will be 5 seconds delay</p>
+<h3 id="53-interactive-rejection">53. Interactive Rejection</h3>
+<p>We get Interactive Rejection if the over utilization exceed 100 % for more than 1 hour and less than 24 hours interactive queries are rejected but pipelines keep running.</p>
+<p><img width="1190" height="746" alt="image" src="https://github.com/user-attachments/assets/d11c3088-a3d3-42a8-9a18-13eb3a0debc1" /></p>
+<h3 id="54-background-rejection">54. Background Rejection</h3>
+<p>We get background / pipeline failures when the over utilization exceeds 24 hours.</p>
+<p><img width="1006" height="702" alt="image" src="https://github.com/user-attachments/assets/882fda5e-95c7-46af-950a-da0032bf07db" /></p>
+<p><img width="803" height="451" alt="image" src="https://github.com/user-attachments/assets/d316f4f6-5f15-420c-ba7f-0af64e6fff09" /></p>
+<p>Imagine you have a toy box, and you can fit 10 toys inside. If you add 12 toys, you have 2 extra toys that don't have a place. This is like an 'overage'—you are over the limit!</p>
+<p>Now, let's break down the terms:</p>
+<p><strong>Add % (Added Percentage)</strong>: This is like saying, "How many new toys did you put in the box?" For example, if you added 2 more toys, the added percentage would show that you've put in more than what fits.</p>
+<p><strong>Burndown %:</strong> Imagine playing with your toys. As you play, you may give some away or remove them. The burndown percentage is like counting how many toys you no longer have because you've given or taken them out of the box.</p>
+<p><strong>Cumulative % (Cumulative Percentage):</strong> This is like keeping track of all the toys that you didn't have space for but still remember they were there. If your toy box is overflowing for a few days, you add each extra toy to a list, showing how many toys you owe the box over time—it's the total amount of toys that you've added and not yet managed!</p>
+<p>So, when you look at how many toys you have in the box and how many more you need to fit, you're really keeping track of your 'add %', 'burndown %', and 'cumulative %' to make sure you know how many you can play with without going over!</p>
+<h2 id="section-8-synapse-data-warehouse">Section 8 : Synapse Data Warehouse</h2>
+<p><img width="879" height="334" alt="image" src="https://github.com/user-attachments/assets/0b5654d7-8ee4-4909-b83a-1002b7414f81" /></p>
+<p>There is no SQL Analytics Endpoint in Warehouse.</p>
+<p><img width="1563" height="755" alt="image" src="https://github.com/user-attachments/assets/d5fbe07e-41fa-4c43-b19b-614f54f193a1" /></p>
+<h3 id="55-limitations-of-tables-in-sql-warehouse">55. Limitations of Tables in SQL Warehouse</h3>
+<ol>
+<li>Both table and column names are case sensitive.</li>
+</ol>
+<p><img width="1511" height="453" alt="image" src="https://github.com/user-attachments/assets/d5b14a38-a0e3-4c22-a65e-90053f598518" /></p>
+<ol>
+<li>
+<p>No support for Primary Keys.</p>
+</li>
+<li>
+<p>No support for unique constraint.</p>
+</li>
+</ol>
+<h3 id="56-loading-data-in-warehouse">56. Loading Data In Warehouse</h3>
+<p><img width="898" height="429" alt="image" src="https://github.com/user-attachments/assets/45015641-773b-4f82-a17a-887c7c67bafd" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+    
+  </body>
+</html>

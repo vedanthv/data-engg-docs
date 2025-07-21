@@ -1,0 +1,3830 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vedanthv.github.io/data-engg-docs/Spark_YT/">
+      
+      
+        <link rel="prev" href="../Spark_Databricks_Course/">
+      
+      
+        <link rel="next" href="../streaming/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>Spark YouTube - Data Engineering Docs by Vedanth</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spark-concepts-and-code" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-header__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering Docs by Vedanth
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spark YouTube
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../astronomer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Astronomer and Airflow
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../databricks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Azure Databricks
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Spark_Databricks_Course/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark Databricks Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spark YouTube
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../streaming/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Streaming Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../MSFabric/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Microsoft Fabric
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Data Engineering Docs by Vedanth" class="md-nav__button md-logo" aria-label="Data Engineering Docs by Vedanth" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Engineering Docs by Vedanth
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../astronomer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Astronomer and Airflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spark_Databricks_Course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark Databricks Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spark YouTube
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spark-concepts-and-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Concepts and Code.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spark Concepts and Code.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lecture-1-what-is-apache-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 1 : What is Apache Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 1 : What is Apache Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unified :
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computing-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing Engine:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compute Cluster:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-2-why-apache-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 2 : Why Apache Spark?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 2 : Why Apache Spark?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Big Data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issues-with-rdbms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issues with RDBMS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservice-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monolith vs Microservice Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-3-hadoop-vs-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 3 : Hadoop vs Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 3 : Hadoop vs Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#misconception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Misconception:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Differences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-vs-stream-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch vs Stream Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ease-of-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ease of Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fault Tolerance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-4-spark-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 4 : Spark Ecosystem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 4 : Spark Ecosystem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-does-spark-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where does Spark run?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-5-read-modes-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 5 : Read Modes in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 5 : Read Modes in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataframereader-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataframeReader API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      mode in Spark
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-6-spark-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 6 : Spark Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 6 : Spark Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spark-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Cluster
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-user-submits-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      What happens when user submits code?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-inside-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      What happens inside the container?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What happens inside the container?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#driver-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Driver Allocation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Worker Allocation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executor-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executor Container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-7-schema-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 7 : Schema in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 7 : Schema in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structtype-and-structfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      StructType and StructField
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-8-handling-corrupter-records-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 8 : Handling Corrupter Records in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 8 : Handling Corrupter Records in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-many-records-in-each-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      How many records in each mode?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How many records in each mode?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#permissive-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permissive Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dropmalformed" class="md-nav__link">
+    <span class="md-ellipsis">
+      DropMalformed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-print-corrupted-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Print Corrupted Records
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-store-corrupted-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Store Corrupted Records
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-9-transformations-and-actions-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 9 : Transformations and Actions in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 9 : Transformations and Actions in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Transformations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-10-dag-and-lazy-evaluation-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 10 : DAG and Lazy Evaluation in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 10 : DAG and Lazy Evaluation in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimizations-on-the-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimizations on the Filter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-11-working-with-json-data-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 11: Working with JSON Data in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 11: Working with JSON Data in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#different-number-of-keys-in-each-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Different number of keys in each line
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiline-incorrect-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiline Incorrect JSON
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#corrupted-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Corrupted Records
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-12-spark-sql-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 12: Spark SQL Engine
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 12: Spark SQL Engine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-is-spark-code-compiled" class="md-nav__link">
+    <span class="md-ellipsis">
+      How is Spark Code compiled?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phases-in-catalyst-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phases in Catalyst Optimizer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phases in Catalyst Optimizer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Diagram
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-13-resilient-distributed-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 13: Resilient Distributed Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 13: Resilient Distributed Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-storage-of-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Storage of List
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-storage-in-rdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Storage in RDD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantage-of-rdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantage of RDD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avoiding-rdds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoiding RDDs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-14-parquet-file-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 14 : Parquet File Internals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 14 : Parquet File Internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#physical-storage-of-data-on-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Physical Storage of Data on Disk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write-once-read-many" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write Once Read Many
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-columnar-format-may-not-be-the-best" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Columnar format may not be the best?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical-partitioning-in-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logical Partitioning in Parquet
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runlength-encoding-and-bitpacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runlength Encoding and Bitpacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-details-on-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      More details on Parquet
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminologies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-types-in-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata Types in Parquet
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-is-data-written-into-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      How is data written into Parquet?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-is-data-read-from-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      How is data read from Parquet?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#olap-workload-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLAP Workload Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitpacking-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bitpacking Advantage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projection-pruning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Projection Pruning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-15-how-to-write-data-on-the-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 15 : How to write data on the disk?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 15 : How to write data on the disk?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modes-to-write-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modes to write data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-16-partitioning-and-bucketing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 16: Partitioning and Bucketing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 16: Partitioning and Bucketing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-of-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example of Partitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partitioning-by-address-and-gender" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitioning by Address and Gender
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bucketing-by-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bucketing by Id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tasks-vs-buckets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tasks vs Buckets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-bucketing-help-with-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does bucketing help with joins?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bucket-pruning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bucket Pruning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-17-spark-session-vs-spark-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 17 : Spark Session vs Spark Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-18-job-stage-and-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 18: Job, Stage and Tasks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 18: Job, Stage and Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-of-jobaction-and-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example of Job,Action and Task
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-flow-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete flow diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-tasks-get-created-read-and-write-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do tasks get created? [Read and Write Exchange]
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-17-dataframe-transformations-in-spark-part-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 17: Dataframe Transformations in Spark Part 1
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 17: Dataframe Transformations in Spark Part 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ways-to-select-values-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ways to select values / columns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecutre-18-dataframe-transformations-in-spark-part-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecutre 18 : Dataframe Transformations in Spark Part II
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecutre 18 : Dataframe Transformations in Spark Part II">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter-where-no-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      filter() / where() no difference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-filter-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple filter conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#literals-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literals in spark
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#renaming-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Renaming Columns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-19-union-vs-unionall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 19: union vs unionAll()
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 19: union vs unionAll()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-data-and-unioning-the-same-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selecting data and unioning the same table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-we-change-the-order-of-the-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      What happens when we change the order of the columns?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-19-repartitioning-and-coalesce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 19: Repartitioning and Coalesce
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 19: Repartitioning and Coalesce">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#repartitioning-vs-coalesce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repartitioning vs Coalesce
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Repartitioning vs Coalesce">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#repartitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repartitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coalesce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coalesce
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons-in-repartitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons in repartitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-get-number-of-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to get number of partitions?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coalescing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coalescing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-20-case-when-if-else-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 20 : Case when / if else in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 20 : Case when / if else in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apply-logic-on-one-column-then-process-if-else-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apply logic on one column then process if else logic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-sql-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark SQL Logic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-21-unique-and-sorted-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 21 : Unique and Sorted Records
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 21 : Unique and Sorted Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#distinct" class="md-nav__link">
+    <span class="md-ellipsis">
+      distinct()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dropping-duplicate-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dropping duplicate records
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    <span class="md-ellipsis">
+      sort()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-22-aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 22 : Aggregate functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 22 : Aggregate functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#count-as-both-action-and-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Count as both Action and Transformation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-23-group-by-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 23: Group By In Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 23: Group By In Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Questions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-do-we-use-window-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where do we use window functions?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-by-two-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping by two columns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-24-joins-in-spark-part-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 24 : Joins in Spark part 1
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 24 : Joins in Spark part 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-do-joins-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do joins work?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-25-types-of-join-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 25 : Types of Join in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 25 : Types of Join in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inner Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Left Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#right-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Right Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-outer-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full Outer Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left-semi-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Left Semi Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left-anti-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Left Anti Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross Join
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-26-join-strategies-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 26 : Join Strategies in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 26 : Join Strategies in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-join-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Join Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shuffle-sort-merge-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shuffle Sort Merge Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shuffle-hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shuffle Hash Join
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broadcast-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broadcast Join
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Broadcast Join">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#window-functions-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Window functions in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Window functions in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rank-vs-dense-rank" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rank vs Dense Rank
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lead-and-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lead and Lag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#range-and-row-between" class="md-nav__link">
+    <span class="md-ellipsis">
+      Range and Row Between
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-memory-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Memory Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executor-memory-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executor Memory OOM
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Executor Memory OOM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-is-10gb-divided" class="md-nav__link">
+    <span class="md-ellipsis">
+      How is 10GB divided?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-does-each-part-of-the-user-memory-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does each part of the user memory do?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-does-each-part-of-the-spark-memory-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does each part of the spark memory do?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-can-we-neither-evict-the-data-nor-spill-to-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      When can we neither evict the data nor spill to disk?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-27-spark-submit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 27: Spark Submit
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 27: Spark Submit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spark-submit-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Submit Command
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-28-deployment-modes-in-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 28 : Deployment Modes in Spark
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 28 : Deployment Modes in Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-mode-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      client mode deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      cluster mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons-of-client-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      pros and cons of client mode
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-29-adaptive-query-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 29: Adaptive Query Execution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 29: Adaptive Query Execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features-of-aqe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features of AQE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Features of AQE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamically-coalescing-shuffle-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamically Coalescing Shuffle Partitions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Splitting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamically-switching-join-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamically Switching Join Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamically-optimizing-skew-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamically Optimizing Skew Join
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamically Optimizing Skew Join">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-30-cache-vs-persist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 30 : Cache vs Persist
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 30 : Cache vs Persist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spark-memory-management_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spark Memory Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-many-partitions-get-stored-in-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      How many partitions get stored in cache?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-level-in-persist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage Level in Persist
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-31-dynamic-resource-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 31 : Dynamic Resource Allocation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 31 : Dynamic Resource Allocation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cluster Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-executor-ask-for-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does executor ask for resources?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallel-execution-and-multi-threading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel Execution and Multi Threading
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-avoid-dynamic-resource-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to avoid dynamic resource allocation?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lecture-32-dynamic-partition-pruning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lecture 32 : Dynamic Partition Pruning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lecture 32 : Dynamic Partition Pruning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dpp-with-2-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      DPP with 2 tables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Streaming Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MSFabric/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Microsoft Fabric
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Spark YouTube</h1>
+
+<h2 id="spark-concepts-and-code">Spark Concepts and Code.</h2>
+<h3 id="lecture-1-what-is-apache-spark">Lecture 1 : What is Apache Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ed862eae-aed7-4bd7-acfe-46fa117402bb" /></p>
+<h4 id="unified">Unified :</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8c33e885-bae7-4db0-983c-e84f1e5e0bfe" /></p>
+<h4 id="computing-engine">Computing Engine:</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/5d93b97e-c545-4885-8b7a-88b31d048197" /></p>
+<p>Spark is not storage platform we can store the data in hdfs, rdbms etc...</p>
+<p>Spark can process terabytes of data in distributed manner.</p>
+<h4 id="compute-cluster">Compute Cluster:</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1505275d-c247-435e-9db0-d1cfbb3cd9e9" /></p>
+<ul>
+<li>each slave has 16 GB RAM, 1TB storage and 4 core CPU</li>
+<li>even master has some data and RAM</li>
+<li>the above cluster can compute 64 gb of data at a time.</li>
+<li>the master divides the data among the slave nodes and then slaves process the data.</li>
+</ul>
+<h3 id="lecture-2-why-apache-spark">Lecture 2 : Why Apache Spark?</h3>
+<p>Different Databases
+<img alt="image" src="https://github.com/user-attachments/assets/9a0002db-8eae-46be-8a54-97836d7f17ae" /></p>
+<p>new formats like video, audio, json,avro started coming in but rdms cannot handle it.</p>
+<p>volume of data also increased. </p>
+<h4 id="what-is-big-data">What is Big Data?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/392ce5ec-a93a-4f9d-afc8-2fec1ed9d920" /></p>
+<p>Data Lake works on Extract Load Transform architecture</p>
+<h4 id="issues-with-rdbms">Issues with RDBMS</h4>
+<ul>
+<li>Storage</li>
+<li>Processing - RAM and CPU</li>
+</ul>
+<p>Enter Spark...</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0af03559-6cae-45e9-9d6c-322bfe032efd" /></p>
+<h4 id="monolith-vs-microservice-architecture">Monolith vs Microservice Architecture</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d3fb2d60-f182-4dbb-a8c6-e146e481a117" /></p>
+<h3 id="lecture-3-hadoop-vs-spark">Lecture 3 : Hadoop vs Spark</h3>
+<h4 id="misconception">Misconception:</h4>
+<ul>
+<li>Hadoop is a database - its not a database just a filesystem (hdfs)</li>
+<li>Spark is 100 times faster than hadoop</li>
+<li>Spark processes data in RAM but Hadoop doesnt</li>
+</ul>
+<h4 id="differences">Differences</h4>
+<h5 id="performance">Performance</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/80625bf5-1712-44f6-a30d-47490e526e4d" /></p>
+<p>Hadoop does lot of read write IO operations and sends data back and forth to the disk.
+<img alt="image" src="https://github.com/user-attachments/assets/85eaa7f1-52b8-44a0-a283-4bd78e11b0a8" /></p>
+<p>But in spark each executor has its own memory.
+<img alt="image" src="https://github.com/user-attachments/assets/8c313769-001a-4a1c-a16a-a33ea125a92a" /></p>
+<p>Where is there no difference?</p>
+<p>When we have very less data like 10 GB, there is no difference because the hadoop cluster also doesnt write to the disk it fits first time in memory.</p>
+<h5 id="batch-vs-stream-processing">Batch vs Stream Processing</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8f6b407c-d59c-457a-bbeb-09700b857b35" /></p>
+<h5 id="ease-of-use">Ease of Use</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/35254ae3-78dc-417c-aab5-02b018e3e11f" /></p>
+<p>Spark has both low level and high level API in Python which is easier than using Hive. Low level programming is on RDD level.</p>
+<h5 id="security">Security</h5>
+<ul>
+<li>
+<p>Hadoop has in built Kerberos Authentication via YARN whereas Spark doesnt have any security mechanism.</p>
+</li>
+<li>
+<p>The authentication helps create ACL lists at directory level in HDFS.</p>
+</li>
+<li>
+<p>Spark uses HDFS Storage so it gets ACL feature / ability and when it uses YARN it gets Kerberos Authentication.</p>
+</li>
+</ul>
+<h5 id="fault-tolerance">Fault Tolerance</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6a4f988b-06b6-4860-a5c0-5302a2bb6ccb" /></p>
+<p>Data Replication in Hadoop
+<img alt="image" src="https://github.com/user-attachments/assets/2ef73e22-6288-44fb-8b2d-1ae974abbd95" /></p>
+<p>HDFS keeps track of which node / rack has the data from A B C and D</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/26741f86-2eaf-4dce-b3d8-f2b9957bbeb4" /></p>
+<p><strong>DAG in Spark</strong></p>
+<ul>
+<li>So Spark computes / transforms in multiple processes Process 1 -&gt; Process 2 -&gt; Process 3 ....</li>
+<li>After each process the data is stored in a data structure called RDD which is immutable. So even if there is a failure Spark engine knows how to reconstruct the data for a particular process from the RDD at that stage.</li>
+</ul>
+<h3 id="lecture-4-spark-ecosystem">Lecture 4 : Spark Ecosystem</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1790b682-10ba-4c47-8594-d743fbe54650" /></p>
+<p>High Level API : We cna write any SQL queries in python,java etc... there are ML and GraphX librries also.</p>
+<p>We can write code in many languages. Low Level API : we can make RDD's and work on them.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/452c4dc0-20d7-45e3-89f6-fb53719f75b9" /></p>
+<h4 id="where-does-spark-run">Where does Spark run?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d2c11530-6dc3-485e-98c7-10e7bafac25b" /></p>
+<p>Spark Engine would need some memory for transformation.</p>
+<ul>
+<li>suppose it needs 4 worker nodes each 20 GB and a driver node of 20 gb.</li>
+<li>it goes to the cluster manager and asks for total 100 GB of memory, if available then the manager will assign that muuch storage.</li>
+<li>cluster manager is also called YARN, K8S, Standalone managers</li>
+</ul>
+<h3 id="lecture-5-read-modes-in-spark">Lecture 5 : Read Modes in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7ab22f33-3951-45d7-849e-83f693e5bf4b" /></p>
+<p>format -&gt; data file format : csv,json,jdbc and odbc connection. Format is optional parameter, by default its parquet format
+option -&gt; inferschema, mode and header [<strong>optional field</strong>]
+schema -&gt; manual schema can be passed here
+load -&gt; path from where we need to read the data [<strong>not optional</strong>]</p>
+<h4 id="dataframereader-api">DataframeReader API</h4>
+<p>Access it using 'spark.read' in the spark session</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0ba45b86-8921-41dc-8453-ebc4298184ab" /></p>
+<h4 id="mode-in-spark"><code>mode</code> in Spark</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8ef66ae0-5f09-4610-8ae4-120aa9ecd673" /></p>
+<h3 id="lecture-6-spark-architecture">Lecture 6 : Spark Architecture</h3>
+<h4 id="spark-cluster">Spark Cluster</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/58ee64d9-0105-453c-97a6-9888b804c98a" /></p>
+<ul>
+<li>20 core per machine and 100 GB RAM / each machine</li>
+<li>Total Cluster : 200 cores and 1TB RAM</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/aaaca550-af99-41ba-bbd3-158a83941819" /></p>
+<ul>
+<li>The master is controlled by Resource Manager and the workers are controlled by Node Manager.</li>
+</ul>
+<h4 id="what-happens-when-user-submits-code">What happens when user submits code?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1cea605b-f750-406a-ae44-819bc06ccea3" /></p>
+<ul>
+<li>The user submits some Spark code for execution to the Resource Manager. It needs 20 GB RAM, 25 GB executor, 5 total executors and 5 CPU cores.</li>
+<li>So the manager goes to W5 and asks to create 20GB container as the driver node.</li>
+</ul>
+<h4 id="what-happens-inside-the-container">What happens inside the container?</h4>
+<h5 id="driver-allocation">Driver Allocation</h5>
+<p>Now this 20 GB driver is called Application Master
+<img alt="image" src="https://github.com/user-attachments/assets/a85199e1-0036-4e51-842a-39faab13adab" /></p>
+<p>There are two main() functions inside the master, one is for PySpark and other is for JVM like Java,Scala etc...</p>
+<p>The JVM main() is called Application Driver.</p>
+<p>The Spark Core has a Java Wrapper and the Java Wrapper has a Python Wrapper.</p>
+<p>When we write code in PySpark it gets converted to Java Wrapper.</p>
+<p>The PySpark driver is not a requirement but the Java Wrapper is required to run any code.</p>
+<h5 id="worker-allocation">Worker Allocation</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6fccdb87-a254-4bc2-9c50-38c9a9d26a02" /></p>
+<ul>
+<li>Now the Application master asks for the executors to be assigned and the resource manager allocates.</li>
+</ul>
+<h4 id="executor-container">Executor Container</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1ee66178-03be-474c-8b02-ec1cc8f73a01" /></p>
+<p>Each executor has 5 core CPU and 25GB RAM.</p>
+<p>THe above is when we have pure Java code and dont use Python UDF.</p>
+<p>But what if we use Python UDF functions?</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/69057cb6-f0f7-40c5-86ab-ab06689bcd08" />
+We need a Python worker inside the executor to be able to run the code.</p>
+<h3 id="lecture-7-schema-in-spark">Lecture 7 : Schema in Spark</h3>
+<h4 id="structtype-and-structfield">StructType and StructField</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c5adae79-16fa-4643-80ea-88c538407c9d" /></p>
+<p>Example:</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bb98a403-21d9-4721-9d48-442bc6bd5006" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a042b2de-561a-4863-a85e-6bf589c385c3" /></p>
+<p>How to skip the header row?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;skipRows&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;file.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="lecture-8-handling-corrupter-records-in-spark">Lecture 8 : Handling Corrupter Records in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/addd14cb-62fd-4af2-a770-8092879a5f1b" /></p>
+<h4 id="how-many-records-in-each-mode">How many records in each mode?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a6396113-d14b-43a1-897d-a9f3eaedb022" /></p>
+<h5 id="permissive-mode">Permissive Mode</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/83e72541-f3b8-4eaa-a08d-81087a9f21b9" /></p>
+<h5 id="dropmalformed">DropMalformed</h5>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f20b5861-4bf1-4826-856d-2d6ae7680193" /></p>
+<h4 id="how-to-print-corrupted-records">How to Print Corrupted Records</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/74bc5cd8-b0bb-4701-869d-ab6a19aa62d8" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/83aca551-1652-4fff-928b-bf0c22ef3d8d" /></p>
+<p>Output
+<img alt="image" src="https://github.com/user-attachments/assets/b8779e7e-5dcd-44fe-bfc1-4d218fe4177c" /></p>
+<h4 id="how-to-store-corrupted-records">How to Store Corrupted Records</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f9cbcb56-6f8d-47cb-8d3e-4c5427a0b27d" /></p>
+<p>The corrupted records are in json format
+<img alt="image" src="https://github.com/user-attachments/assets/51982d15-67d4-4f1a-94b8-ab51cc8e3bba" /></p>
+<h3 id="lecture-9-transformations-and-actions-in-spark">Lecture 9 : Transformations and Actions in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/347c73e6-2cdb-491b-85b8-a98797df7b5f" /></p>
+<h4 id="types-of-transformations">Types of Transformations</h4>
+<ul>
+<li>Narrow Transformation</li>
+<li>Wide Transformation</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7fa407aa-fe59-4b90-a5f4-d1cb969e06e0" /></p>
+<p>Example:
+<img alt="image" src="https://github.com/user-attachments/assets/c7b44c1b-5e48-4728-9a24-93fe42762bf0" /></p>
+<p>Suppose data is of 200MB. 200MB / 128MB = 2 partitions</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0c74472a-ec82-4241-a236-2ed3c2e35ea2" /></p>
+<p>Let's say both partitions go to separate executors.</p>
+<p>Q1 : Filtering Records
+<img alt="image" src="https://github.com/user-attachments/assets/5bbf61d7-1116-4d0d-b860-f5410f12c1b8" />
+There is no data movement here.</p>
+<p>Q2: Find Total Income of each employee
+<img alt="image" src="https://github.com/user-attachments/assets/3524bd45-9d80-43d7-a134-2a43460fae5b" /></p>
+<p>One id = 2 record is in one partition and the other is in the second partition so we need to do wide transformation
+<img alt="image" src="https://github.com/user-attachments/assets/060eb0d1-a8fc-44b5-843e-738ebd87e42e" /></p>
+<p>Data needs to be shuffled and records with same id must be moved to same partition.</p>
+<ul>
+<li>filter,select,union etc are narrow transformations</li>
+<li>join,groupby,distinct</li>
+</ul>
+<h3 id="lecture-10-dag-and-lazy-evaluation-in-spark">Lecture 10 : DAG and Lazy Evaluation in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b323161d-5dcf-4a01-ad70-05b11c4e811f" /></p>
+<ul>
+<li>For every action there is a new job, here there are three actions : read,inferSchema,sum and show</li>
+<li>When used with groupBy().sum(): It is considered an action because it triggers computation to aggregate data across partitions and produce a result. This operation forces Spark to execute the transformations leading up to it, effectively creating a job.</li>
+<li>
+<p>When used as a column expression df.select(sum("value")): It acts more like a transformation in Spark's context, especially if part of a larger query or pipeline that does not immediately trigger execution. In this case, it only defines the operation and does not create a job until an action (like show() or collect()) is called.</p>
+</li>
+<li>
+<p>Job for reading file
+<img alt="image" src="https://github.com/user-attachments/assets/c568a81e-dfa8-4637-bf22-637605286140" />
+Whole Stage Codegen - generate Java ByteCode</p>
+</li>
+<li>
+<p>Inferschema
+<img alt="image" src="https://github.com/user-attachments/assets/c79751a7-ea04-444a-8940-61eb0d144a5f" /></p>
+</li>
+<li>
+<p>GroupBy and Count
+As explained above this is an action.</p>
+</li>
+<li>
+<p>Show
+Final action to display df</p>
+</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/925397f9-c1e6-4662-ba01-a52d8bcc04ab" />
+After we read the csv and inferSchema there are no jobs created since filter and repartition both are transformations not actions.</p>
+<p>When there are two filters on same dataset</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a05bb675-508b-42bb-8128-f38a5e0d21fa" /></p>
+<p>This is the job
+<img alt="image" src="https://github.com/user-attachments/assets/272cea9a-7570-4716-b831-1883472cc4be" /></p>
+<h5 id="optimizations-on-the-filter">Optimizations on the Filter</h5>
+<p>Both the filters are on the same task
+<img alt="image" src="https://github.com/user-attachments/assets/2682b8b3-3f31-4d5e-ba6a-b2ea32ea2246" />
+The optimizations can be applied because Spark is lazily evaluated.</p>
+<h3 id="lecture-11-working-with-json-data-in-spark">Lecture 11: Working with JSON Data in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/09ce5719-db12-446c-8247-9495ea979768" /></p>
+<p>Two types of JSON notation:</p>
+<ul>
+<li>
+<p>Line Delimited JSON
+<img alt="image" src="https://github.com/user-attachments/assets/95b248fd-491a-4083-963f-102489848154" /></p>
+</li>
+<li>
+<p>Multi Line JSON
+<img alt="image" src="https://github.com/user-attachments/assets/91f43e31-58a1-4443-a5c2-fc376ef61c38" /></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">[</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Manish&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">},</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">{</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nikita&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">21000</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">},</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">{</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pritam&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">22000</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">},</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">{</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Prantosh&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25000</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="p">},</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="p">{</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vikash&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">67</span><span class="p">,</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40000</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="p">}</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="p">]</span>
+</code></pre></div>
+<p>Line Delimited JSON is more efficient in terms of performance because the compiler knows that each line has one JSON record whereas in multiline json the compiler needs to keept track of where the record ends and the next one starts.</p>
+<h4 id="different-number-of-keys-in-each-line">Different number of keys in each line</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8aeeeb0a-906f-44a5-b3a0-a7c5c8d28e31" /></p>
+<p>Here what happens is that the line with the extra key has the value while for the rest its null
+<img alt="image" src="https://github.com/user-attachments/assets/1fc8a438-c9f8-4d7e-8fbb-82c8ec73f167" /></p>
+<h4 id="multiline-incorrect-json">Multiline Incorrect JSON</h4>
+<p>We dont pass a list here rather its just dictionaries
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Manish&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">},</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">{</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nikita&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">21000</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">},</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">{</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pritam&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">22000</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">},</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="p">{</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Prantosh&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25000</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="p">},</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="p">{</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vikash&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">67</span><span class="p">,</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">  </span><span class="nt">&quot;salary&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40000</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="p">}</span>
+</code></pre></div>
+When we process the json it just reads the first dictionary as a record and the rest is not processed.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6b25b6f2-8eda-466d-affc-08c0fed2f551" /></p>
+<h4 id="corrupted-records">Corrupted Records</h4>
+<p>We dont need to define <code>_corrupted_record</code> in the schema, it will add the column on its ownn</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/60f6c31e-6174-40ab-ba71-e3f0070a01fa" /></p>
+<h3 id="lecture-12-spark-sql-engine">Lecture 12: Spark SQL Engine</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ffb137d5-5a71-427d-b411-1493925ed6a4" /></p>
+<h4 id="how-is-spark-code-compiled">How is Spark Code compiled?</h4>
+<ul>
+<li>The catalyst optimizer creates a plan and creates RDD lineage</li>
+</ul>
+<h4 id="phases-in-catalyst-optimizer">Phases in Catalyst Optimizer</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4dcb1108-768c-4c28-aa21-732e93fda646" /></p>
+<h5 id="workflow-diagram">Workflow Diagram</h5>
+<ul>
+<li>Unresolved Logical Plan : Bunch of crude steps to execute the SQL code</li>
+<li>Catalog : The table, files and database metadata information si stored in the catalog. Suppose we call read.csv on file that doesnt exist. The procedure that gives / throws the error is assisted via the catalog. In Analysis phase, we go through these steps. If some file/table is not found then we get <strong>Analysis Exception</strong> This error occurs when the Logical plan provided is not able to be resolved.</li>
+<li>Reoslved Logical Plan : This is the phase when we finished analysing the catalog objects.</li>
+<li>Logical Optimization: There are many examples. Suppose we need just two columns in select output, the spark engine does not fetch all the columns rather jsut fetches the two columns from memory that we need. Another example is when we use multiple filters on the same column in different lines of code. When we execute this code, we see that all of it is executed with <strong>or</strong> statements in one single line of code.</li>
+<li>Physical Plan: This involves taking decision like the type of join to use: Broadcast Join is one example. From the logical plan, we can build multiple physical plans.
+Thebest Physical Plan is a set of RDDs to be run on different executors on the cluster.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7931f705-5d53-45d0-8bdc-407e2b3426a7" /></p>
+<h3 id="lecture-13-resilient-distributed-dataset">Lecture 13: Resilient Distributed Dataset</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/9f092749-7050-4067-9b9f-4e19e3527a18" /></p>
+<h4 id="data-storage-of-list">Data Storage of List</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/023e8304-b40a-40a6-8f61-516efe301635" /></p>
+<h4 id="data-storage-in-rdd">Data Storage in RDD</h4>
+<p>Suppose we have 500MB of data and 128MB partition, so we will have 4 partitions.</p>
+<p>The data is scattered on various executors.
+<img alt="image" src="https://github.com/user-attachments/assets/4c99e784-5366-4ee4-b1ac-c7baa0a49f34" /></p>
+<p>Its not in single contiguous location like elements of a list. The data structure used ot process this data is called RDD
+<img alt="image" src="https://github.com/user-attachments/assets/99aac217-5141-4c6b-bcbe-0873e7a9bbbd" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/01a10422-cb78-42a3-bb95-db643950b621" /></p>
+<p>Why is RDD recoverable?</p>
+<ul>
+<li>
+<p>RDD is immutable. If we apply multiple filters each dataset after filtering is a different dataset
+<img alt="image" src="https://github.com/user-attachments/assets/ff872b52-f89f-406e-b8e1-30edd48624cf" /></p>
+</li>
+<li>
+<p>In below case if rdd2 fails then we can restore rdd1 because of the lineage.
+<img alt="image" src="https://github.com/user-attachments/assets/9497cf7a-7646-4dc1-ba2b-790e524572f5" /></p>
+</li>
+</ul>
+<h4 id="disadvantage-of-rdd">Disadvantage of RDD</h4>
+<ul>
+<li>No optimization done by Spark on RDD. The dev must specify explicitly on how to optimize RDD.</li>
+</ul>
+<h4 id="advantage">Advantage</h4>
+<ul>
+<li>Works well with unstructured data where there are no columns and rows / key-value pairs</li>
+<li>RDD is type safe, we get error on compile time rather than runtime which happens with Dataframe API.</li>
+</ul>
+<h4 id="avoiding-rdds">Avoiding RDDs</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7dcd2caa-fac8-478f-9ba2-e99370c3fb44" /></p>
+<ul>
+<li>RDD : How to do? Dataframe API: Just specify what to do?</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a028ab4e-b35e-4ead-9c04-a5cdbbf7f228" />
+You can see in above case that we have a join and filter but we are specifically saying that first join then filter so it triggers a shuffle first and then filter which is not beneficial.</p>
+<h3 id="lecture-14-parquet-file-internals">Lecture 14 : Parquet File Internals</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/50def6a3-7bfa-4b14-881d-46710762a06b" /></p>
+<p>There are two types of file formats:</p>
+<ul>
+<li>Columnar Based and Row Based</li>
+</ul>
+<h4 id="physical-storage-of-data-on-disk">Physical Storage of Data on Disk</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/76e40279-29f0-43b3-80ec-fd4c3e9e4894" /></p>
+<h4 id="write-once-read-many">Write Once Read Many</h4>
+<p>The funda of big data is write once read many.</p>
+<ul>
+<li>We dont need all the columns for analytics of big data, so columnar storage is the best.</li>
+<li>If we store in row based format then we need to jump many memory racks to be able to get the data we need.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4fb9d3cc-541e-4b28-a818-5be35e211a8f" /></p>
+<ul>
+<li>OLTP generally use row base4d file format.</li>
+<li>I/O should be reduced so OLAP uses columnar format.</li>
+</ul>
+<h4 id="why-columnar-format-may-not-be-the-best">Why Columnar format may not be the best?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/94d7beb7-be65-4836-9fce-1ec86285d842" /></p>
+<p>In above case we can get col1 and col2 easily but for col10 we still need to scan the entire file.</p>
+<p>To tackle this:</p>
+<p>Let's say we have 100 million total rows.</p>
+<p>We can store 100,000 records at a time, continuously in one row, then the next 100,000 records in next row and so on in hybrid format.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/af359956-aa81-4f62-a692-b1492bc7ae0c" /></p>
+<h4 id="logical-partitioning-in-parquet">Logical Partitioning in Parquet</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d72060bc-6425-4b18-a1e8-3bd2e7b6376d" /></p>
+<p>Let's day we have 500mb data, each row group by default has 128 mb data, so we will have 4 row groups.
+Each row group will have some metadata attached to it.</p>
+<p>In our example let's say one row group has 100000 records.
+The column is futher stored as a page.</p>
+<h4 id="runlength-encoding-and-bitpacking">Runlength Encoding and Bitpacking</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/5a0219f3-ea0f-4758-ab80-1f3513a5a79f" /></p>
+<p>Suppose we have 10 lakh records but there can be say 4 countries.</p>
+<p>So parquet actually creates a dictionary of key value pair with key as int starting from 0 to 3 and then in the dictionary encoded data, we can see the keys being used insted of country name.</p>
+<p><img width="1194" height="588" alt="image" src="https://github.com/user-attachments/assets/dc926297-8375-4c85-8575-2816dafda415" /></p>
+<h4 id="more-details-on-parquet">More details on Parquet</h4>
+<p>The row-wise formats store data as records, one after another. This format works well when accessing entire records frequently. However, it can be inefficient when dealing with analytics, where you often only need specific columns from a large dataset.</p>
+<p><img width="1456" height="732" alt="image" src="https://github.com/user-attachments/assets/dfd90692-bacc-46ef-95db-2cabe9d42f87" /></p>
+<p>Imagine a table with 50 columns and millions of rows. If you’re only interested in analyzing 3 of those columns, a row-wise format would still require you to read all 50 columns for each row.</p>
+<p>Columnar formats address this issue by storing data in columns instead of rows. This means that when you need specific columns, you can read only the columnsdata you need, significantly reducing the amount of data scanned.</p>
+<p><img width="1456" height="728" alt="image" src="https://github.com/user-attachments/assets/f9195654-310f-4834-acab-644e5c51dfd3" /></p>
+<p>However, storing data in a columnar format has some downsides. The record write or update operation requires touching multiple column segments, resulting in numerous I/O operations. This can significantly slow the write performance, especially when dealing with high-throughput writes.</p>
+<p>When queries involve multiple columns, the database system must reconstruct the records from separate columns. The cost of this reconstruction increases with the number of columns involved in the query.</p>
+<p>The hybrid format combines the best of both worlds. The format groups data into "row groups," each containing a subset of rows (aka horizontal partition). Within each row group, data for each column is called a “column chunk" (aka vertical partition).</p>
+<p><img width="1456" height="637" alt="image" src="https://github.com/user-attachments/assets/f4275a15-7461-4eda-9aff-b5e2d440c105" /></p>
+<p>In the row group, these chunks are guaranteed to be stored contiguously on disk.</p>
+<h4 id="terminologies">Terminologies</h4>
+<p><img width="592" height="628" alt="image" src="https://github.com/user-attachments/assets/1910dccb-e6cf-4b90-8c30-1ec7d5612c66" /></p>
+<p>A Parquet file is composed of:</p>
+<p><strong>Row Groups</strong>: Each row group contains a subset of the rows in the dataset. Data is organized into columns within each row group, each stored in a column chunk.</p>
+<p><strong>Column Chunk</strong>: A chunk is the data for a particular column in the row group. Column chunk is further divided into pages.</p>
+<p><strong>Pages:</strong> A page is the smallest data unit in Parquet. There are several types of pages, including data pages (actual data), dictionary pages (dictionary-encoded values), and index pages (used for faster data lookup).</p>
+<h4 id="metadata-types-in-parquet">Metadata Types in Parquet</h4>
+<p><strong>Magic number:</strong> The magic number is a specific sequence of bytes (PAR1) located at the beginning and end of the file. It is used to verify whether it is a valid Parquet file.</p>
+<p><strong>FileMetadata:</strong> Parquet stores FileMetadata in the footer of the file. This metadata provides information like the number of rows, data schema, and row group metadata. Each row group metadata contains information about its column chunks (ColumnMetadata), such as the encoding and compression scheme, the size, the page offset, the min/max value of the column chunk, etc. The application can use information in this metadata to prune unnecessary data.</p>
+<p><strong>PageHeader:</strong> The page header metadata is stored with the page data and includes information such as value, definition, and repetition encoding. Parquet also stores definition and repetition levels to handle nested data. The application uses the header to read and decode the data.</p>
+<h4 id="how-is-data-written-into-parquet">How is data written into Parquet?</h4>
+<p><img width="1456" height="1030" alt="image" src="https://github.com/user-attachments/assets/5f7d8552-ff1a-4a3b-8648-5a5f8dc1cd2f" /></p>
+<ul>
+<li>
+<p>The application issues a written request with parameters like the data, the compression and encoding scheme for each column (optional), the file scheme (write to one or multiple files), etc.</p>
+</li>
+<li>
+<p>The Parquet Writer first collects information, such as the data schema, the null appearance, the encoding scheme, and all the column types recorded in FileMetadata.</p>
+</li>
+<li>
+<p>The Writer writes the magic number at the beginning of the file.</p>
+</li>
+<li>
+<p>Then, it calculates the number of row groups based on the row group’s max size (configurable) and the data’s size. This step also determines which subset of data belongs to which row group.</p>
+</li>
+<li>
+<p>For each row group, it iterates through the column list to write each column chunk for the row group. This step will use the compression scheme specified by the user (the default is none) to compress the data when writing the chunks.</p>
+</li>
+<li>
+<p>The chunk writing process begins by calculating the number of rows per page using the max page size and the chunk size. Next, it will try to calculate the column's min/max statistic. (This calculation is only applied to columns with a measurable type, such as integer or float.)</p>
+</li>
+<li>
+<p>Then, the column chunk is written page by page sequentially. Each page has a header that includes the page’s number of rows, the page’s encoding for data, repetition, and definition. The dictionary page is stored with its header before the data page if dictionary encoding is used.</p>
+</li>
+<li>
+<p>After writing all the pages for the column chunk, the Parquet Writer constructs the metadata for that chunk, which includes information like the column's min/max, the uncompressed/compressed size, the first data page offset, and the first dictionary page offset.</p>
+</li>
+<li>
+<p>The column chunk writing process continues until all columns in the row group are written to disk contiguously. The metadata for each column chunk is recorded in the row group metadata.</p>
+</li>
+<li>
+<p>After writing all the row groups, all row groups’ metadata is recorded in the FileMetadata.</p>
+</li>
+<li>
+<p>The FileMetadata is written to the footer.</p>
+</li>
+<li>
+<p>The process finishes by writing the magic number at the end of the file.</p>
+</li>
+</ul>
+<h4 id="how-is-data-read-from-parquet">How is data read from Parquet?</h4>
+<p><img width="1398" height="990" alt="image" src="https://github.com/user-attachments/assets/d5836308-8146-42e4-8efe-5b6bbc83cc8f" /></p>
+<ul>
+<li>
+<p>The application issues a read request with parameters such as the input file, filters to limit the number of read row groups, the set of desired columns, etc.</p>
+</li>
+<li>
+<p>If the application requires verification that it’s reading a valid Parquet file, the reader will check if there is a magic number at the beginning and end of the file by seeking the first and last four bytes.</p>
+</li>
+<li>
+<p>It then tries to read the FileMetadata from the footer. It extracts information for later use, such as the file schema and the row group metadata.</p>
+</li>
+<li>
+<p>If filters are specified, they will limit the scanned row groups by iterating over every row group and checking the filters against each chunk’s statistics. If it satisfies the filters, this row group is appended to the list, which is later used to read.</p>
+</li>
+<li>
+<p>The reader defines the column list to read. If the application specifies a subset of columns it wants to read, the list only contains these columns.</p>
+</li>
+<li>
+<p>The next step is reading the row groups. The reader will iterate through the row group list and read each row group.</p>
+</li>
+<li>
+<p>The reader will read the column chunks for each row group based on the column list. It used ColumnMetadata to read the chunk.</p>
+</li>
+<li>
+<p>When reading the column chunk for the first time, the reader locates the position of the first data page (or dictionary page if dictionary encoding is used) using the first page offset in the column metadata. From this position, the reader reads the pages sequentially until no pages are left.</p>
+</li>
+<li>
+<p>To determine whether any data remains, the reader tracks the current number of read rows and compares it to the chunk’s total number of rows. If the two numbers are equal, the reader has read all the chunk data.</p>
+</li>
+<li>
+<p>To read and decode each data page, the reader visits the page header to collect information like the value encoding, the definition, and the repetition level encoding.</p>
+</li>
+<li>
+<p>After reading all the row groups’ column chunks, the reader moves to read the following row groups.</p>
+</li>
+<li>
+<p>The process continues until all the row groups in the row group list are read.</p>
+</li>
+</ul>
+<p>Because the Parquet file can be stored in multiple files, the application can read them simultaneously.</p>
+<p>In addition, a single Parquet file is partitioned horizontally (row groups) and vertically (column chunks), which allows the application to read data in parallel at the row group or column level.</p>
+<h4 id="olap-workload-example">OLAP Workload Example</h4>
+<p><img width="780" height="410" alt="image" src="https://github.com/user-attachments/assets/03629b2a-74be-4803-8114-3439a8ca42e6" /></p>
+<p><img width="1048" height="670" alt="image" src="https://github.com/user-attachments/assets/433d90d9-5364-40ee-945a-281157cf3e6d" /></p>
+<h4 id="demo">Demo</h4>
+<p><code>parquet-tools inspect &lt;filename&gt;</code></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/be572741-6fd9-470b-ad98-0f0d6c293a38" />
+<img alt="image" src="https://github.com/user-attachments/assets/e4fff36d-48ed-4ca8-9cbd-310f8b35a103" /></p>
+<p>Gives some file and brief column level metadata.</p>
+<p><code>parquet_file.metadata.row_group(0).column_group(0)</code>
+<img alt="image" src="https://github.com/user-attachments/assets/ea81d74c-6fb3-4c80-bbbf-521f6c1a3be2" /></p>
+<p>Compression is GZIP
+<img alt="image" src="https://github.com/user-attachments/assets/7d841a8d-fc8d-4f8c-8a42-da2b436a13fc" /></p>
+<p>Encoding is explained on top.</p>
+<h4 id="bitpacking-advantage">Bitpacking Advantage</h4>
+<ul>
+<li>Bitpacking helps in compressing the bits so in above case we just have 4 unique values and hence we need just 2 bytes.</li>
+<li>Query in seconds for running select on csv,parquet etc..</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7700c5a0-90b9-4ad1-b430-25ca7df99903" /></p>
+<h4 id="summary">Summary</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e4a1bbe6-629b-4970-94bf-a6493f32146b" /></p>
+<ul>
+<li>
+<p>Here the actual data is stored in the pages and it has metadata like min,max and count.</p>
+</li>
+<li>
+<p>Let's say we need to find out people less than 18 years age</p>
+</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/eb37e1e1-ddab-42da-872b-0de10dbf12f2" /></p>
+<p>Here when we divide data into row groups, we dont need to do any IO read operation on Row group 2, it saves lot of time and optimize performance.</p>
+<p>The above concept is called <strong>Predicate Pushdown</strong>.</p>
+<h4 id="projection-pruning">Projection Pruning</h4>
+<p>Projection Pruning means we dont read IO from columns that are not part of the select query or that arent required for any join.</p>
+<h3 id="lecture-15-how-to-write-data-on-the-disk">Lecture 15 : How to write data on the disk?</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a22d1931-1b95-4515-9311-5c53883b47ba" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/03f8e132-9ead-4ae4-9d59-ad339ebcf615" /></p>
+<h4 id="modes-to-write-data">Modes to write data</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/1ecedad1-043a-49d9-be96-d1ba66d062c3" /></p>
+<p>Create three files
+<img alt="image" src="https://github.com/user-attachments/assets/5e28b1b7-af47-4cb6-ac24-45d0a64b03a7" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>  <span class="n">write_df</span> <span class="o">=</span> <span class="n">read_df</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>\
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>\
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span>\  <span class="c1"># Using .mode() instead of .option() for overwrite mode</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;/FileStore/tables/Write_Data/&quot;</span><span class="p">)</span>\
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="lecture-16-partitioning-and-bucketing">Lecture 16: Partitioning and Bucketing</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/48c965e1-ffe3-4cb8-b1cf-40d3135a8cc1" /></p>
+<p>In above data we cannot partition by any column because there is no similarity but we can bucket the data.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a6557580-ea42-442b-9167-2bc4e5c825e0" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/637c53b2-5a96-4388-ab07-113e5917ce99" />
+In above data we can partition by the country, but again we might have more data in India partition and less data in Japan.</p>
+<h4 id="example-of-partitioning">Example of Partitioning</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6fd554a4-5d68-41c5-bb7e-d2b59a5edd51" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c9f1a402-de99-4ae2-8842-c357b31e3636" /></p>
+<p>The advantage is that the entire data is not scanned and only few partitions are scanned based on the filters.</p>
+<p><strong>Partitioning by Id</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ca71390e-bcd6-423e-9a0a-4a8f48abe967" /></p>
+<p>Here we can see that we have created partitions by ID and since ID is low cardinality column partitioning is not efficient and we need to use bucketing.</p>
+<h4 id="partitioning-by-address-and-gender">Partitioning by Address and Gender</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/9a1a1836-f740-4f74-a3a8-412d8b4c39c6" /></p>
+<h4 id="bucketing-by-id">Bucketing by Id</h4>
+<p>Dividing into 3 buckets
+<img alt="image" src="https://github.com/user-attachments/assets/9c9446d5-a67a-4a7b-9816-a3dd5f87a6f1" /></p>
+<h4 id="tasks-vs-buckets">Tasks vs Buckets</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/28c545a4-74dd-4dc8-8406-f716a769b09b" /></p>
+<ul>
+<li>If we have 200 partitions we will have 200 tasks and each task will create 5 buckets each, to tackle this we first repartition into 5 partitions and then bucketBy 5.</li>
+</ul>
+<h4 id="how-does-bucketing-help-with-joins">How does bucketing help with joins?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6db2b3d0-7a19-40dd-8f22-f0bb95b7df9e" /></p>
+<ul>
+<li>Here we can see that since we have same column bucket on both tables the ids can be easily mapped and there is no shuffling.</li>
+</ul>
+<h4 id="bucket-pruning">Bucket Pruning</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/237d7bda-2c12-462c-9092-b71921c3321d" />
+Suppose we have 1M Aadhar Ids and we divide into 100,000 each bucket so when we divide the above aadhar id by 100000 then we get the exact bucket where the number lies in.</p>
+<h3 id="lecture-17-spark-session-vs-spark-context">Lecture 17 : Spark Session vs Spark Context</h3>
+<ul>
+<li>Spark Session is entry point to the Spark cluster where we provide the parameters to create and operate our cluster.</li>
+<li>Spark session will have different context like one for SQL, PySpark etc...</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c122f106-6b42-42d1-bd4a-201e8b482152" /></p>
+<h3 id="lecture-18-job-stage-and-tasks">Lecture 18: Job, Stage and Tasks</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f54725bf-2e81-4b73-a65c-97cb449887c7" /></p>
+<ul>
+<li>One Application is created.</li>
+<li>One job is created per action.</li>
+<li>One stage is defined for every transformation like filter.</li>
+<li>Task is the actually activity on the data that's happening.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/025a67b4-2ced-4ad9-a23a-eaa6d65f349c" /></p>
+<h4 id="example-of-jobaction-and-task">Example of Job,Action and Task</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b232dc8d-ff27-4650-92ca-7c3b912b5132" /></p>
+<h4 id="complete-flow-diagram">Complete flow diagram</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4e07a77b-8885-46a7-8793-53d7dd3f5f59" /></p>
+<p>Every job has minimum one stage and one task.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/96990346-8429-41e7-ac94-f11855baa9de" />
+Repartition to filter is one job because we dont hit an action in between.</p>
+<p>Every wide dependency transformation has its own stage. All narrow dependency transformations come in one stage as a DAG.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d9c8d425-892c-4ac0-bb6e-930bc9f51a32" /></p>
+<h4 id="how-do-tasks-get-created-read-and-write-exchange">How do tasks get created? [Read and Write Exchange]</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4d47470c-a3bc-4656-9b1a-7f718edd2c47" /></p>
+<ul>
+<li>The repartition stage actually is a wide dependency transformation and creates two partitions from one, its a Write exchange of data.</li>
+<li>Now the filter and select stage reads this repartitioned data(<strong>Read exchange</strong>) and filter creates two tasks because we have two partitions.</li>
+<li>Next we need to find out how many folks earn &gt; 90000 and age &gt; 25 so we need to do a groupby that's a wide dependency transformation and it creates another stage. By default there are 200 partitions created.</li>
+<li>So some partitions may have data and some wont.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ec5734b2-3985-4fdd-abc4-4933e890e080" /></p>
+<h3 id="lecture-17-dataframe-transformations-in-spark-part-1">Lecture 17: Dataframe Transformations in Spark Part 1</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b3c9d9a3-b664-4cde-868f-d8d9c508ed9f" />
+Data gets stored in Row() format in the form of bytes</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fccd78ab-d343-41dd-9a48-77122a4447d9" /></p>
+<p>Columns are expressions. Expressions are set of transformations on more than one value in a record.</p>
+<h4 id="ways-to-select-values-columns">Ways to select values / columns</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/3bb9ee25-d1d2-42e9-bb8b-22cb7c1030d3" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ccd538cb-5122-4ca4-ae8f-0e1d46a56996" /></p>
+<p>Column Manipulations</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/be26f027-5ef2-4475-8fd9-2e520be44dab" /></p>
+<p>Other methods
+<img alt="image" src="https://github.com/user-attachments/assets/705819f1-fb56-4024-a3f1-4590706a58f7" /></p>
+<p><strong>selectExpr</strong>
+<img alt="image" src="https://github.com/user-attachments/assets/7ccf1d62-4834-43b8-84ae-7727a159eccc" /></p>
+<p><strong>Aliasing Columns</strong>
+<img alt="image" src="https://github.com/user-attachments/assets/e9710673-c2b4-476f-8296-fd1ee25681b5" /></p>
+<h3 id="lecutre-18-dataframe-transformations-in-spark-part-ii">Lecutre 18 : Dataframe Transformations in Spark Part II</h3>
+<h4 id="filter-where-no-difference"><code>filter()</code> / <code>where()</code> no difference</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ccdb523c-04bb-490a-bd54-e051dc0d221b" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/19d178e5-086e-41c1-908f-689badb24df8" /></p>
+<h4 id="multiple-filter-conditions">Multiple filter conditions</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/baa7134d-e151-404e-98d6-5dc8b010fc5d" /></p>
+<h4 id="literals-in-spark">Literals in spark</h4>
+<p>Used to pass same value in all the columns
+<img alt="image" src="https://github.com/user-attachments/assets/b96c60d9-754f-450d-bc46-7aaf6848c095" /></p>
+<h4 id="adding-columns">Adding Columns</h4>
+<p>If the column already exists then it gets overwritten.
+<img alt="image" src="https://github.com/user-attachments/assets/32f4d415-9685-4329-acfd-41ee7a7fd720" /></p>
+<h4 id="renaming-columns">Renaming Columns</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6fa9577a-c0f3-4e54-b756-d24cb6fb6eda" /></p>
+<h3 id="lecture-19-union-vs-unionall">Lecture 19: union vs unionAll()</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/3e649ae8-6b69-4fa9-b687-109e4ede5615" /></p>
+<p>We can see that here we have a duplicate id
+<img alt="image" src="https://github.com/user-attachments/assets/3680c897-59c2-4f04-963d-3ce99981f3b4" /></p>
+<p>In PySpark union and unionAll behaves in the same way, both retain duplicates
+<img alt="image" src="https://github.com/user-attachments/assets/041e31d1-017f-45f7-aa7e-3c7db513d617" /></p>
+<p>But in Spark SQL when we do union it drops the duplicate records
+<img alt="image" src="https://github.com/user-attachments/assets/05af5b19-9963-4581-a71d-77fe42f739cf" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/00fde583-6538-4cc3-b275-97d8c5d620b2" /></p>
+<h4 id="selecting-data-and-unioning-the-same-table">Selecting data and unioning the same table</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f9226608-4b77-40db-91e1-82072e8cd14b" /></p>
+<h4 id="what-happens-when-we-change-the-order-of-the-columns">What happens when we change the order of the columns?</h4>
+<p><code>wrong_manager_df</code> actually has the wrong order of columns but still we get the union output but in a wrong column values.
+<img alt="image" src="https://github.com/user-attachments/assets/3db3d2c8-3008-4930-b223-6f7bb31da477" /></p>
+<p>If we give different number of columns an exception is thrown.
+<img alt="image" src="https://github.com/user-attachments/assets/ece32bd0-6ea3-45f1-8919-721ef783c65b" /></p>
+<p>If we use unionByName then the column names on both dfs must be the same.
+<img alt="image" src="https://github.com/user-attachments/assets/fd3659ae-703f-42bc-bd4a-49c9c427cd9e" /></p>
+<h3 id="lecture-19-repartitioning-and-coalesce">Lecture 19: Repartitioning and Coalesce</h3>
+<p>Suppose we have 5 partitions and one of them is skewed a lot 100MB, let's say this is the best selling product records. This partition takes lot of time to compute. So the other executors have to wait until this executor finishes processing.
+<img alt="image" src="https://github.com/user-attachments/assets/2a5567b0-486c-4b8b-aa91-41d077281e91" /></p>
+<h4 id="repartitioning-vs-coalesce">Repartitioning vs Coalesce</h4>
+<h5 id="repartitioning">Repartitioning</h5>
+<p>Suppose we have the above partitions and total data is 100mb. let's say we do repartition(5) so we will have 5 partitions now for the data with 40mb per partition.</p>
+<h5 id="coalesce">Coalesce</h5>
+<p>In case of coalesce there is no equal splitting of partition memory, rather the already existing partitions get merged together.
+<img alt="image" src="https://github.com/user-attachments/assets/85f6803b-6905-49e4-b3b3-3a896cde668f" /></p>
+<p>There is no shuffling in coalesce but in repartitioning there is shuffling of data.</p>
+<h4 id="pros-and-cons-in-repartitioning">Pros and Cons in repartitioning</h4>
+<ul>
+<li>There is evenly distributed data.</li>
+<li>Con is that IO operations are more, its expensive.</li>
+<li>Con of coalesce is that the data is unevenly distributed.</li>
+</ul>
+<p>Repartitioning can increase or decrease the partitions but coalescing can only decrease the partitions.</p>
+<h4 id="how-to-get-number-of-partitions">How to get number of partitions?</h4>
+<p><code>flight_df.rdd.getNumPartitions()</code> gets the initial number of partitions and then we can repartition <code>flight_df.repartition(4)</code>. Data is evenly distributed.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/00bd0cfe-e61a-4826-b978-b6c02924a363" /></p>
+<p><strong>Repartitioning based on columns</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/9d39f248-2be8-4520-a57a-4084bcfc297f" /></p>
+<p>Since we asked for 300 partitions and we have 255 records some partitions will have null record.
+<img alt="image" src="https://github.com/user-attachments/assets/c59615d8-65c1-44e8-85c4-3e1833a4cb60" /></p>
+<h4 id="coalescing">Coalescing</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/210eb04d-80b3-4cce-a7dd-1b7757b3bd1c" />
+Suppose we have 8 partitions and we coalesce into 3 partitions. Coalesce has only one arg.</p>
+<p>Uneven distribution of data in partitions.
+<img alt="image" src="https://github.com/user-attachments/assets/bc136007-2ae3-4df1-90b4-625352a81809" /></p>
+<h3 id="lecture-20-case-when-if-else-in-spark">Lecture 20 : Case when / if else in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ee17eab0-640d-4fc5-ac03-f751a8a90831" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/310da700-3caa-44c2-a508-5fa19ff1ef66" /></p>
+<h4 id="apply-logic-on-one-column-then-process-if-else-logic">Apply logic on one column then process if else logic</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ba68a0f3-82d4-4db1-a879-fb977423f9dc" /></p>
+<h4 id="spark-sql-logic">Spark SQL Logic</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b0fd9a4f-b452-4132-9b6b-ad543a0c7056" /></p>
+<h3 id="lecture-21-unique-and-sorted-records">Lecture 21 : Unique and Sorted Records</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bff40f32-fa87-4a64-b448-a72ca92bf1d2" /></p>
+<h4 id="distinct">distinct()</h4>
+<p>Original Data
+<img alt="image" src="https://github.com/user-attachments/assets/8417fe25-264b-4d03-910b-a28063b07186" /></p>
+<p>Distinct Data
+<img alt="image" src="https://github.com/user-attachments/assets/95b4fe97-033f-4a28-87a7-d0a1ad37498b" /></p>
+<p>Distinct Based on certain columns
+<img alt="image" src="https://github.com/user-attachments/assets/612a6833-011e-4631-b706-4df9f318d6e9" /></p>
+<p>⚠️ Distinct takes no arguments we need to select the columns first and then apply distinct.</p>
+<h4 id="dropping-duplicate-records">Dropping duplicate records</h4>
+<p>Point to note is that the dataframe <code>manager_df</code> has no changes, it just shows the records after dups have been dropped.
+<img alt="image" src="https://github.com/user-attachments/assets/b443755e-1fc8-4d30-95f8-9c73c3412c6d" /></p>
+<h4 id="sort">sort()</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fc5d7b04-992a-4530-9660-a4f2ae7d82f9" /></p>
+<p>Descending order
+<img alt="image" src="https://github.com/user-attachments/assets/3865f2de-b818-4d5c-84e0-193390ba4586" /></p>
+<p><strong>Sorting on multiple columns</strong></p>
+<p>Here first the salary is srranged in desc order then we arrange the name in asc order from those records with same salary.
+<img alt="image" src="https://github.com/user-attachments/assets/3fce7816-872f-414f-8bfb-8ad329d9ed73" /></p>
+<h3 id="lecture-22-aggregate-functions">Lecture 22 : Aggregate functions</h3>
+<h4 id="count-as-both-action-and-transformation">Count as both Action and Transformation</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d2cd9647-fc8a-4247-b04e-539a48331f76" /></p>
+<p>⚠️ When we are doing count on a single column and there is a null in it, its not considered in the count. But for all columns we have nulls in the count.
+<img alt="image" src="https://github.com/user-attachments/assets/1ae8b278-3675-439c-9b12-8853064c9f3a" /></p>
+<p>Job created in first case and its not created in second case below.
+<img alt="image" src="https://github.com/user-attachments/assets/8a771986-85e2-465d-a2c4-d4a2bd86dfca" /></p>
+<h3 id="lecture-23-group-by-in-spark">Lecture 23: Group By In Spark</h3>
+<p>Sample Data</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/17c9a1dd-b003-4c67-8b1f-3f4e8fb6a556" /></p>
+<h4 id="questions">Questions</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/60d2d30b-c2c9-4e3f-9544-b8ab7eece55c" /></p>
+<p>Salary per department using groupBy()
+<img alt="image" src="https://github.com/user-attachments/assets/b90a254d-1aac-46f1-8e2e-c66e8d99c0ad" /></p>
+<h4 id="where-do-we-use-window-functions">Where do we use window functions?</h4>
+<p>Suppose we need to find out the percentage of total salary from a particular dept that the person is earning. we can use window function to specify the total salary per department in the particular record itself like I've shown below.
+<img alt="image" src="https://github.com/user-attachments/assets/6c328d14-bf1e-4059-83d5-618f6c7a0ec0" /></p>
+<p>This way we dont need to perform a join.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c6ababa6-3031-4147-887e-1b0b80a7fc13" /></p>
+<h4 id="grouping-by-two-columns">Grouping by two columns</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0822535b-c50a-433a-bd1e-67b9ee6b9dcc" /></p>
+<h3 id="lecture-24-joins-in-spark-part-1">Lecture 24 : Joins in Spark part 1</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/442da83f-1447-4834-ba6b-6195fb5e775c" /></p>
+<p>Which customers joined platform but never brought anything?</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/9d0f578f-a02a-4da1-b8c4-3d88767b5fb7" /></p>
+<p>Whenever we need information from another table, we use joins and there should be some common column.</p>
+<p>Join is a costly wide dependency operation.</p>
+<h4 id="how-do-joins-work">How do joins work?</h4>
+<p>How many records do we get after inner joining the below two tables.
+<img alt="image" src="https://github.com/user-attachments/assets/6e83fe11-578b-4590-9a89-43c98ca482a8" /></p>
+<p>We get a total of 9 records.
+<img alt="image" src="https://github.com/user-attachments/assets/d706afb9-74bf-4c99-bceb-ed9327a2357d" /></p>
+<p>Sometimes data gets duplicated when we do joins, so we should use distinct() but remember distinct is wide dependency transform.</p>
+<h3 id="lecture-25-types-of-join-in-spark">Lecture 25 : Types of Join in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e5e441c3-c64d-40ed-8646-89afcecc0be1" /></p>
+<h4 id="inner-join">Inner Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/641aa365-9493-46ff-9cb3-518805fda892" /></p>
+<h4 id="left-join">Left Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/295cadda-2a97-41bb-a02d-997dfafd3a5b" />
+All records in left table + those that join with right table, whereever we dont get match on right table the columns become null.</p>
+<h4 id="right-join">Right Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0e0c88d6-a290-42a7-901c-eae316262a44" /></p>
+<h4 id="full-outer-join">Full Outer Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b49eb89d-829a-44f5-a30a-4ab08a89a289" /></p>
+<h4 id="left-semi-join">Left Semi Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/acf7fb6a-d939-4b80-9bb7-7b411e43ac2e" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fc790260-df75-470a-8c91-795095ce72b2" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>from pyspark.sql import SparkSession
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>spark = SparkSession.builder.appName(&quot;LeftSemiJoinExample&quot;).getOrCreate()
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a># Left DataFrame: Orders
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>orders = spark.createDataFrame([
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    (1, &quot;iPhone&quot;),
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    (2, &quot;Pixel&quot;),
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    (3, &quot;OnePlus&quot;),
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    (4, &quot;Nokia&quot;)
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>], [&quot;customer_id&quot;, &quot;product&quot;])
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a># Right DataFrame: Valid Customers
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>valid_customers = spark.createDataFrame([
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    (1,), (3,)
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>], [&quot;customer_id&quot;])
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a># Perform left semi join
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>filtered_orders = orders.join(valid_customers, on=&quot;customer_id&quot;, how=&quot;left_semi&quot;)
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>filtered_orders.show()
+</code></pre></div>
+<p><strong>Output</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>+-----------+--------+
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>|customer_id|product |
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>+-----------+--------+
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>|          1|iPhone  |
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>|          3|OnePlus |
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>+-----------+--------+
+</code></pre></div>
+<h4 id="left-anti-join">Left Anti Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/108e662c-63c8-4115-8181-928f66a0665c" /></p>
+<p>Find out all customers who have never purchased any product.</p>
+<h4 id="cross-join">Cross Join</h4>
+<p>Never use cross join!
+<img alt="image" src="https://github.com/user-attachments/assets/4d9b51bd-9a07-476c-a53c-3166bceec0b8" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/10038361-8d23-4adb-9b1c-23095ae05aab" /></p>
+<h3 id="lecture-26-join-strategies-in-spark">Lecture 26 : Join Strategies in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/45d79335-9f31-43d8-9a04-93d48ec3a918" /></p>
+<p>Joins are expensive due to shuffling.</p>
+<p>4 partitions are there in each dataframe.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/cae9e337-7d63-4134-8df1-964847c351e4" /></p>
+<p>Executors in the cluster</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/267e6dd1-b981-441d-a2dd-693e2e013c7d" /></p>
+<p>Now we need to join employee and salary df to get the output but they are on different executors, so we need to do data shuffling.</p>
+<p>Each executor has 200 partitions. Goal is to get all same keys in one executor.
+<img alt="image" src="https://github.com/user-attachments/assets/80daa55e-8dce-4e3e-839d-8f6b2b2bee16" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e37dd852-daa4-4f1c-be91-83d01451cb57" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/9266d9fb-9dee-486a-9e38-ffcd00658fcf" /></p>
+<ul>
+<li>Since we want to get id for 1 we divide 1/200 = 1 and then send all the data to that executor 1.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/69e73f9b-f7af-461e-8ac9-65f2d279a1c3" /></p>
+<p>Suppose we want to map the salary for id = 7 so the data from the employee df with id = 7 and also salary df with id=7 will come into the executor 7.</p>
+<p>Similarly id = 201 will go into 201/200 = executor no 1.</p>
+<h4 id="types-of-join-strategies">Types of Join Strategies</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/58ea7594-9378-4fd6-b0f7-a16b77c88d4c" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/9d1c2231-bc9a-41e2-8cbf-3137570acfe0" /></p>
+<p>Joins generally result in shuffling</p>
+<p>There are two dataframes df1 and df2 each with 4 partitions.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fde4638b-d6a4-46d1-926b-fd7f20cabf2d" /></p>
+<p>We have two executors.</p>
+<p>In join goal is to join with same keys.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/12274ff6-b7a6-4e32-8cca-7d4409b5dd75" /></p>
+<p>We can see that red P1 has corresponding id for salary in the other executor.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6339f3f0-2e8e-4e48-aa22-69ce46a2ac5c" /></p>
+<p>We need to get same keys fetched from other executors.</p>
+<p>When a dataframe is sent to executors by default 200 partitions are created per dataframe.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8465bc0e-5f80-4c19-8697-14f03e889c9f" /></p>
+<p>Now let's say we want to find salary for id = 1 we can divide 1/200 on blue = 1 and 1/200 on red = 1, so both data will come into executor 1 in the partition 1.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/574fd6aa-aa86-49ab-a23c-28fa37c2f351" /></p>
+<p>Similarly for id = 7 also we will send the data on blue and red P7</p>
+<p>But if id = 201 then 201/200 = 1 so this id will come into P1 only.</p>
+<p>If we have id = 102 then 102/200 = 102 partition on 2nd executor.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d4e6056c-bb9f-4c9c-8e78-c19b3684e536" /></p>
+<p>The executors can be on different worker nodes also, we need to then move data across from one worker node to other.</p>
+<h3 id="strategies">Strategies</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/22526c97-ddd0-4088-aefa-fbb29a599efb" /></p>
+<p>Broadcast nested loop join is costly because we dont do a straight join, rather its based on &lt; an &gt; conditions, its O(n^2)</p>
+<h4 id="shuffle-sort-merge-join">Shuffle Sort Merge Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/3fb09974-e5a1-400c-9871-f0e748e65216" /></p>
+<p>TC : O(nlogn)</p>
+<h4 id="shuffle-hash-join">Shuffle Hash Join</h4>
+<p>The smaller table gets a hash table created with hashed keys in memory.</p>
+<p>Now from df1 we checked which keys match with O(1) lookup using the hash table.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e2a95ff0-5c94-4871-830d-585cc23c868b" /></p>
+<h3 id="broadcast-join">Broadcast Join</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/96982a15-f0dd-4b08-97ca-663ed9d63459" /></p>
+<p>The tables that are less than 100mb can be broadcast.</p>
+<p>Scenario : Suppose one table is 1GB size so we will have 1000MB / 128MB = 8 partitions and there is another table of size 5mb.</p>
+<p>So if we dont broadcast, then the df with 100gb should be shuffled around with 5mb data across executors for joining. Instead of that we will just send the small df in all the executors so that there is no shuffling.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/20369a8d-d88f-42fb-8c33-3372c78d74ac" /></p>
+<p>The amount of data that can be broadcast depends on the memory of executor and driver. Make sure that there is no case where driver memory is 2GB and we are trying to broadcast 1GB data.</p>
+<h4 id="demo_1">Demo</h4>
+<p>There are total 200 partitions when we join </p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a426fb92-a489-4532-8184-56ffad0c77a6" /></p>
+<p><strong>Normal Sort Merge Join Execution Plan</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>== Physical Plan ==
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>AdaptiveSparkPlan isFinalPlan=false
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>+- == Initial Plan ==
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   Project [sale_id#10484L, sale_date#10485, amount#10486L, country_name#10514]
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>   +- SortMergeJoin [country_id#10487L], [country_id#10513L], Inner
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>      :- ColumnarToRow
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>      :  +- PhotonResultStage
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>      :     +- PhotonSort [country_id#10487L ASC NULLS FIRST]
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>      :        +- PhotonShuffleExchangeSource
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>      :           +- PhotonShuffleMapStage
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>      :              +- PhotonShuffleExchangeSink hashpartitioning(country_id#10487L, 1024)
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>      :                 +- PhotonFilter isnotnull(country_id#10487L)
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>      :                    +- PhotonRowToColumnar
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>      :                       +- LocalTableScan [sale_id#10484L, sale_date#10485, amount#10486L, country_id#10487L]
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>      +- ColumnarToRow
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>         +- PhotonResultStage
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>            +- PhotonSort [country_id#10513L ASC NULLS FIRST]
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>               +- PhotonShuffleExchangeSource
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>                  +- PhotonShuffleMapStage
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>                     +- PhotonShuffleExchangeSink hashpartitioning(country_id#10513L, 1024)
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>                        +- PhotonFilter isnotnull(country_id#10513L)
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>                           +- PhotonRowToColumnar
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>                              +- LocalTableScan [country_id#10513L, country_name#10514]
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>== Photon Explanation ==
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>Photon does not fully support the query because:
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>        Unsupported node: SortMergeJoin [country_id#10487L], [country_id#10513L], Inner.
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>Reference node:
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>    SortMergeJoin [country_id#10487L], [country_id#10513L], Inner
+</code></pre></div>
+<p><strong>Spark UI Diagram</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e2f11398-cd8e-4020-8487-32d3d5bce576" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/5a0406e0-6f35-4f57-8f3d-93dd3623bc31" /></p>
+<p><strong>Broadcast Join Execution Plan</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>== Physical Plan ==
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>AdaptiveSparkPlan isFinalPlan=false
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>+- == Initial Plan ==
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>   ColumnarToRow
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>   +- PhotonResultStage
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>      +- PhotonProject [sale_id#10484L, sale_date#10485, amount#10486L, country_name#10514]
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>         +- PhotonBroadcastHashJoin [country_id#10487L], [country_id#10513L], Inner, BuildRight, false, true
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>            :- PhotonFilter isnotnull(country_id#10487L)
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>            :  +- PhotonRowToColumnar
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>            :     +- LocalTableScan [sale_id#10484L, sale_date#10485, amount#10486L, country_id#10487L]
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>            +- PhotonShuffleExchangeSource
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>               +- PhotonShuffleMapStage
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>                  +- PhotonShuffleExchangeSink SinglePartition
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>                     +- PhotonFilter isnotnull(country_id#10513L)
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>                        +- PhotonRowToColumnar
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>                           +- LocalTableScan [country_id#10513L, country_name#10514]
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>== Photon Explanation ==
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>The query is fully supported by Photon.
+</code></pre></div>
+<p><img alt="image" src="https://github.com/user-attachments/assets/116ece89-7dbc-43f2-9477-ceea6fe3238f" /></p>
+<h3 id="window-functions-in-spark">Window functions in Spark</h3>
+<h4 id="rank-vs-dense-rank">Rank vs Dense Rank</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/73665356-9370-45b3-9499-d97cf200d464" /></p>
+<p>Dense rank does not leave any gaps between the ranks.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d25268ac-6ef9-4367-b151-08bcb14d320d" /></p>
+<h4 id="lead-and-lag">Lead and Lag</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/60cc0b87-5d07-4873-ba7d-d1766d136dbb" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/406bcb15-c4cd-4837-8ec9-694fe652b754" /></p>
+<h4 id="range-and-row-between">Range and Row Between</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/2880cef0-ceee-4a15-a1e3-d80110fe0582" /></p>
+<p>Q1</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/7280b56c-aa7e-4521-8b0b-d4bb3c58efbd" /></p>
+<p>Using first and last functions let's try to acheive this.</p>
+<p>Data:</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/249c83a8-5005-4faf-ab63-46e87f725819" /></p>
+<p>This solution is wrong, ideally we should get 111000 in all rows of <code>latest_sales</code> column.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/79e31ba6-d7e2-4e9c-ae3b-d08b5f2502bc" /></p>
+<p>Let's look at explain plan.</p>
+<p>We can see that the window here is <code>unbounded preceeding and current row</code></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/20a04927-9aeb-45bf-8458-9a8438ccfa9b" /></p>
+<p>What do these terms mean?</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/51dc44d0-ee2e-49ed-bcdf-2b0064e199fa" /></p>
+<ul>
+<li>Unbounded preceeding : If i'm standing at a current row in a window I will return the result of any operation on the window from here to all the rows before me in the window.</li>
+<li>current_row : the row im standing at.</li>
+<li>Unbounded following : opposite of unbounded preceeding.</li>
+<li>rows_between(start_row,end_row) : basically the row we are currently at is 0, all rows before that are negative numbers and all rows after that is positive numbers.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ab7d0388-eff1-4780-835d-be88374a4807" /></p>
+<p>If we dont give anything then it just goes from current row to either unbounded preceeding (first row) of window or unbounded following (last row) of window.</p>
+<p>Converting from string to unixtime when we have two fields date and time.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a1b00037-79e0-48be-b254-f8709e0c9616" /></p>
+<p><code>emp_df = emp_df.withColumn("timestamp",from_unixtime(unix_timestamp(expr("CONCAT(date,' ',time)"),"dd-MM-yyyy HH:mm")))</code></p>
+<p>The timestamp column is a string.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b8767f27-92fc-4b03-bb70-2d1507ba368e" /></p>
+<h3 id="spark-memory-management">Spark Memory Management</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/cc9afbc8-f2a0-45cb-8695-6b205fe70e5f" /></p>
+<p>If we do <code>df.range(100000)</code> and then do <code>df.collect()</code> on 1Gb driver we get OOM error</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/37dd4f71-e486-49b2-99b5-11c9f091ff7c" /></p>
+<p><strong>Spark Architecture</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/210188a5-8832-4338-bbf1-2f839e1fe8e7" /></p>
+<p>Driver memory is of two types:</p>
+<ul>
+<li>spark.driver.memory</li>
+<li>spark.driver.memoryOverhead</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/26affc9c-885f-46a5-842c-d85ccaca1577" /></p>
+<p>With collect all records go into the driver.
+But with show just one partition gets sent to the heap space.</p>
+<p><strong>🎯 Think of the Spark Driver Like a Worker</strong></p>
+<p>Imagine the Spark driver is a person doing a big task at a desk.</p>
+<p>The desk = spark.driver.memory (main memory)</p>
+<p>The room around the desk = spark.driver.memoryOverhead (extra space to move, store tools, use side tables)</p>
+<p>🧠 Why Just the Desk Isn’t Enough</p>
+<p>Let’s say the driver (person) is:</p>
+<p>Writing on paper (standard Spark tasks)</p>
+<p>Using a laptop (Python/PySpark or native code)</p>
+<p>Holding tools and files (temporary data, buffers, network stuff)</p>
+<p>Only giving them a desk (spark.driver.memory) isn't enough:</p>
+<p>The laptop (native code, Python UDFs) might need space outside the desk</p>
+<p>The tools (Spark internals, shuffle, serialization) don’t fit on the desk — they use off-heap memory</p>
+<p>If you don’t give them enough room around the desk (memoryOverhead), they might trip over stuff and fail the task.</p>
+<p>🧪 Real Spark Example
+When you run PySpark like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>df.withColumn(&quot;double&quot;, my_udf(df[&quot;col&quot;]))
+</code></pre></div>
+<p>That Python UDF runs outside the JVM. It needs extra native memory, not regular Java memory.</p>
+<p>Spark says:</p>
+<p>“I’ll use driver.memory for my JVM, but I need some memoryOverhead for the native stuff.”</p>
+<p>✅ Summary (in 1 line)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>spark.driver.memory is for Spark&#39;s own work (Java),
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>spark.driver.memoryOverhead is for everything outside the JVM — like Python, shuffle, native code.
+</code></pre></div>
+<p>The memory overhead is <code>max(384mb,10% of driver memory)</code></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/18f48403-fcc7-4481-8d40-291af5fece66" /></p>
+<p>Let's say there is <code>df1</code> and we want to join it with two small tables <code>df2</code> and <code>df3</code>.</p>
+<p>We send both df2 and df3 to the driver.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/72a16be0-c634-4ec8-abbe-90bcf8e6e45e" /></p>
+<p>Let's say we now give 5 dayasets worth 250 mb and the total driver space is 1G.</p>
+<p>If rest 750mb is not enough for other processes then the driver will give OOM exception.</p>
+<p><strong>💥 So… How Can GC Cause Out of Memory (OOM)?</strong></p>
+<p>You’d think GC helps prevent OOMs — and it does! But in high-memory-pressure situations, it can actually cause or worsen them.</p>
+<p>🚨 Here’s how it happens:
+1. Too Many Objects / Too Much Data in Memory
+You load huge datasets or perform wide transformations (e.g., groupBy, join).</p>
+<p>Spark stores a lot of intermediate data in RAM (JVM heap).</p>
+<p>👉 JVM tries to make space by running GC again and again.</p>
+<ol>
+<li>GC Takes Too Long
+If GC runs too often or too long (e.g., &gt; 30s), the JVM thinks something’s wrong.</li>
+</ol>
+<p>You get:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>java.lang.OutOfMemoryError: GC overhead limit exceeded
+</code></pre></div>
+<p>This means:</p>
+<p>“GC is using 98% of the CPU but only recovering 2% of memory — I give up.”</p>
+<ol>
+<li>GC Can’t Free Anything
+Some objects (like cached RDDs or references from your code) stay in memory.</li>
+</ol>
+<p>GC runs but can't collect them because they're still "referenced".</p>
+<p>Eventually, JVM runs out of space and crashes with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>java.lang.OutOfMemoryError: Java heap space
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>⚠️ Common Scenarios in Spark
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Cause   Result
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Large shuffles / joins  Too many objects in memory
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Caching huge RDDs   Heap filled, GC can&#39;t recover
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>Improper partitions Few tasks → huge memory per task
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Memory leaks (bad code) Uncollectable references
+</code></pre></div>
+<p>Example code</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>from pyspark.sql import SparkSession
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>from pyspark.storagelevel import StorageLevel
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>import random
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>spark = SparkSession.builder \
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    .appName(&quot;OOM-GC-Demo&quot;) \
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    .config(&quot;spark.driver.memory&quot;, &quot;1g&quot;) \
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    .getOrCreate()
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a># Create a large DataFrame with few partitions (causes memory pressure)
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>data = [(i % 10, random.randint(1, 1000)) for i in range(10_000_000)]  # 10 million rows
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>df = spark.createDataFrame(data, [&quot;group_id&quot;, &quot;value&quot;])
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a># Force a wide transformation + cache
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>result = df.groupBy(&quot;group_id&quot;).count().persist(StorageLevel.MEMORY_ONLY)
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a># Trigger action
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>result.count()
+</code></pre></div>
+<p>✅ How to Fix</p>
+<p>Increase spark.executor.memory or spark.driver.memory</p>
+<p>Use persist(StorageLevel.DISK_ONLY) if RAM is tight</p>
+<p>Avoid huge wide transformations without enough partitions</p>
+<p>Tune GC (G1GC is often better for large heaps)</p>
+<h3 id="executor-memory-oom">Executor Memory OOM</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/939e11c4-90c2-4b29-a90c-0aa2d1a23742" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/00f1004a-f0b4-4360-b1d1-fcaee996c126" /></p>
+<p>10 GB per executor and 4 cores</p>
+<p>Expanding one executor</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ad413e15-62ae-4b57-bb36-852ec1281d9c" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a1612bca-0cc2-4f0e-b876-4e9be2573f65" /></p>
+<p>Exceeding either 10GB or 1GB leads to OOM</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/418c7206-0f9e-442a-a918-4b82fc9c77a1" /></p>
+<h4 id="how-is-10gb-divided">How is 10GB divided?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e5a594f8-de1f-44a7-b09e-90c8c3f3db43" /></p>
+<h4 id="what-does-each-part-of-the-user-memory-do">What does each part of the user memory do?</h4>
+<ol>
+<li>Reserved Memory</li>
+</ol>
+<p>Minimum 450mb must be our memory of executor.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/66c06198-0763-41ea-b1e2-a24ffb0a8785" /></p>
+<ol>
+<li>User Memory </li>
+</ol>
+<p><img alt="image" src="https://github.com/user-attachments/assets/46939ef5-5ea5-4036-8659-a7c05fb333f1" /></p>
+<ol>
+<li>Storage Memory Usage</li>
+</ol>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fcb5e939-6743-483a-8fb1-a149ba15cab4" /></p>
+<ol>
+<li>Executor Memory Usage</li>
+</ol>
+<p><img alt="image" src="https://github.com/user-attachments/assets/eda22dc1-4827-46e1-a9de-37f1b5209cc2" /></p>
+<h4 id="what-does-each-part-of-the-spark-memory-do">What does each part of the spark memory do?</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/ea6417e3-f87b-4d2f-b418-c3564f0f1f39" /></p>
+<p>⚙️ Background: Memory in Spark Executors</p>
+<p>Each executor in Spark has a limited memory budget. This memory is split for:</p>
+<ul>
+<li>
+<p>Execution Memory: used for joins, aggregations, shuffles</p>
+</li>
+<li>
+<p>Storage Memory: used for caching RDDs or DataFrames</p>
+</li>
+<li>
+<p>User Memory: everything else (broadcast vars, UDFs, JVM overhead)</p>
+</li>
+</ul>
+<p>🔄 1. Static Memory Manager (Old)</p>
+<p>This was Spark's memory model before Spark 1.6.</p>
+<p>🔧 How It Works:</p>
+<ul>
+<li>Fixed memory boundaries set in config.</li>
+<li>You manually allocate how much memory goes to:</li>
+<li>Storage (RDD cache)</li>
+<li>Execution (shuffles, joins)</li>
+<li>If storage fills up → cached blocks are evicted.</li>
+<li>No sharing between execution and storage.</li>
+</ul>
+<p>Example fractions</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>spark.storage.memoryFraction = 0.6
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>spark.shuffle.memoryFraction = 0.2
+</code></pre></div>
+<p>🔄 2. Unified Memory Manager (Modern - Default)</p>
+<p>Introduced in Spark 1.6+ and is default since Spark 2.0.</p>
+<p>🔧 How It Works:</p>
+<p>Combines execution + storage into a single unified memory pool.</p>
+<p>Dynamic memory sharing: if execution needs more, storage can give up memory — and vice versa.</p>
+<p>Much more flexible and efficient.</p>
+<p>✅ Benefits:</p>
+<ul>
+<li>Less tuning needed</li>
+<li>Avoids wasted memory in one region while another needs more</li>
+<li>Better stability under pressure</li>
+</ul>
+<p><strong>In bwlo case execution memory is empty so storage mmemory uses more of execution memory for caching</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c7619c3d-8095-4688-836f-22c76ba4c002" /></p>
+<p>Now executor does some work in blue boxes</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/923ba744-4f13-487e-a00b-0b472cedf1db" /></p>
+<p>Now entire memory is full, so we need to evict some data that has been cached. This happens in LRU fashion.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/428545ed-0166-4206-a07c-5d515b35d4ef" /></p>
+<p>Now let's say executor has entire memory used 2.9 something gb... but it needs more memory.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fedc16a6-778f-41ed-9faa-4c907d03a9fb" /></p>
+<p>If the storage pool memory is free it can utilize that.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f49ddce2-99e4-4d7a-9835-a2239bb375a0" /></p>
+<p>If the storage pool is also full, then we get OOM!!!</p>
+<h4 id="when-can-we-neither-evict-the-data-nor-spill-to-disk">When can we neither evict the data nor spill to disk?</h4>
+<p>Suppose we have two dataframes df1 and df2 and the key id = 1 is heavily skewed in both dataframes, and its 3GB</p>
+<p>Since we need to get all the data from df1 and df2 with id = 1 onto the same executor to perform the join, we have just 2.9GB but the data is 3gb so it gives OOM.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d47407f0-ef69-4bd0-b212-4b892691d351" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b97b7abf-4acf-451c-8cc6-263dc620a747" /></p>
+<p>We can handle 3-4 cores per executor beyond that we get memory executor error.</p>
+<p><strong>❓ When can Spark neither evict nor spill data from executor memory?</strong></p>
+<p>This happens when both eviction and spilling are not possible, and it leads to:</p>
+<p>💥 OutOfMemoryError in executors.</p>
+<p>✅ These are the main scenarios:</p>
+<p><strong>🧱 1. Execution Memory Pressure with No Spill Support</strong></p>
+<p>Execution memory is used for:</p>
+<ul>
+<li>Joins (SortMergeJoin, HashJoin)</li>
+<li>Aggregations (groupByKey, reduceByKey)</li>
+<li>Sorts</li>
+</ul>
+<p>Some operations (like hash-based aggregations) need a lot of memory, and not all are spillable.</p>
+<p>🔥 Example:</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>df.groupBy(&quot;user_id&quot;).agg(collect_set(&quot;event&quot;))
+</code></pre></div>
+If collect_set() builds a huge in-memory structure (e.g., millions of unique events per user)</p>
+<p>And that structure can’t be spilled to disk</p>
+<p>And execution memory is full</p>
+<p>👉 Spark can’t evict (no caching), and can’t spill (not supported for this op)
+→ 💣 OOM</p>
+<p><strong>🔁 2. Execution Takes Priority, So Storage Can't Evict Enough</strong></p>
+<p>In Unified Memory Manager, execution gets priority over storage.</p>
+<p>But sometimes, even after evicting all cache, execution still doesn’t get enough memory.</p>
+<p>🔥 Example:
+- You cached a large DataFrame.
+- Then you do a massive join.</p>
+<p>Spark evicts all cached data, but still can't free enough memory.</p>
+<p>👉 No more memory to give → 💥</p>
+<p><strong>User Code holding References</strong></p>
+<p>🍕 Imagine Spark is a Pizza Party
+Spark is throwing a pizza party. You and your friends (the executors) are each given a plate (memory) to hold some pizza slices (data).</p>
+<p>The rule is:</p>
+<p>“Eat your slice, then give your plate back so someone else can use it.”</p>
+<p>😬 But You Keep Holding Your Plate
+You finish your slice, but instead of giving the plate back, you say:</p>
+<p>“Hmm… I might want to lick the plate later,”
+so you hold on to it.</p>
+<p>And you keep doing this with every plate 🍽️.</p>
+<p>Now, you have 10 plates stacked up, all empty, but you're still holding them.</p>
+<p>🍕 But There’s a Problem…
+Spark wants to serve more pizza (more data), but now there are no plates left.
+Even though you’re not using yours, Spark can’t take them back, because you’re still holding on.</p>
+<p>💥 Result?
+Spark gets frustrated and says:</p>
+<p>“I’m out of plates! I can’t serve any more pizza!”</p>
+<p>That’s when Spark crashes with a memory error (OOM) — because it can’t clean up the memory you're holding onto.</p>
+<p>✅ What Should You Do?
+Let go of the plates as soon as you're done eating (i.e., don’t store data in variables or lists forever).</p>
+<p>That way, Spark can reuse memory and everyone gets more pizza. 🍕</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>from pyspark.sql import SparkSession
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>spark = SparkSession.builder \
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    .appName(&quot;HoldingReferencesOOM&quot;) \
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    .config(&quot;spark.driver.memory&quot;, &quot;1g&quot;) \
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    .getOrCreate()
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a># Create a large DataFrame
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>df = spark.range(1_000_000)  # 1 million rows
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a># ❌ BAD: Holding all rows in a Python list
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>all_data = df.collect()  # Loads entire DataFrame into driver memory
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a># Still holding reference to a big object
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a># Spark can&#39;t clean this up because Python is holding it
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a># Do more operations
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>df2 = df.selectExpr(&quot;id * 2 as double_id&quot;)
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>df2.show()
+</code></pre></div>
+<p>Spark wants to free memory, but it can’t, because your code is still holding a reference to the list <code>all_list</code> is still a reference and even though we may not use it later Java GC doesnt know that. its like we finish playing with a teddy bear but still hold onto it, the teacher thinks we are still playing with it, so they cant take it back.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>df = spark.range(1_000_000)
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a># ✅ Process data without collecting everything into memory
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>df.filter(&quot;id % 2 == 0&quot;).show(10)  # only shows first 10 rows
+</code></pre></div>
+<h3 id="lecture-27-spark-submit">Lecture 27: Spark Submit</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8e499b3f-7e55-420e-a94b-c5099948ff18" /></p>
+<p>Spark submit is a command line tool to run spark applications, it packages the spark code and runs on cluster.</p>
+<p>The spark cluster can be standalone,local,K8s or YARN.</p>
+<h4 id="spark-submit-command">Spark Submit Command</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d1074716-4dc8-4469-b126-1bfc949dc58d" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0cb56a47-03c2-4068-b6b8-69f97237225b" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/e269e312-fcab-4f07-9a5b-2202ce1e785b" /></p>
+<p>Master can run on <code>yarn</code>,<code>local</code> or <code>k8s</code></p>
+<p><code>deploy-mode</code> -&gt; specifies where driver runs</p>
+<p><code>--class</code> -&gt; not required for python, just scala or java</p>
+<p><code>--jars</code> -&gt; my sql connector jar files</p>
+<p><code>spark.dynamicAllocation.enabled</code> -&gt; free's up some memory if we are not using it</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/a19795ba-4d5e-4012-90f8-db8d58a2a2e3" /></p>
+<p>We provide two arguments to <code>main.py</code> file. </p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/5c42be36-179e-44d4-a215-41e059c127ca" /></p>
+<p>We can provide syntax to generate log file.
+<img alt="image" src="https://github.com/user-attachments/assets/9e162712-9fc4-42a9-a7e1-40a8da4d69c6" /></p>
+<p>The local system computer from where we run the command is called edge node.</p>
+<h3 id="lecture-28-deployment-modes-in-spark">Lecture 28 : Deployment Modes in Spark</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/96b5edab-c2fe-4d71-898a-58193e94ff0f" /></p>
+<p>Below is the normal Spark Architecture</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4360bf36-7807-4c69-9a9d-5adc87df9f3d" /></p>
+<p>Here we have a separate EC2 instance called edge node. Its configuration is not as much as the other nodes.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6a9e92f6-ac2e-4dbb-b6f9-d7f2df99e2cc" /></p>
+<p>User does not connect directly to the cluster rather connects to the edge node now.</p>
+<p>They can login to the edge node and perform tasks. Kerberos is used for Authentication and Authorization.</p>
+<p>Any data that needs to be submitted to cluster also goes through edge node.</p>
+<p>The /bin/spark-submit folder is on the edge node, it contains hadoop client libaries YARN is not installed here.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6ed26628-b3c2-41fd-8d70-cd1b0c515cab" /></p>
+<h4 id="client-mode-deployment">client mode deployment</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8a127c39-ec56-4d10-b751-8cb8598305f9" /></p>
+<p>Driver is made on the edge node.</p>
+<h4 id="cluster-mode">cluster mode</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/64afeed7-0803-46b5-b748-6dd0ff9d5305" /></p>
+<p>In cluster mode, the driver is created on the cluster.</p>
+<h4 id="pros-and-cons-of-client-mode">pros and cons of client mode</h4>
+<p>Pro : </p>
+<ul>
+<li>The user can see the cluster logs on their own system.</li>
+</ul>
+<p>Con : </p>
+<ul>
+<li>Once the driver in the local system shuts down, the executors also go down.</li>
+<li>When we submit on client mode we will have network latency. Two way communication creates lot of delay.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0c4adda6-86ad-4b60-9deb-b14b0f6b2012" /></p>
+<p>In cluster mode, we are given an application id and using that we can see the spark ui details.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bbb7665c-960c-4b3c-bfd2-eaecab4611be" /></p>
+<h3 id="lecture-29-adaptive-query-execution">Lecture 29: Adaptive Query Execution</h3>
+<h4 id="features-of-aqe">Features of AQE</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6d312c6b-2983-4ebc-a3fb-9fef5647bced" /></p>
+<h5 id="dynamically-coalescing-shuffle-partitions">Dynamically Coalescing Shuffle Partitions</h5>
+<p>Sugar is best selling product it has highest data in the partition.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6302df14-6abb-4f8e-ac1a-63aee3154957" /></p>
+<p>Now there is a GroupBy / Shuffling of data. All the Sugar data comes to one partition.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/419528eb-2d4a-4a90-b302-436c9ace1277" /></p>
+<p>By default there are 200 partitions, but 195 are empty.</p>
+<p>The resources are getting wasted because these 195 partitions also need to be shuffled.</p>
+<p>The 5 partitions become 5 tasks but Partition 1 takes lot of time to run.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/60d3d490-b566-4f3d-a8eb-22d2c530197e" /></p>
+<p>Now AQE coalesces the partitions.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/0cee3eda-96db-44fd-a000-a31ef5273174" /></p>
+<p>Two tasks are now reduced and also 2 cores become free.</p>
+<p>But even after coalescing we may end up with data skew.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bffc1b5f-8afd-4557-9cc3-2f8b260771b0" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/8a18642b-4448-455a-9a55-8a545930ae30" /></p>
+<p>Once we coalesce we end up with 2 partitions and 1/2 completes fast, the one with sugar takes time.</p>
+<h4 id="data-splitting">Data Splitting</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/49399787-322c-452e-9e91-17d650a8b84c" /></p>
+<p>If median is 5MB and one partition is &gt; 25MB then the data splits.</p>
+<h4 id="dynamically-switching-join-strategy">Dynamically Switching Join Strategy</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/48da944e-f024-4e2c-b31a-d79015f0d356" /></p>
+<p>By default spark does sort merge join.</p>
+<p>Now if we compress table2 to become 10mb, even though sort merge join DAG is built, if AQE is enabled, we can check runtime statistics.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/77901eba-47b2-4eec-b199-68deee0b3b3a" /></p>
+<p>Since data is only 10MB we can broadcast the data but shuffling still happens only sorting and merging is avoided.</p>
+<h4 id="dynamically-optimizing-skew-join">Dynamically Optimizing Skew Join</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/aae53785-bad9-4399-8094-ba636234f4c3" /></p>
+<p>We are considering two tables where key = Sugar and just 128MB of data.</p>
+<p>Let's show other partitions also</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6d1eca97-aa29-4534-838b-8d177b868ab9" /></p>
+<p>Now when we do the Sort Merge Join and get all keys together the Sugar partition size increases.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f56d8ded-a4cc-495a-8606-176bda358233" /></p>
+<p>All tasks except the one with Sugar completes fast.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/535c4cf4-c3b9-4076-8241-9133d673721a" /></p>
+<p>This leads to OOM error.</p>
+<h5 id="solutions">Solutions</h5>
+<ul>
+<li>Salting</li>
+<li>AQE</li>
+</ul>
+<p>AQE has ShuffleReader, it has statistics on the memory and size of each partition. This parttion gets automatically split in both tables.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/77e35131-03a6-4ad0-898f-b705f935d2e4" /></p>
+<h3 id="lecture-30-cache-vs-persist">Lecture 30 : Cache vs Persist</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/05c58f62-ef62-4736-a11b-01f4846176f0" /></p>
+<h4 id="spark-memory-management_1">Spark Memory Management</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/df790f28-9d34-4cfd-9c20-20243300046a" /></p>
+<p>The Spark Memory is further expanded into Storage Memory Pool and Executor Memory Pool.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/729e1214-7dac-48fe-98f8-2341192d7b42" /></p>
+<p>The cache is stored in Storage Memory Pool.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/592f8810-e785-485f-8810-14f4e56e918d" /></p>
+<p>Not all the memory is stored in the executor. When df line code is run, df is removed from the executor, but in the subsequent step df is used to calculate df2. So in this case ideally df should be computed again, but if we have cache memory we can directly fetch from there.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/fc019da5-0f98-47b4-9351-099ee4cecb42" /></p>
+<p>When we cache the data goes from executor short lived memory to the storage pool. The cache is based on LRU mechanism.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/4534d33f-ccf1-49cd-ac1a-992ada1f26fd" /></p>
+<p>Now let's day we have 15 partitions but only 14.5 fit in storage memory, 1 partition does not get stored.</p>
+<p>By default storage_level for <code>df.cache()</code> is <code>MEMORY_AND_DISK</code> if the data does not fit in MEMORY move it to disk, but the data takes time to read from disk so its not recommended.</p>
+<p>If the partition gets lost during IO, the DAG will recalculate that.</p>
+<p><code>persist()</code> gives us more flexibility.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d6ea7a42-f104-4710-a66a-148ab389de35" /></p>
+<p><code>persist()</code> -&gt; when we pass MEMORY_AND_DISK to persist it becomes cache(). Cache is just a wrapper class on persist().</p>
+<h4 id="how-many-partitions-get-stored-in-cache">How many partitions get stored in cache?</h4>
+<p>When we use <code>show()</code> just one partition gets cached.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/35cd42ac-f7e5-4d16-9180-ead9dcf3e5d4" /></p>
+<p>When we use <code>count()</code> all partitions get cached.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c57e9075-91ae-4454-bb8d-4a5452044652" /></p>
+<h4 id="storage-level-in-persist">Storage Level in Persist</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/21a8e1cc-8eaa-4a90-b7ab-9d51594b02e1" /></p>
+<p>In <code>MEMORY_AND_DISK</code> the data is stored in disk after memory is full but its stored in serialized form, it should be deserialized before spark can process it and hence CPU utilization is high here.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b1127097-c5fa-4bdd-8095-338a24b5df71" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c6319ddf-79d8-4f39-9bba-ac6949c671f6" /></p>
+<p><strong>MEMORY_ONLY_2</strong></p>
+<p>This data is replicated twice. Just to ensure that if we have complex computations and things fail, we dont need to do computations again.</p>
+<p><code>MEMORY_ONLY_SER</code> and <code>MEMORY_AND_DISK_SER</code> works only in Scala and Java.</p>
+<h3 id="lecture-31-dynamic-resource-allocation">Lecture 31 : Dynamic Resource Allocation</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bc67607d-ac0c-4c7d-8198-b3be42d4aa59" /></p>
+<h4 id="cluster-configuration">Cluster Configuration</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/d0283700-c961-4c84-b7e8-99186341e2bf" /></p>
+<p>There is no problem with above configuration.</p>
+<p>But let's say another user comes and asks for more resources...</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b95ac3f3-fece-4475-8f9e-af22ec6eae01" /></p>
+<p>The red person can't get assigned any more memory since cluster is already full.</p>
+<p>The resource manager works on FIFO process.</p>
+<p>Now this small process that needs only 25GB may have to wait for hours.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/31eff3b8-5804-4833-ba2d-44fbe173952a" /></p>
+<p>In dynamic memory allocation, the data that is not used is released.</p>
+<p>Resource Manager has no role, spark internal algo does this.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/052cdcb7-9b36-442c-b2b9-5e07d152707e" /></p>
+<p>Let's say we have free 750GB and driver demands 500GB from resource manager but there might be other processes waiting for the memory so it may not get it.</p>
+<p>We can use min executors and max executors to get around this. We set min executors in such a way that process does not fail.</p>
+<p>Now let's say there is a process which has completed execution and so Dynamic Resource Allocator frees the data. But we want it for further calculations. Do we calculate it again? No.</p>
+<p>We can use <strong>External Shuffle Service</strong>. This works independently on every worker node and data in this doesnt get deleted.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c3e41033-dc01-4925-87df-05417b63786f" /></p>
+<p>If executors idle from 60s then we release the data.</p>
+<h4 id="how-does-executor-ask-for-resources">How does executor ask for resources?</h4>
+<p>If the executor does not get its required memory within 1 sec then it starts asking in two fold manner.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/37d347d0-0db3-479c-92e2-bc08e600062b" /></p>
+<p>First it asks for 1GB then 2GB then 4GB and so on...</p>
+<p><code>spark.scheduler.backlogTimeout</code> = 2s the executor waits till 2s before asking for memory.</p>
+<h4 id="parallel-execution-and-multi-threading">Parallel Execution and Multi Threading</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/51543a7e-2c23-467f-bcbd-f2d9383ba20a" /></p>
+<h4 id="when-to-avoid-dynamic-resource-allocation">When to avoid dynamic resource allocation?</h4>
+<p>For critical jobs that needs to be run within certain SLA avoid it.</p>
+<h3 id="lecture-32-dynamic-partition-pruning">Lecture 32 : Dynamic Partition Pruning</h3>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f3fec4e7-fb1c-4df7-8fcf-3a5603f37145" /></p>
+<p>In below code we have a filter applied to select only 19th April 2023 data,</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c2b31884-ff92-4899-94b6-0e2eca6036e9" /></p>
+<p>Below we can see that only one file that is for 19th April 2023 is read, not all of them.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/6145f2e9-ad56-4d9f-bff0-cc1d5cddc47d" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/b0aeae59-6aad-4522-b88c-d48ed168b340" /></p>
+<h4 id="dpp-with-2-tables">DPP with 2 tables</h4>
+<p><img alt="image" src="https://github.com/user-attachments/assets/41fd14e0-7e73-4e27-a646-1d9be439c64c" /></p>
+<p>Partition pruning does not happen on first table but will happen on table 2. Dynamic Partition Pruning helps us to update filter on runtime.</p>
+<p>Two conditions:</p>
+<ul>
+<li>Data should be partitioned.</li>
+<li>2nd Table should be broadcasted.</li>
+</ul>
+<p><img alt="image" src="https://github.com/user-attachments/assets/2c7f3104-572f-4104-b0d7-ee0ca2685ab8" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/687e08bf-21bd-4c68-a4e1-4547f72de828" /></p>
+<p><strong>Without Dynamic Partition Pruning</strong></p>
+<p>Total 123 files read from first table not one like previous case.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/bb08d05b-3504-40d7-afee-92be1b96c4c6" /></p>
+<p><strong>With Dynamic Partition Pruning</strong></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/af82cde4-1d28-40a8-b7d5-317b14b7a2c8" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/177581ed-bda5-4cba-8bc4-e7412dc3dbc8" /></p>
+<p>The smaller dimdate table is broadcasted and hash join performed. Only 3 files are read this time.</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/43fab357-56c8-4ce2-bc4d-b88c7c226488" /></p>
+<p>At runtime a subquery is run...</p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/f0ce0f0a-e8de-484d-981d-780a21c90d53" /></p>
+<p><img alt="image" src="https://github.com/user-attachments/assets/c50c043b-6029-4721-9247-452ffb0492c4" /></p>
+<p>Now because of the runtime filter only 4 partitions are read/scanned.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+    
+  </body>
+</html>
