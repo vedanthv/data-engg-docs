@@ -127,10 +127,17 @@ Spark Engine would need some memory for transformation.
 
 ![image](https://github.com/user-attachments/assets/7ab22f33-3951-45d7-849e-83f693e5bf4b)
 
-format -> data file format : csv,json,jdbc and odbc connection. Format is optional parameter, by default its parquet format
-option -> inferschema, mode and header [**optional field**]
-schema -> manual schema can be passed here
-load -> path from where we need to read the data [**not optional**]
+**format**
+data file format : csv,json,jdbc and odbc connection. Format is optional parameter, by default its parquet format
+
+**option** 
+inferschema, mode and header [**optional field**]
+
+**schema**
+manual schema can be passed here
+
+**load**
+path from where we need to read the data [**not optional**]
 
 #### DataframeReader API
 
@@ -188,7 +195,7 @@ The PySpark driver is not a requirement but the Java Wrapper is required to run 
 
 ![image](https://github.com/user-attachments/assets/1ee66178-03be-474c-8b02-ec1cc8f73a01)
 
-Each executor has 5 core CPU and 25GB RAM.
+Each executor has 5 core CPU and 25GB RAM. Each one of them runs on separate container.
 
 THe above is when we have pure Java code and dont use Python UDF.
 
