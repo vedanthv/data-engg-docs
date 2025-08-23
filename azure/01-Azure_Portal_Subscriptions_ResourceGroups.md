@@ -137,3 +137,46 @@ Subscription (Billing boundary, access policies)
 **Subscription → The “who pays” (billing).**
 
 ---
+
+### Management Groups
+
+🌐 What are Azure Management Groups?
+
+Management Groups in Azure are a way to organize multiple subscriptions into a hierarchy.
+
+Think of them as folders in a file system where:
+
+- Management Groups = Folders
+- Subscriptions = Files inside those folders
+- Resources = Data inside those files
+
+They allow you to apply governance, policies, and RBAC access across many subscriptions at once.
+
+```
+Root Management Group
+ ├── Corp-IT (Management Group)
+ │     ├── Subscription A (Prod)
+ │     └── Subscription B (Dev)
+ ├── Corp-Finance (Management Group)
+ │     └── Subscription C (Finance Dept)
+ └── Corp-Analytics (Management Group)
+       └── Subscription D (Data Science)
+```
+
+- You apply policies (like "only deploy resources in East US") at Corp-IT, and it flows down to all subscriptions in that group.
+- RBAC roles assigned at higher-level management groups inherit down.
+
+**✨ Key Features**
+
+- Hierarchy up to 6 levels deep (excluding root & subscription).
+- Root Management Group is automatically created for every Azure AD tenant.
+- Policy & RBAC inheritance: Apply once → affects all child subscriptions/resources.
+- Segregation: You can separate departments, environments (Dev/QA/Prod), or business units.
+- Scalability: Essential for large organizations managing 100s of subscriptions.
+
+**🔑 Use Cases**
+
+- Apply Azure Policies (e.g., only allow specific VM SKUs, enforce tagging).
+- Apply RBAC roles (e.g., Finance team can only access Finance subscriptions).
+- Enforce security baselines across multiple subscriptions.
+- Manage costs by grouping subscriptions by business unit.
