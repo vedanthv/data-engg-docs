@@ -415,8 +415,11 @@ We dont need to define ```_corrupted_record``` in the schema, it will add the co
 
 ![image](https://github.com/user-attachments/assets/ffb137d5-5a71-427d-b411-1493925ed6a4)
 
-#### How is Spark Code compiled?
+#### How is code converted into Byte Code?
 
+<img width="1036" height="423" alt="image" src="https://github.com/user-attachments/assets/208cf61e-6d22-4ad0-af86-eb27433b7c15" />
+
+#### How is Spark Code compiled?
 
 - The catalyst optimizer creates a plan and creates RDD lineage
 
