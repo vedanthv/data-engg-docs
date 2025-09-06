@@ -1,7 +1,5 @@
 ### Overview of Azure Storage
 
-Perfect 👍 let’s go through a **practical overview of Azure Storage** — like a Data Engineer would need for real projects (Databricks, Delta Lake, Unity Catalog, etc.).
-
 ---
 
 # 🔹 What is Azure Storage?
