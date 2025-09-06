@@ -6,7 +6,7 @@ If the metastore storage account is provided by us, then all the catalog, schema
 
 2. If Metastore location is not provided.
 
-In this case we need to provide the location at catalog level to create tables.
+In this case we need to provide the location at catalog level to create tables. This is mandatory.
 
 <img width="749" height="308" alt="image" src="https://github.com/user-attachments/assets/d352fafa-3bd0-49a3-b7d3-dcfb1818b84d" />
 
