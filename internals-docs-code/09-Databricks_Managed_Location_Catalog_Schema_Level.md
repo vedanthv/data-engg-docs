@@ -62,7 +62,7 @@ UI:
 Go to Catalog → External Locations → Create.
 Name: ext_loc_dev
 Path: abfss://uc-data@<storageaccount>.dfs.core.windows.net/
-Storage credential: uc-cred
+Storage credential: uc-cred (Storage Credential is at Storage Account level so for one cred is enough)
 
 ```
 CREATE EXTERNAL LOCATION ext_loc_dev
@@ -95,6 +95,9 @@ CREATE CATALOG dev
 MANAGED LOCATION 'abfss://uc-data@<storageaccount>.dfs.core.windows.net/dev';
 ```
 
+<img width="515" height="404" alt="image" src="https://github.com/user-attachments/assets/da261099-f7a5-41b1-925b-066cc2f84125" />
+
+
 **7. Create Schema**
 
 Schemas can also have their own managed locations (if needed).
@@ -124,6 +127,11 @@ GRANT SELECT, MODIFY ON TABLE dev.bronze.trades TO `account users`;
 
 **10. Create Tables at Different Levels**
 
+```
+CREATE SCHEMA dev.bronze
+COMMENT 'This is schema in dev catalog without external location'
+```
+
 This gets created in metastore level container because its managed and we havent specified external location at catalog level.
 
 ```
@@ -152,6 +160,13 @@ CREATE TABLE IF NOT EXISTS dev_ext.bronze.raw_sales (
 INSERT INTO dev_ext.bronze.raw_sales VALUES (1,'Cookies',1,200.50);
 ```
 
+Creating schema in external location.
+
+```
+CREATE EXTERNAL LOCATION 'ext_schema'
+MANAGED LOCATION 'https://adbvedanthnew.databricks.net/adb/schema/bronze_ext'
+```
+
 This gets created in schema level since we specified external location at schema level.
 
 ```sql
@@ -168,6 +183,28 @@ INSERT INTO dev_ext.bronze_Ext.raw_sales VALUES (1,'Cookies',1,200.50);
 
 <img width="1351" height="621" alt="image" src="https://github.com/user-attachments/assets/0a6847fb-ef66-4bc9-9bc7-2b0c6d7317a7" />
 
-<img width="1349" height="665" alt="image" src="https://github.com/user-attachments/assets/651b1500-a997-4f29-bfac-ca5c7ae3c44a" />
+### Where data is stored?
 
-<img width="1349" height="665" alt="image" src="https://github.com/user-attachments/assets/c14733f5-c9e2-4470-800b-589557e5a3d8" />
+1. Stored in metastore root location
+
+<img width="663" height="291" alt="image" src="https://github.com/user-attachments/assets/2d2bf8cd-3986-4a19-87db-8d456f9146f0" />
+
+<img width="676" height="274" alt="image" src="https://github.com/user-attachments/assets/e9be7b1d-699c-41ed-ae5b-215181611c44" />
+
+2. Store in Catalog Level Ext Location
+
+```sql
+DESC EXTENDED DEV_EXT.BRONZE.RAW_SALE;
+```
+
+<img width="686" height="284" alt="image" src="https://github.com/user-attachments/assets/2adc41ef-11fb-4994-8818-d3780d411c43" />
+
+3. Store in Schema Level External Location
+
+```sql
+DESC EXTENDED DEV_EXT.BRONZE_EXT.RAW_SALE
+```
+
+<img width="675" height="287" alt="image" src="https://github.com/user-attachments/assets/eb572613-c2e1-41f6-a47a-d0d1251e4a82" />
+
+
