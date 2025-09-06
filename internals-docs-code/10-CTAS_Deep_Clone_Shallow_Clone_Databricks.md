@@ -66,3 +66,7 @@ Requery shallow clone
 We can see only one row the 2nd row inserted is not visible.
 
 Shallow Clone points to the source version of original table when created and does not update the data.
+
+When we do the vice versa and insert new record in shallow table, it does not impact the original table. The new data is stored in the shallow table's own location.
+
+Only when we VACUUM the main table, all records from shallow table also gets deleted.
