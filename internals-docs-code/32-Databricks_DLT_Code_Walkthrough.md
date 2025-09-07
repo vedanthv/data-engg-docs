@@ -277,3 +277,64 @@ In SCD Type1 just the update is captured.
 <img width="1101" height="340" alt="image" src="https://github.com/user-attachments/assets/535c9268-243f-4363-83db-0a5c7a171fd4" />
 
 <img width="1113" height="326" alt="image" src="https://github.com/user-attachments/assets/7e508692-86ec-428c-a2c5-765015d779d0" />
+
+### Rules for Data Quality : Warn, Drop and Fail
+
+**Defining the Rules**
+
+```python
+__order_rules = {
+  "Valid Order Status" : "o_order_status in ('O','F','P')",
+  "Valid Order Price" : "o_orderprice > 0"
+}
+
+__customer_rules = {
+  "valid market segment" : "c_mktsegment is not null"
+}
+```
+
+**Adding the rules**
+
+```python
+@dlt.table(
+  table_properties = {"quality":"bronze"},
+  comment = "Orders Bronze Table"
+)
+@dlt.expect_all(__order_rules) # warn
+def orders_bronze():
+  df = spark.readStream.table("dev.bronze.orders_raw")
+  return df
+```
+
+```python
+@dlt.table(
+  table_properties = {"quality":"bronze"},
+  comment = "Customers Materialized View"
+)
+@dlt.expect_all(__customer_rules) # warn
+def customers_bronze():
+  df = spark.read.table("dev.bronze.customers_raw")
+  return df
+```
+
+<img width="1094" height="435" alt="image" src="https://github.com/user-attachments/assets/b4aac33d-84b6-4c7f-a27e-cd5732273f70" />
+
+### Edge Case
+
+<img width="1634" height="700" alt="image" src="https://github.com/user-attachments/assets/4305b045-466b-42a6-b9a5-fe9e8887ce91" />
+
+Number of failed records here is 2, but in source table only one record was flawed, but since there are two consumers it shows 2 records failed.
+
+### Using Expectations on the view
+
+<img width="1307" height="246" alt="image" src="https://github.com/user-attachments/assets/7fd7199a-1ef9-4882-b02a-18c4d20a2ef4" />
+
+<img width="1305" height="263" alt="image" src="https://github.com/user-attachments/assets/71392311-db10-4ce5-bb5d-1f553257976c" />
+
+Even though on top we can see market segment is null, since we are doing a left join and the joined view does not have details for the customer 99999,(because it failed expectation and record was dropped), so there were no failed records at all.
+
+<img width="1645" height="498" alt="image" src="https://github.com/user-attachments/assets/337e2848-d934-4a80-9d59-5711fd9c6e15" />
+
+### Monitoring and Observability
+
+[Check this link](https://learn.microsoft.com/en-us/azure/databricks/dlt/monitor-event-logs)
