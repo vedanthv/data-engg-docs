@@ -140,11 +140,6 @@ You should see Event Grid delivering the event with metadata like:
   "event_type": "Microsoft.Storage.BlobCreated"
 }
 ```
-
-Great question 👌 — the **subscription** is the key piece that makes **Event Grid actually deliver events** to something.
-
----
-
 ## 🔑 Why do we need an Event Grid subscription?
 
 * **Event Grid itself is just an event router**.
