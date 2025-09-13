@@ -183,8 +183,6 @@ measures:
 
 ### Clear Example of Metric View vs Standard View
 
-Got it 👍 — let’s take your **“Revenue per Distinct Customer across geographies”** example and break it into **standard view vs metric view** with actual queries.
-
 ---
 
 ## 1. Standard View Approach
