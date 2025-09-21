@@ -57,5 +57,3 @@ Imagine:
 ✅ **So yes, exactly**: executor keeps small table A in memory, and streams batches of rows for the skewed key from table B (from memory and disk), joining them incrementally.
 
 ---
-
-👉 Do you want me to also explain what happens in the **opposite case** (when both A and B are huge and skewed)? That’s where Spark can still OOM despite spilling.
