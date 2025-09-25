@@ -7,6 +7,78 @@ I focus on technologies like Apache Spark, Kafka/Redpanda, Databricks, AWS, and 
 The main goal of this repo is to strengthen my own understanding, but I also hope it can be useful to anyone else navigating similar topics. Think of it as a learning log that balances hands-on exploration with professional best practices - something between a personal notebook and a practical guide.
 
 <!-- TOC START -->
+## 📑 Consolidated Table of Contents
+
+
+### Azure
+
+1. [Azure Integration Databricks](azure/00-Azure_Integration_Databricks.md)
+2. [Azure Portal Subscriptions Resourcegroups](azure/01-Azure_Portal_Subscriptions_ResourceGroups.md)
+3. [Azure Cli Scenarios](azure/02-Azure_CLI_Scenarios.md)
+4. [Azure Powershell Scenarios](azure/03-Azure_Powershell_Scenarios.md)
+5. [Azure Arm Templates](azure/05-Azure_ARM_Templates.md)
+6. [Azure Bicep Templates](azure/06-Azure_Bicep_Templates.md)
+7. [Overview Of Azure Storage](azure/07-Overview_Of_Azure_Storage.md)
+8. [Blob Storage Fundamentals](azure/08-Blob_Storage_Fundamentals.md)
+9. [Adls Gen2 Overview](azure/09-ADLS_Gen2_Overview.md)
+10. [Azure Rbac Acl](azure/10-Azure_RBAC_ACL.md)
+11. [Azure Types Of Storage](azure/11-Azure_Types_Of_Storage.md)
+12. [Azure Storage Replication Strategies](azure/12-Azure_Storage_Replication_Strategies.md)
+13. [Soft Delete Pitr Azure Storage](azure/13-Soft_Delete_PITR_Azure_Storage.md)
+14. [Azure Shared Access Signature](azure/14-Azure_Shared_Access_Signature.md)
+15. [Azure Lifetime Management Policies](azure/15-Azure_Lifetime_Management_Policies.md)
+16. [Eventgrid Integration Azure](azure/16-EventGrid_Integration_Azure.md)
+17. [Azure Encrpytion Standards](azure/17-Azure_Encrpytion_Standards.md)
+18. [Azure+ Private Endpoints](azure/18-Azure+_Private_Endpoints.md)
+19. [Cross Region Replication Azure](azure/19-Cross_Region_Replication_Azure.md)
+20. [Azure Storage Rest Api](azure/20-Azure_Storage_Rest_API.md)
+21. [Introduction Azure Data Factory](azure/21-Introduction_Azure_Data_Factory.md)
+22. [Azure Data Factory Vs Synapse](azure/22-Azure_Data_Factory_vs_Synapse.md)
+23. [Azure Data Factory Architecture](azure/23-Azure_Data_Factory_Architecture.md)
+24. [Readme](azure/README.md)
+
+### Data-formats
+
+1. [Data Format Deep Dive Pt1](data-formats/01-Data_Format_Deep_Dive_Pt1.md)
+
+### Databricks
+
+1. [Azure Databricks Uc Creation](databricks/01-Azure_Databricks_UC_Creation.md)
+2. [Databricks Uc Introduction](databricks/02-Databricks_UC_Introduction.md)
+3. [Databricks Managed External Tables Hive](databricks/03-Databricks_Managed_External_Tables_Hive.md)
+4. [Uc External Location Storage Credentials](databricks/04-UC_External_Location_Storage_Credentials.md)
+5. [Databricks Managed Location Catalog Schema Level](databricks/05-Databricks_Managed_Location_Catalog_Schema_Level.md)
+6. [Ctas Deep Clone Shallow Clone Databricks](databricks/06-CTAS_Deep_Clone_Shallow_Clone_Databricks.md)
+7. [Rbac Custom Roles Serviceprincipals](databricks/07-RBAC_Custom_Roles_ServicePrincipals.md)
+8. [Deletion Vectors Delta Lake](databricks/08-Deletion_Vectors_Delta_lake.md)
+9. [Liquid Clustering Delta Lake](databricks/09-Liquid_Clustering_Delta_Lake.md)
+10. [Concurrency Liquid Clustering](databricks/10-Concurrency_Liquid_Clustering.md)
+11. [11 Copy Into Databricks](databricks/11_Copy_Into_Databricks.md)
+12. [Autoloader Databricks](databricks/12-AutoLoader_Databricks.md)
+13. [Intro Databricks Lakeflow Declarative Pipelines](databricks/13-Intro_Databricks_Lakeflow_Declarative_Pipelines.md)
+14. [Dlt Batch Vs Streaming Workloads](databricks/14-DLT_Batch_Vs_Streaming_Workloads.md)
+15. [Dlt Data Storage Checkpoints](databricks/15-DLT_Data_Storage_Checkpoints.md)
+16. [Databricks Secret Scopes](databricks/16-Databricks_Secret_Scopes.md)
+17. [Databricks Controlplane Dataplane](databricks/17-Databricks_ControlPlane_DataPlane.md)
+18. [Databricks Dlt Code Walkthrough](databricks/18-Databricks_DLT_Code_Walkthrough.md)
+19. [Databricks Serverless Compute](databricks/19-Databricks_Serverless_Compute.md)
+20. [Databricks Warehouses](databricks/20-Databricks_Warehouses.md)
+21. [Databricks Lakehouse Federation](databricks/21-Databricks_Lakehouse_Federation.md)
+22. [Databricks Metrics Views](databricks/22-Databricks_Metrics_Views.md)
+23. [Databricks Streaming Materialized Views Sql](databricks/23-Databricks_Streaming_Materialized_Views_SQL.md)
+24. [Databricks Cli Setup](databricks/24-Databricks_CLI_Setup.md)
+
+### Notebooks
+
+1. [Readme](notebooks/README.md)
+
+### Spark
+
+1. [Spark Architecture Yarn](spark/01-Spark_Architecture_YARN.md)
+2. [Spark Driver Oom](spark/02-Spark_Driver_OOM.md)
+3. [Types Of Memory Spark](spark/03-Types_Of_Memory_Spark.md)
+4. [Spark Dynamic Partition Pruning](spark/04-Spark_Dynamic_Partition_Pruning.md)
+5. [Spark Salting Technique](spark/05-Spark_Salting_Technique.md)
 <!-- TOC END -->
 
 
