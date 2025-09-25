@@ -23,6 +23,6 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add internal-docs-code/README.md
+          git add internals-docs-code/README.md
           git diff-index --quiet HEAD || git commit -m "Auto-update TOC"
           git push
