@@ -7,38 +7,8 @@ I focus on technologies like Apache Spark, Kafka/Redpanda, Databricks, AWS, and 
 The main goal of this repo is to strengthen my own understanding, but I also hope it can be useful to anyone else navigating similar topics. Think of it as a learning log that balances hands-on exploration with professional best practices - something between a personal notebook and a practical guide.
 
 <!-- TOC START -->
-# 📑 Table of Contents
+# 📑 Consolidated Table of Contents
 
-## Outline of Sections 
-- Azure
-- Data-formats
-- Databricks
-- Scenarios
-- Spark
-- Streaming
-
-## Activities-pipelines
-
-1. [Simplecopydata](notebooks/adf/activities-pipelines/00-simpleCopyData.json)
-2. [Eventtriggerschedule](notebooks/adf/activities-pipelines/01-eventTriggerSchedule.json)
-3. [Filteractivityarray](notebooks/adf/activities-pipelines/02-filterActivityArray.json)
-4. [Foreach](notebooks/adf/activities-pipelines/03-forEach.json)
-5. [Masterchilddependency](notebooks/adf/activities-pipelines/04-masterChildDependency.json)
-6. [Metadataactivity](notebooks/adf/activities-pipelines/05-metaDataActivity.json)
-7. [Parameterizedpipeline](notebooks/adf/activities-pipelines/06-parameterizedPipeline.json)
-8. [Set Append Activity](notebooks/adf/activities-pipelines/07-set-append-activity.json)
-9. [Switchactivity](notebooks/adf/activities-pipelines/08-switchActivity.json)
-10. [Systemvariables](notebooks/adf/activities-pipelines/09-systemVariables.json)
-11. [Untilactivity](notebooks/adf/activities-pipelines/10-untilActivity.json)
-
-## Adf
-
-
-## Architecture
-
-1. [Use Cases Streaming](streaming/architecture/01-Use_Cases_Streaming.md)
-2. [Redpanda Vs Kafka Arch Differences](streaming/architecture/02-Redpanda_vs_Kafka_Arch_Differences.md)
-3. [Redpanda Architure In Depth Pt1](streaming/architecture/03-Redpanda_Architure_In_Depth_Pt1.md)
 
 ## Azure
 
@@ -103,6 +73,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 22. [Databricks Metrics Views](databricks/22-Databricks_Metrics_Views.md)
 23. [Databricks Streaming Materialized Views Sql](databricks/23-Databricks_Streaming_Materialized_Views_SQL.md)
 24. [Databricks Cli Setup](databricks/24-Databricks_CLI_Setup.md)
+
+## Scenarios
+
 
 ## Databricks
 
@@ -183,20 +156,26 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 4. [Spark Dynamic Partition Pruning](spark/04-Spark_Dynamic_Partition_Pruning.md)
 5. [Spark Salting Technique](spark/05-Spark_Salting_Technique.md)
 
-## Src
-
-1. [Admin](notebooks/kafka/src/admin.py)
-2. [Avro Consumer](notebooks/kafka/src/avro_consumer.py)
-3. [Avro Producer](notebooks/kafka/src/avro_producer.py)
-4. [Consumer](notebooks/kafka/src/consumer.py)
-5. [Json Producer](notebooks/kafka/src/json_producer.py)
-6. [Producer](notebooks/kafka/src/producer.py)
-7. [Register Avro Schema](notebooks/kafka/src/register_avro_schema.py)
-8. [Schema](notebooks/kafka/src/schema.avro)
-9. [Utils](notebooks/kafka/src/utils.py)
-
 ## Streaming
 
+
+### Architecture
+
+1. [Use Cases Streaming](streaming/architecture/01-Use_Cases_Streaming.md)
+2. [Redpanda Vs Kafka Arch Differences](streaming/architecture/02-Redpanda_vs_Kafka_Arch_Differences.md)
+3. [Redpanda Architure In Depth Pt1](streaming/architecture/03-Redpanda_Architure_In_Depth_Pt1.md)
+
+### Kafka
+
+1. [Kafka Kraft Setup](streaming/kafka/01-Kafka_KRaft_Setup.md)
+2. [Kafka Broker Properties](streaming/kafka/02-Kafka_Broker_Properties.md)
+3. [Topic Default Properties](streaming/kafka/03-Topic_Default_Properties.md)
+4. [Kafka Hardware Considerations](streaming/kafka/04-Kafka_Hardware_Considerations.md)
+5. [Kafka Configuring Clusters Broker Consideration](streaming/kafka/05-Kafka_Configuring_Clusters_Broker_Consideration.md)
+6. [Kafka Broker Os Tuning](streaming/kafka/06-Kafka_Broker_OS_Tuning.md)
+7. [Kafka Os Tuning Dirty Page Handling](streaming/kafka/07-Kafka_OS_Tuning_Dirty_Page_Handling.md)
+8. [Kafka File Descriptors Overcommit Memory](streaming/kafka/08-Kafka_File_Descriptors_Overcommit_Memory.md)
+9. [Kafka Production Concerns](streaming/kafka/09-Kafka_Production_Concerns.md)
 <!-- TOC END -->
 
 
