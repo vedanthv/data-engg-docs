@@ -1,4 +1,4 @@
-## Data Engineering and Cloud Platform Knowledge Base
+# Data Engineering and Cloud Platform Knowledge Base
 
 This repository is where I keep track of what I’m learning and experimenting with across data engineering, distributed systems, and cloud platforms. It’s part study notes, part code lab, and part reference guide — essentially a place to capture concepts as I work through them and to revisit later when I need a refresher.
 
