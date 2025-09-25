@@ -7,10 +7,40 @@ I focus on technologies like Apache Spark, Kafka/Redpanda, Databricks, AWS, and 
 The main goal of this repo is to strengthen my own understanding, but I also hope it can be useful to anyone else navigating similar topics. Think of it as a learning log that balances hands-on exploration with professional best practices - something between a personal notebook and a practical guide.
 
 <!-- TOC START -->
-## 📑 Consolidated Table of Contents
+# 📑 Table of Contents
+
+## Outline of Sections 
+- Azure
+- Data-formats
+- Databricks
+- Scenarios
+- Spark
+- Streaming
+
+## Activities-pipelines
+
+1. [Simplecopydata](notebooks/adf/activities-pipelines/00-simpleCopyData.json)
+2. [Eventtriggerschedule](notebooks/adf/activities-pipelines/01-eventTriggerSchedule.json)
+3. [Filteractivityarray](notebooks/adf/activities-pipelines/02-filterActivityArray.json)
+4. [Foreach](notebooks/adf/activities-pipelines/03-forEach.json)
+5. [Masterchilddependency](notebooks/adf/activities-pipelines/04-masterChildDependency.json)
+6. [Metadataactivity](notebooks/adf/activities-pipelines/05-metaDataActivity.json)
+7. [Parameterizedpipeline](notebooks/adf/activities-pipelines/06-parameterizedPipeline.json)
+8. [Set Append Activity](notebooks/adf/activities-pipelines/07-set-append-activity.json)
+9. [Switchactivity](notebooks/adf/activities-pipelines/08-switchActivity.json)
+10. [Systemvariables](notebooks/adf/activities-pipelines/09-systemVariables.json)
+11. [Untilactivity](notebooks/adf/activities-pipelines/10-untilActivity.json)
+
+## Adf
 
 
-### Azure
+## Architecture
+
+1. [Use Cases Streaming](streaming/architecture/01-Use_Cases_Streaming.md)
+2. [Redpanda Vs Kafka Arch Differences](streaming/architecture/02-Redpanda_vs_Kafka_Arch_Differences.md)
+3. [Redpanda Architure In Depth Pt1](streaming/architecture/03-Redpanda_Architure_In_Depth_Pt1.md)
+
+## Azure
 
 1. [Azure Integration Databricks](azure/00-Azure_Integration_Databricks.md)
 2. [Azure Portal Subscriptions Resourcegroups](azure/01-Azure_Portal_Subscriptions_ResourceGroups.md)
@@ -36,11 +66,11 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 22. [Azure Data Factory Vs Synapse](azure/22-Azure_Data_Factory_vs_Synapse.md)
 23. [Azure Data Factory Architecture](azure/23-Azure_Data_Factory_Architecture.md)
 
-### Data-formats
+## Data-formats
 
 1. [Data Format Deep Dive Pt1](data-formats/01-Data_Format_Deep_Dive_Pt1.md)
 
-### Databricks
+## Databricks
 
 1. [Azure Databricks Uc Creation](databricks/01-Azure_Databricks_UC_Creation.md)
 2. [Databricks Uc Introduction](databricks/02-Databricks_UC_Introduction.md)
@@ -74,6 +104,21 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 3. [Types Of Memory Spark](spark/03-Types_Of_Memory_Spark.md)
 4. [Spark Dynamic Partition Pruning](spark/04-Spark_Dynamic_Partition_Pruning.md)
 5. [Spark Salting Technique](spark/05-Spark_Salting_Technique.md)
+
+## Src
+
+1. [Admin](notebooks/kafka/src/admin.py)
+2. [Avro Consumer](notebooks/kafka/src/avro_consumer.py)
+3. [Avro Producer](notebooks/kafka/src/avro_producer.py)
+4. [Consumer](notebooks/kafka/src/consumer.py)
+5. [Json Producer](notebooks/kafka/src/json_producer.py)
+6. [Producer](notebooks/kafka/src/producer.py)
+7. [Register Avro Schema](notebooks/kafka/src/register_avro_schema.py)
+8. [Schema](notebooks/kafka/src/schema.avro)
+9. [Utils](notebooks/kafka/src/utils.py)
+
+## Streaming
+
 <!-- TOC END -->
 
 
