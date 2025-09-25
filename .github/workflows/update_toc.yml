@@ -1,0 +1,28 @@
+name: Update TOC
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  update-toc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Generate TOC
+        run: |
+          python generate_toc.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add internal-docs-code/README.md
+          git diff-index --quiet HEAD || git commit -m "Auto-update TOC"
+          git push
