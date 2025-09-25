@@ -35,7 +35,6 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 21. [Introduction Azure Data Factory](azure/21-Introduction_Azure_Data_Factory.md)
 22. [Azure Data Factory Vs Synapse](azure/22-Azure_Data_Factory_vs_Synapse.md)
 23. [Azure Data Factory Architecture](azure/23-Azure_Data_Factory_Architecture.md)
-24. [Readme](azure/README.md)
 
 ### Data-formats
 
@@ -67,10 +66,6 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 22. [Databricks Metrics Views](databricks/22-Databricks_Metrics_Views.md)
 23. [Databricks Streaming Materialized Views Sql](databricks/23-Databricks_Streaming_Materialized_Views_SQL.md)
 24. [Databricks Cli Setup](databricks/24-Databricks_CLI_Setup.md)
-
-### Notebooks
-
-1. [Readme](notebooks/README.md)
 
 ### Spark
 
