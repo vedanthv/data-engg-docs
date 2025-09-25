@@ -17,7 +17,7 @@ def to_title_case(name: str) -> str:
 subdirs = [d for d in os.listdir(root_dir) if os.path.isdir(os.path.join(root_dir, d))]
 
 for subdir in sorted(subdirs):
-    if subdir.startswith(".") or subdir.lower() in ["venv", ".github"]:
+    if subdir.startswith(".") or subdir.lower() in ["venv", ".github",'notebooks']:
         continue
 
     folder_path = os.path.join(root_dir, subdir)
