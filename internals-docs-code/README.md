@@ -66,6 +66,13 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 22. [Azure Data Factory Vs Synapse](azure/22-Azure_Data_Factory_vs_Synapse.md)
 23. [Azure Data Factory Architecture](azure/23-Azure_Data_Factory_Architecture.md)
 
+## Data
+
+1. [Emp](notebooks/spark/data/emp.csv)
+2. [Emp New](notebooks/spark/data/emp_new.csv)
+3. [Order Multiline](notebooks/spark/data/order_multiline.json)
+4. [Order Singleline](notebooks/spark/data/order_singleline.json)
+
 ## Data-formats
 
 1. [Data Format Deep Dive Pt1](data-formats/01-Data_Format_Deep_Dive_Pt1.md)
@@ -82,7 +89,7 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 8. [Deletion Vectors Delta Lake](databricks/08-Deletion_Vectors_Delta_lake.md)
 9. [Liquid Clustering Delta Lake](databricks/09-Liquid_Clustering_Delta_Lake.md)
 10. [Concurrency Liquid Clustering](databricks/10-Concurrency_Liquid_Clustering.md)
-11. [11 Copy Into Databricks](databricks/11_Copy_Into_Databricks.md)
+11. [Copy Into Databricks](databricks/11-Copy_Into_Databricks.md)
 12. [Autoloader Databricks](databricks/12-AutoLoader_Databricks.md)
 13. [Intro Databricks Lakeflow Declarative Pipelines](databricks/13-Intro_Databricks_Lakeflow_Declarative_Pipelines.md)
 14. [Dlt Batch Vs Streaming Workloads](databricks/14-DLT_Batch_Vs_Streaming_Workloads.md)
@@ -97,7 +104,78 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 23. [Databricks Streaming Materialized Views Sql](databricks/23-Databricks_Streaming_Materialized_Views_SQL.md)
 24. [Databricks Cli Setup](databricks/24-Databricks_CLI_Setup.md)
 
-### Spark
+## Databricks
+
+1. [Auto Loader Normal Schema Evolution](notebooks/databricks/Auto Loader  Normal Schema Evolution.ipynb)
+2. [Auto Loader Rescue Mode](notebooks/databricks/Auto Loader rescue mode.ipynb)
+3. [Column Level Masking](notebooks/databricks/Column Level Masking.ipynb)
+4. [Delta Live Tables](notebooks/databricks/Delta Live Tables.ipynb)
+5. [Row Level Filters](notebooks/databricks/Row Level Filters.dbc)
+6. [User Defined Functions](notebooks/databricks/User Defined Functions.ipynb)
+7. [Working With Json](notebooks/databricks/Working with JSON.ipynb)
+
+## Kafka
+
+1. [.env](notebooks/kafka/.env)
+2. [Dockerfile](notebooks/kafka/Dockerfile)
+3. [Readme](notebooks/kafka/README.md)
+4. [Docker Compose](notebooks/kafka/docker-compose.yml)
+5. [Requirements](notebooks/kafka/requirements.txt)
+
+## Kafka
+
+1. [Kafka Kraft Setup](streaming/kafka/01-Kafka_KRaft_Setup.md)
+2. [Kafka Broker Properties](streaming/kafka/02-Kafka_Broker_Properties.md)
+3. [Topic Default Properties](streaming/kafka/03-Topic_Default_Properties.md)
+4. [Kafka Hardware Considerations](streaming/kafka/04-Kafka_Hardware_Considerations.md)
+5. [Kafka Configuring Clusters Broker Consideration](streaming/kafka/05-Kafka_Configuring_Clusters_Broker_Consideration.md)
+6. [Kafka Broker Os Tuning](streaming/kafka/06-Kafka_Broker_OS_Tuning.md)
+7. [Kafka Os Tuning Dirty Page Handling](streaming/kafka/07-Kafka_OS_Tuning_Dirty_Page_Handling.md)
+8. [Kafka File Descriptors Overcommit Memory](streaming/kafka/08-Kafka_File_Descriptors_Overcommit_Memory.md)
+9. [Kafka Production Concerns](streaming/kafka/09-Kafka_Production_Concerns.md)
+
+## Scenario-based-pipelines
+
+1. [Webhookemailsimple](notebooks/adf/scenario-based-pipelines/00-webhookEmailSimple.json)
+2. [Sqlserverlookupactivity](notebooks/adf/scenario-based-pipelines/01-sqlServerLookupActivity.json)
+3. [Storedprocedurelookupactivity](notebooks/adf/scenario-based-pipelines/02-storedProcedureLookupActivity.json)
+4. [Readme](notebooks/adf/scenario-based-pipelines/README.md)
+
+## Scenarios
+
+
+## Spark
+
+1. [00 Installing Spark](notebooks/spark/00_Installing_Spark.ipynb)
+2. [02 Transformationsptii](notebooks/spark/02_TransformationsPtII.ipynb)
+3. [03 Transformationsptiii](notebooks/spark/03_TransformationsPtIII.ipynb)
+4. [04 Strings Dates](notebooks/spark/04_Strings_Dates.ipynb)
+5. [05 Union Unionall Aggregations](notebooks/spark/05_Union_UnionAll_Aggregations.ipynb)
+6. [06 Window Functions](notebooks/spark/06_Window_Functions.ipynb)
+7. [07 Repartitioning Coalesce Joins](notebooks/spark/07_Repartitioning_Coalesce_Joins.ipynb)
+8. [08 Readformats Handlingerronousrecords](notebooks/spark/08_ReadFormats_HandlingErronousRecords.ipynb)
+9. [09 Complexfileformats](notebooks/spark/09_ComplexFileFormats.ipynb)
+10. [10 Working With Json Data](notebooks/spark/10_Working_With_Json_Data.ipynb)
+11. [11 Writing Data Spark](notebooks/spark/11_Writing_Data_Spark.ipynb)
+12. [12 Spark Udfs](notebooks/spark/12_Spark_UDFs.ipynb)
+13. [13 Spark Dag Ui](notebooks/spark/13_Spark_DAG_UI.ipynb)
+14. [14 Optimizingshuffles](notebooks/spark/14_OptimizingShuffles.ipynb)
+15. [16 Cache Persist Techniques](notebooks/spark/16_Cache_Persist_Techniques.ipynb)
+16. [21 Broadcastvariables Accumulators](notebooks/spark/21_BroadCastVariables_Accumulators.ipynb)
+17. [22 Join Optimizations](notebooks/spark/22_Join_Optimizations.ipynb)
+18. [22 Join Optimizations Pt2](notebooks/spark/22_Join_Optimizations_Pt2.ipynb)
+19. [23 Dynamic Static Resource Allocation](notebooks/spark/23_Dynamic_Static_Resource_Allocation.ipynb)
+20. [24 Skewness And Salting](notebooks/spark/24_Skewness_And_Salting.ipynb)
+21. [Notes](notebooks/spark/notes.md)
+
+## Spark
+
+1. [Smj Spill To Disk Q1](scenarios/spark/01-SMJ_Spill_To_Disk_Q1.md)
+2. [Smj Spill To Disk Q2](scenarios/spark/02-SMJ_Spill_To_Disk_Q2.md)
+3. [Smj Output During Spill Q3](scenarios/spark/03-SMJ_Output_During_Spill_Q3.md)
+4. [Cross Vs Broadcast Join](scenarios/spark/04-Cross_vs_Broadcast_Join.md)
+
+## Spark
 
 1. [Spark Architecture Yarn](spark/01-Spark_Architecture_YARN.md)
 2. [Spark Driver Oom](spark/02-Spark_Driver_OOM.md)
