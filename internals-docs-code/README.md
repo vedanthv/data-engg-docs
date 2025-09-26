@@ -105,6 +105,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 7. [Kafka Os Tuning Dirty Page Handling](streaming/kafka/07-Kafka_OS_Tuning_Dirty_Page_Handling.md)
 8. [Kafka File Descriptors Overcommit Memory](streaming/kafka/08-Kafka_File_Descriptors_Overcommit_Memory.md)
 9. [Kafka Production Concerns](streaming/kafka/09-Kafka_Production_Concerns.md)
+10. [Kafka Message Types](streaming/kafka/10-Kafka_Message_Types.md)
+11. [Kafka Configuring Producers Pt1](streaming/kafka/11-Kafka_Configuring_Producers_Pt1.md)
+12. [Kafka Configuring Producers Pt2](streaming/kafka/12-Kafka_Configuring_Producers_Pt2.md)
 <!-- TOC END -->
 
 
