@@ -2,9 +2,9 @@ import os
 import re
 
 root_dir = "internals-docs-code"
-readme_path = os.path.join(root_dir, "README.md")
+readme_path = os.path.join(root_dir, "index.md")
 
-toc = ["# 📑 Consolidated Table of Contents\n"]
+toc = ["# 📑 Data Engineering Knowledge Base\n"]
 
 # Regex to strip numeric prefixes (like 01-, 02-)
 prefix_pattern = re.compile(r"^\d+-")
