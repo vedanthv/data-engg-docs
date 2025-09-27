@@ -99,3 +99,21 @@
 * **ACL = Which rooms and drawers inside you can open.**
 
 ---
+
+### Practical : How to setup RBAC and ACLs?
+
+```
+az role assignment create \
+  --assignee <userObjectIdOrEmail> \
+  --role "Storage Blob Data Reader" \
+  --scope /subscriptions/<subId>/resourceGroups/<rgName>/providers/Microsoft.Storage/storageAccounts/<storageAccountName>
+```
+
+```
+az storage fs access set \
+  --account-name <storageAccountName> \
+  --file-system <containerName> \
+  --path <folderName> \
+  --acl "user:<userObjectId>:r-x"
+```
+

@@ -76,4 +76,3 @@ It uses **continuous transaction log backups + full/differential backups**.
 
 ---
 
-Do you want me to also give you a **step-by-step guide (portal + CLI)** to enable *soft delete* on Blob Storage and *PITR* on Azure SQL?

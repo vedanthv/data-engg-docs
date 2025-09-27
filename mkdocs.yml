@@ -69,6 +69,8 @@ markdown_extensions:
 
 plugins:
   - search
+  - pdf-export:
+      verbose: true
 
 # BEGIN AUTO NAV
 nav:
