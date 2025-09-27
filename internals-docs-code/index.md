@@ -7,7 +7,7 @@ I focus on technologies like Apache Spark, Kafka/Redpanda, Databricks, AWS, and 
 The main goal of this repo is to strengthen my own understanding, but I also hope it can be useful to anyone else navigating similar topics. Think of it as a learning log that balances hands-on exploration with professional best practices - something between a personal notebook and a practical guide.
 
 <!-- TOC START -->
-# 📑 Consolidated Table of Contents
+# 📑 Data Engineering Knowledge Base
 
 
 ## Azure
