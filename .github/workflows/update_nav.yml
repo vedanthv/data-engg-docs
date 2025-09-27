@@ -28,7 +28,7 @@ jobs:
         run: pip install pyyaml
 
       - name: Run nav generator
-        run: python gen_nav.py  
+        run: python generate_nav.py  
 
       - name: Commit and push changes
         run: |
