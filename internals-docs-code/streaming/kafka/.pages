@@ -1,5 +1,6 @@
 title: Kafka
 nav:
+- Index: index.md
 - Kafka Kraft Setup: 01-Kafka_KRaft_Setup.md
 - Kafka Broker Properties: 02-Kafka_Broker_Properties.md
 - Topic Default Properties: 03-Topic_Default_Properties.md

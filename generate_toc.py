@@ -31,6 +31,8 @@ def process_folder(folder_path, relative_path, level=2):
         name_raw = os.path.splitext(file)[0]
         name_clean = prefix_pattern.sub("", name_raw).replace("_", " ").replace("-", " ")
         name_title = to_title_case(name_clean)
+        if name_title == '.pages':
+            continue
         file_path = os.path.join(relative_path, file)
         toc.append(f"{i}. [{name_title}]({file_path})")
 

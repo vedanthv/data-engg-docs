@@ -12,7 +12,6 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ## Azure
 
-1. [.pages](azure/.pages)
 2. [Azure Integration Databricks](azure/00-Azure_Integration_Databricks.md)
 3. [Azure Portal Subscriptions Resourcegroups](azure/01-Azure_Portal_Subscriptions_ResourceGroups.md)
 4. [Azure Cli Scenarios](azure/02-Azure_CLI_Scenarios.md)
@@ -39,13 +38,11 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ## Data-formats
 
-1. [.pages](data-formats/.pages)
 2. [Data Format Deep Dive Pt1](data-formats/01-Data_Format_Deep_Dive_Pt1.md)
 3. [Parquet Format Internals](data-formats/02-Parquet_Format_Internals.md)
 
 ## Databricks
 
-1. [.pages](databricks/.pages)
 2. [Azure Databricks Uc Creation](databricks/01-Azure_Databricks_UC_Creation.md)
 3. [Databricks Uc Introduction](databricks/02-Databricks_UC_Introduction.md)
 4. [Databricks Managed External Tables Hive](databricks/03-Databricks_Managed_External_Tables_Hive.md)
@@ -73,11 +70,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ## Scenarios
 
-1. [.pages](scenarios/.pages)
 
 ### Spark
 
-1. [.pages](scenarios/spark/.pages)
 2. [Smj Spill To Disk Q1](scenarios/spark/01-SMJ_Spill_To_Disk_Q1.md)
 3. [Smj Spill To Disk Q2](scenarios/spark/02-SMJ_Spill_To_Disk_Q2.md)
 4. [Smj Output During Spill Q3](scenarios/spark/03-SMJ_Output_During_Spill_Q3.md)
@@ -85,7 +80,6 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ## Spark
 
-1. [.pages](spark/.pages)
 2. [Spark Architecture Yarn](spark/01-Spark_Architecture_YARN.md)
 3. [Spark Driver Oom](spark/02-Spark_Driver_OOM.md)
 4. [Types Of Memory Spark](spark/03-Types_Of_Memory_Spark.md)
@@ -128,18 +122,15 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ## Streaming
 
-1. [.pages](streaming/.pages)
 
 ### Architecture
 
-1. [.pages](streaming/architecture/.pages)
 2. [Use Cases Streaming](streaming/architecture/01-Use_Cases_Streaming.md)
 3. [Redpanda Vs Kafka Arch Differences](streaming/architecture/02-Redpanda_vs_Kafka_Arch_Differences.md)
 4. [Redpanda Architure In Depth Pt1](streaming/architecture/03-Redpanda_Architure_In_Depth_Pt1.md)
 
 ### Kafka
 
-1. [.pages](streaming/kafka/.pages)
 2. [Kafka Kraft Setup](streaming/kafka/01-Kafka_KRaft_Setup.md)
 3. [Kafka Broker Properties](streaming/kafka/02-Kafka_Broker_Properties.md)
 4. [Topic Default Properties](streaming/kafka/03-Topic_Default_Properties.md)

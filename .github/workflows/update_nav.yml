@@ -1,0 +1,39 @@
+name: Auto Update Nav
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # allow manual trigger
+
+permissions:
+  contents: write   # allow pushing with GITHUB_TOKEN
+
+jobs:
+  update-nav:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   
+          fetch-depth: 0                       
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run nav generator
+        run: python gen_nav.py  
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add mkdocs.yml nav_generated.yml || true
+          git diff --quiet && echo "No changes to commit" || git commit -m "🔄 Auto-update nav"
+          git push
