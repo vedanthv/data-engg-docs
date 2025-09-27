@@ -109,6 +109,16 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 27. [Spark Unique Sorted Records](spark/27-Spark_Unique_Sorted_Records.md)
 28. [Spark Agg Functions](spark/28-Spark_Agg_Functions.md)
 29. [Spark Group By](spark/30-Spark_Group_By.md)
+30. [Spark Joins Intro](spark/31-Spark_Joins_Intro.md)
+31. [Spark Join Strategies](spark/32-Spark_Join_Strategies.md)
+32. [Spark Window Functions](spark/33-Spark_Window_Functions.md)
+33. [Spark Memory Management](spark/34-Spark_Memory_Management.md)
+34. [Spark Executor Oom](spark/35-Spark_Executor_OOM.md)
+35. [Spark Submit Command](spark/36-Spark_Submit_Command.md)
+36. [Spark Deployment Modes](spark/37-Spark_Deployment_Modes.md)
+37. [Spark Adaptive Query Execution](spark/38-Spark_Adaptive_Query_Execution.md)
+38. [Spark Dynamic Resource Allocation](spark/39-Spark_Dynamic_Resource_Allocation.md)
+39. [Spark Dynamic Partition Pruning](spark/40-Spark_Dynamic_Partition_Pruning.md)
 
 ## Streaming
 
