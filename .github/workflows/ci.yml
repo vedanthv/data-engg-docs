@@ -1,9 +1,8 @@
 name: ci 
 on:
-  push:
-    branches:
-      - master 
-      - main
+  workflow_run:
+    workflows: ["Auto Update .pages"]   
+      - completed
 permissions:
   contents: write
 jobs:

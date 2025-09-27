@@ -2,8 +2,7 @@ name: Auto Update .pages
 
 on:
   push:
-    paths:
-      - 'docs/internal-docs-code/**/*.md'   # trigger only when md files change
+    branches: [ main ]
   workflow_dispatch:                        # allow manual trigger
 
 permissions:
@@ -28,13 +27,13 @@ jobs:
         run: pip install pyyaml
 
       - name: Run .pages updater
-        run: python scripts/update_pages.py
+        run: python generate_page_yml.py
 
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/internal-docs-code/**/*.pages || true
+          git add /internals-docs-code/**/*.pages || true
           git commit -m "chore: auto-update .pages files" || echo "No changes to commit"
           git push
         env:
