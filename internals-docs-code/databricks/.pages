@@ -1,0 +1,26 @@
+title: Databricks
+nav:
+- Azure Databricks Uc Creation: 01-Azure_Databricks_UC_Creation.md
+- Databricks Uc Introduction: 02-Databricks_UC_Introduction.md
+- Databricks Managed External Tables Hive: 03-Databricks_Managed_External_Tables_Hive.md
+- Uc External Location Storage Credentials: 04-UC_External_Location_Storage_Credentials.md
+- Databricks Managed Location Catalog Schema Level: 05-Databricks_Managed_Location_Catalog_Schema_Level.md
+- Ctas Deep Clone Shallow Clone Databricks: 06-CTAS_Deep_Clone_Shallow_Clone_Databricks.md
+- Rbac Custom Roles Serviceprincipals: 07-RBAC_Custom_Roles_ServicePrincipals.md
+- Deletion Vectors Delta Lake: 08-Deletion_Vectors_Delta_lake.md
+- Liquid Clustering Delta Lake: 09-Liquid_Clustering_Delta_Lake.md
+- Concurrency Liquid Clustering: 10-Concurrency_Liquid_Clustering.md
+- Copy Into Databricks: 11-Copy_Into_Databricks.md
+- Autoloader Databricks: 12-AutoLoader_Databricks.md
+- Intro Databricks Lakeflow Declarative Pipelines: 13-Intro_Databricks_Lakeflow_Declarative_Pipelines.md
+- Dlt Batch Vs Streaming Workloads: 14-DLT_Batch_Vs_Streaming_Workloads.md
+- Dlt Data Storage Checkpoints: 15-DLT_Data_Storage_Checkpoints.md
+- Databricks Secret Scopes: 16-Databricks_Secret_Scopes.md
+- Databricks Controlplane Dataplane: 17-Databricks_ControlPlane_DataPlane.md
+- Databricks Dlt Code Walkthrough: 18-Databricks_DLT_Code_Walkthrough.md
+- Databricks Serverless Compute: 19-Databricks_Serverless_Compute.md
+- Databricks Warehouses: 20-Databricks_Warehouses.md
+- Databricks Lakehouse Federation: 21-Databricks_Lakehouse_Federation.md
+- Databricks Metrics Views: 22-Databricks_Metrics_Views.md
+- Databricks Streaming Materialized Views Sql: 23-Databricks_Streaming_Materialized_Views_SQL.md
+- Databricks Cli Setup: 24-Databricks_CLI_Setup.md

@@ -1,0 +1,41 @@
+name: Auto Update .pages
+
+on:
+  push:
+    paths:
+      - 'docs/internal-docs-code/**/*.md'   # trigger only when md files change
+  workflow_dispatch:                        # allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false   # we'll use GITHUB_TOKEN later
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run .pages updater
+        run: python scripts/update_pages.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/internal-docs-code/**/*.pages || true
+          git commit -m "chore: auto-update .pages files" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

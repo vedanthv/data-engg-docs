@@ -1,0 +1,5 @@
+title: Architecture
+nav:
+- Use Cases Streaming: 01-Use_Cases_Streaming.md
+- Redpanda Vs Kafka Arch Differences: 02-Redpanda_vs_Kafka_Arch_Differences.md
+- Redpanda Architure In Depth Pt1: 03-Redpanda_Architure_In_Depth_Pt1.md

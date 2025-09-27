@@ -1,0 +1,14 @@
+title: Kafka
+nav:
+- Kafka Kraft Setup: 01-Kafka_KRaft_Setup.md
+- Kafka Broker Properties: 02-Kafka_Broker_Properties.md
+- Topic Default Properties: 03-Topic_Default_Properties.md
+- Kafka Hardware Considerations: 04-Kafka_Hardware_Considerations.md
+- Kafka Configuring Clusters Broker Consideration: 05-Kafka_Configuring_Clusters_Broker_Consideration.md
+- Kafka Broker Os Tuning: 06-Kafka_Broker_OS_Tuning.md
+- Kafka Os Tuning Dirty Page Handling: 07-Kafka_OS_Tuning_Dirty_Page_Handling.md
+- Kafka File Descriptors Overcommit Memory: 08-Kafka_File_Descriptors_Overcommit_Memory.md
+- Kafka Production Concerns: 09-Kafka_Production_Concerns.md
+- Kafka Message Types: 10-Kafka_Message_Types.md
+- Kafka Configuring Producers Pt1: 11-Kafka_Configuring_Producers_Pt1.md
+- Kafka Configuring Producers Pt2: 12-Kafka_Configuring_Producers_Pt2.md

@@ -1,58 +1,100 @@
 site_name: Data Engineering Docs by Vedanth
 site_url: https://vedanthv.github.io/data-engg-docs/
+site_description: "Comprehensive Data Engineering Notes, Tutorials, and Guides by Vedanth"
+site_author: "Vedanth V Baliga"
+
 theme:
   name: material
+  logo: assets/images/logo.png   # optional
+  favicon: assets/images/favicon.ico
   features:
     - navigation.tabs
     - navigation.sections
-    - toc.integrate
+    - navigation.expand
     - navigation.top
+    - navigation.footer        # prev/next links
+    - toc.integrate            # TOC at top of page
+    - toc.follow               # floating TOC on right
+    - toc.expand               # collapsible nested TOC
     - search.suggest
     - search.highlight
+    - search.share
+    - search.index
     - content.tabs.link
     - content.code.annotation
     - content.code.copy
+    - content.code.select
+    - content.code.expand
   language: en
   palette:
     - scheme: default
       toggle:
-        icon: material/toggle-switch-off-outline 
+        icon: material/toggle-switch-off-outline
         name: Switch to dark mode
       primary: teal
-      accent: purple 
-    - scheme: slate 
+      accent: purple
+    - scheme: slate
       toggle:
         icon: material/toggle-switch
-        name: Switch to light mode    
+        name: Switch to light mode
       primary: teal
       accent: lime
 
 nav:
-  - About : index.md
-  - Astronomer and Airflow : astronomer.md
-  - Azure Databricks : databricks.md
-  - Spark Databricks Course : Spark_Databricks_Course.md
-  - Spark YouTube : Spark_YT.md
-  - Streaming Architecture: streaming.md
-  - Microsoft Fabric: MSFabric.md
+  - About: index.md
+  - Guides:
+      - Astronomer and Airflow: astronomer.md
+      - Azure Databricks: databricks.md
+      - Microsoft Fabric: MSFabric.md
+  - Internal Docs: internal-docs-code/   # auto nav using awesome-pages
+  - Learning Resources:
+      - Spark Databricks Course: Spark_Databricks_Course.md
+      - Spark YouTube: Spark_YT.md
+      - Streaming Architecture: streaming.md
 
 markdown_extensions:
+  - toc:
+      permalink: "🔗"
+  - admonition
+  - footnotes
+  - attr_list
+  - def_list
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
+      linenums_style: inline
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - admonition
+  - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
-  - footnotes
-  - pymdownx.details
-  - pymdownx.superfences
   - pymdownx.mark
-  - attr_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.keys
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
-copyright: |
-  &copy; 2023 <a href="https://github.com/vedanthv"  target="_blank" rel="noopener">Vedanth V Baliga</a>
+plugins:
+  - search
+  - awesome-pages   # auto navigation inside internal-docs-code
 
+extra:
+  navigation:
+    previous: "← Previous"
+    next: "Next →"
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/vedanthv
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/vedanthvbaliga
+  generator: false
+
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.js
+
+copyright: |
+  &copy; 2023-2025 <a href="https://github.com/vedanthv" target="_blank" rel="noopener">Vedanth V Baliga</a>
