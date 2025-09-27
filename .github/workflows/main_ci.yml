@@ -1,7 +1,7 @@
 name: main_ci 
 on:
   workflow_run:
-    workflows: ["Auto Update .pages"] 
+    workflows: ["Update TOC","Auto Update Nav"] 
     types:
       - completed
 
