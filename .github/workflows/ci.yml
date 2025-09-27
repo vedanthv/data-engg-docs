@@ -1,8 +1,10 @@
-name: ci 
+name: main_ci 
 on:
   workflow_run:
-    workflows: ["Auto Update .pages"]   
+    workflows: ["Auto Update .pages"] 
+    types:
       - completed
+
 permissions:
   contents: write
 jobs:
