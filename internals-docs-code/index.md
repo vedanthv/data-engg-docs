@@ -41,7 +41,6 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 1. [Data Format Deep Dive Pt1](data-formats/01-Data_Format_Deep_Dive_Pt1.md)
 2. [Parquet Format Internals](data-formats/02-Parquet_Format_Internals.md)
-3. [Index](data-formats/index.md)
 
 ## Databricks
 
