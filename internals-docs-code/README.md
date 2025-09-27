@@ -39,6 +39,7 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 ## Data-formats
 
 1. [Data Format Deep Dive Pt1](data-formats/01-Data_Format_Deep_Dive_Pt1.md)
+2. [Parquet Format Internals](data-formats/02-Parquet_Format_Internals.md)
 
 ## Databricks
 
@@ -84,6 +85,30 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 3. [Types Of Memory Spark](spark/03-Types_Of_Memory_Spark.md)
 4. [Spark Dynamic Partition Pruning](spark/04-Spark_Dynamic_Partition_Pruning.md)
 5. [Spark Salting Technique](spark/05-Spark_Salting_Technique.md)
+6. [What Is Spark](spark/06-What_Is_Spark.md)
+7. [Why Apache Spark](spark/07-Why_Apache_Spark.md)
+8. [Hadoop Vs Spark](spark/08-Hadoop_Vs_Spark.md)
+9. [Spark Ecosystem](spark/09-Spark_Ecosystem.md)
+10. [Spark Ecosystem](spark/10-Spark_Ecosystem.md)
+11. [Spark Architecture](spark/11-Spark_Architecture.md)
+12. [Schema In Spark](spark/12-Schema_In_Spark.md)
+13. [Handling Corrupt Records Spark](spark/13-Handling_Corrupt_Records_Spark.md)
+14. [Spark Transformations Actions](spark/14-Spark_Transformations_Actions.md)
+15. [Spark Dag Lazy Eval](spark/15-Spark_DAG_Lazy_Eval.md)
+16. [Spark Json Data](spark/16-Spark_JSON_Data.md)
+17. [Spark Sql Engine](spark/17-Spark_SQL_Engine.md)
+18. [Spark Rdd](spark/18-Spark_RDD.md)
+19. [Spark Writing Data Disk](spark/19-Spark_Writing_Data_Disk.md)
+20. [Spark Partitioning Bucketing](spark/20-Spark_Partitioning_Bucketing.md)
+21. [Spark Session Vs Context](spark/21-Spark_Session_vs_Context.md)
+22. [Spark Job Stage Task](spark/22-Spark_Job_Stage_Task.md)
+23. [Spark Transformations](spark/23-Spark_Transformations.md)
+24. [Spark Union Vs Unionall](spark/24-Spark_Union_vs_UnionAll.md)
+25. [Spark Repartition Vs Coalesce](spark/25-Spark_Repartition_vs_Coalesce.md)
+26. [Spark Case When](spark/26-Spark_Case_When.md)
+27. [Spark Unique Sorted Records](spark/27-Spark_Unique_Sorted_Records.md)
+28. [Spark Agg Functions](spark/28-Spark_Agg_Functions.md)
+29. [Spark Group By](spark/30-Spark_Group_By.md)
 
 ## Streaming
 
