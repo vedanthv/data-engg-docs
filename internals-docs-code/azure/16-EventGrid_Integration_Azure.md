@@ -183,5 +183,158 @@ If you don’t subscribe, the channel is still publishing videos (events), but *
 ---
 ✅ So, you need to **create a subscription** every time you want to connect an **event source** to an **event handler**.
 
+### Example
 
-Would you like me to extend this demo to show **routing events to multiple consumers** (like Function + Logic App + Event Hub) the way AWS EventBridge fan-outs events?
+---
+
+# 🔹 Architecture Overview
+
+1. **Blob Storage** → file lands (raw data).
+2. **Event Grid (system topic)** → automatically emits `BlobCreated` event.
+3. **Event Subscription** → routes event to an **Azure Function**.
+4. **Azure Function** → parses event payload (which blob was uploaded) and calls **Databricks Jobs API**.
+5. **Databricks Job** → runs notebook/ETL to process the file.
+
+---
+
+# 🔹 Step 1. Create Storage Account
+
+This is the **event source**.
+
+```bash
+az storage account create \
+  --name mydatalake123 \
+  --resource-group myResourceGroup \
+  --location eastus \
+  --sku Standard_LRS \
+  --kind StorageV2 \
+  --hierarchical-namespace true
+```
+
+---
+
+# 🔹 Step 2. Create an Event Handler (Azure Function)
+
+This Function will receive BlobCreated events and trigger Databricks.
+
+```bash
+az functionapp create \
+  --resource-group myResourceGroup \
+  --consumption-plan-location eastus \
+  --runtime python \
+  --functions-version 4 \
+  --name databrickstriggerfunc \
+  --storage-account mydatalake123
+```
+
+---
+
+# 🔹 Step 3. Create Event Subscription
+
+Connect Blob Storage → Event Grid → Function.
+
+```bash
+az eventgrid event-subscription create \
+  --name blobCreatedToDatabricks \
+  --source-resource-id /subscriptions/<subId>/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/mydatalake123 \
+  --endpoint-type azurefunction \
+  --endpoint /subscriptions/<subId>/resourceGroups/myResourceGroup/providers/Microsoft.Web/sites/databrickstriggerfunc/functions/<functionName>
+```
+
+---
+
+# 🔹 Step 4. Function Code (Python)
+
+This Function will:
+
+1. Receive BlobCreated event.
+2. Extract blob URL.
+3. Call Databricks Jobs API (authenticated with **Personal Access Token** or **Managed Identity**).
+
+```python
+import logging
+import os
+import requests
+import azure.functions as func
+
+# Databricks config
+DATABRICKS_INSTANCE = os.environ["DATABRICKS_INSTANCE"]   # e.g. https://adb-123456789012.12.azuredatabricks.net
+DATABRICKS_TOKEN = os.environ["DATABRICKS_TOKEN"]         # Store securely in Key Vault
+DATABRICKS_JOB_ID = os.environ["DATABRICKS_JOB_ID"]       # Job you want to trigger
+
+def main(event: func.EventGridEvent):
+    result = event.get_json()
+    logging.info(f"Received event: {result}")
+
+    # Check for blob created event
+    if event.event_type == "Microsoft.Storage.BlobCreated":
+        blob_url = result.get("url")
+        logging.info(f"New blob detected: {blob_url}")
+
+        # Trigger Databricks job via REST API
+        url = f"{DATABRICKS_INSTANCE}/api/2.1/jobs/run-now"
+        headers = {"Authorization": f"Bearer {DATABRICKS_TOKEN}"}
+        payload = {
+            "job_id": DATABRICKS_JOB_ID,
+            "notebook_params": {
+                "input_blob": blob_url
+            }
+        }
+
+        response = requests.post(url, headers=headers, json=payload)
+        if response.status_code == 200:
+            logging.info("Databricks job triggered successfully")
+        else:
+            logging.error(f"Failed to trigger job: {response.text}")
+```
+
+---
+
+# 🔹 Step 5. Databricks Job
+
+1. Create a **Job** in Databricks (pointing to a Notebook/Delta Live Table).
+2. Add a parameter `input_blob` so the notebook knows which file to process.
+
+Example Notebook:
+
+```python
+dbutils.widgets.text("input_blob", "")
+blob_url = dbutils.widgets.get("input_blob")
+
+print(f"Processing file: {blob_url}")
+
+# Example: Read from Blob/ADLS into Spark
+df = spark.read.text(blob_url)
+# Do ETL...
+```
+
+---
+
+# 🔹 Step 6. Test It
+
+Upload a file to Blob Storage:
+
+```bash
+az storage blob upload \
+  --account-name mydatalake123 \
+  --container-name raw \
+  --name testdata.csv \
+  --file ./testdata.csv
+```
+
+Event Grid → Function → Databricks job → Notebook runs with the blob path.
+
+---
+
+# 🔹 Extras (Production Ready)
+
+* **Secure secrets** → Store `DATABRICKS_TOKEN` in **Azure Key Vault** and integrate with Function.
+* **Retries** → Event Grid automatically retries delivery (with exponential backoff).
+* **Dead-letter destination** → configure a Blob container to store undelivered events.
+* **Monitoring** → Use **Application Insights** on the Function + Event Grid metrics.
+
+---
+
+✅ With this setup, every time a new file lands in storage, your Databricks pipeline kicks in automatically — no polling needed, fully event-driven.
+
+---

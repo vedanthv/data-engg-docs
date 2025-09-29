@@ -200,3 +200,169 @@ Great — let’s make this real-world and easy to remember 👇
 * **Service Endpoint = VIP Lane (still public, just secured to your VNet)**
 
 ---
+
+## Example
+
+Great question — let’s go through an **Azure Private Link example** step by step.
+
+---
+
+# 🔹 What is Azure Private Link?
+
+Azure **Private Link** lets you **access Azure services over a private IP address inside your Virtual Network (VNet)**.
+
+* Without Private Link → your app connects to a **public endpoint** (internet-exposed).
+* With Private Link → your app connects to a **private endpoint** (private IP in your VNet), but traffic still reaches the Azure service securely over Microsoft’s backbone network.
+
+---
+
+# 🔹 Example Scenario
+
+You have:
+
+* An **App VM** in a Virtual Network.
+* An **Azure Storage Account**.
+
+👉 You want the VM to connect to the storage account securely **without going over the public internet**.
+
+---
+
+# 🔹 Step-by-Step Setup
+
+## 1. Create a VNet + VM
+
+```bash
+# Create resource group
+az group create -n myRG -l eastus
+
+# Create VNet + subnet
+az network vnet create \
+  --name myVNet \
+  --resource-group myRG \
+  --address-prefix 10.0.0.0/16 \
+  --subnet-name mySubnet \
+  --subnet-prefix 10.0.1.0/24
+
+# Create VM in VNet (Linux example)
+az vm create \
+  --resource-group myRG \
+  --name myVM \
+  --image UbuntuLTS \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --vnet-name myVNet \
+  --subnet mySubnet
+```
+
+---
+
+## 2. Create a Storage Account
+
+```bash
+az storage account create \
+  --name mystoragepldemo \
+  --resource-group myRG \
+  --location eastus \
+  --sku Standard_LRS \
+  --kind StorageV2
+```
+
+---
+
+## 3. Create a Private Endpoint
+
+This links the storage account to your VNet with a private IP.
+
+```bash
+az network private-endpoint create \
+  --resource-group myRG \
+  --name myPrivateEndpoint \
+  --vnet-name myVNet \
+  --subnet mySubnet \
+  --private-connection-resource-id $(az storage account show \
+        --name mystoragepldemo \
+        --resource-group myRG \
+        --query "id" -o tsv) \
+  --group-id blob \
+  --connection-name myConnection
+```
+
+* `--group-id blob` → connects specifically to Blob service.
+* A private IP (like `10.0.1.4`) is assigned inside `mySubnet`.
+
+---
+
+## 4. Configure Private DNS
+
+Private endpoints require DNS to resolve the storage account name to the **private IP**.
+
+```bash
+az network private-dns zone create \
+  --resource-group myRG \
+  --name "privatelink.blob.core.windows.net"
+
+az network private-dns link vnet create \
+  --resource-group myRG \
+  --zone-name "privatelink.blob.core.windows.net" \
+  --name MyDNSLink \
+  --virtual-network myVNet \
+  --registration-enabled false
+
+az network private-endpoint dns-zone-group create \
+  --resource-group myRG \
+  --endpoint-name myPrivateEndpoint \
+  --name MyZoneGroup \
+  --private-dns-zone "privatelink.blob.core.windows.net" \
+  --zone-name "privatelink.blob.core.windows.net"
+```
+
+Now, `mystoragepldemo.blob.core.windows.net` resolves to the **private IP (10.0.x.x)** inside your VNet.
+
+A Record `mystorageacct.blob.core.windows.net → 10.0.1.4` created in the DNS
+
+---
+
+## 5. Test from VM
+
+SSH into the VM:
+
+```bash
+ssh azureuser@<public-ip-of-vm>
+```
+
+Test DNS resolution:
+
+```bash
+nslookup mystoragepldemo.blob.core.windows.net
+```
+
+✅ Should resolve to `10.0.1.x` (private IP).
+
+Test connectivity:
+
+```bash
+curl https://mystoragepldemo.blob.core.windows.net/
+```
+
+Traffic goes through the private endpoint, not the public internet.
+
+---
+
+# 🔹 Real-World Uses
+
+* **Databricks accessing ADLS Gen2** over private link.
+* **SQL Database private endpoint** to keep DB off the public internet.
+* **Key Vault private endpoint** so secrets are only accessible in-VNet.
+* **App Service → Storage Account** private integration.
+
+---
+
+# 🔹 Key Benefits
+
+* Removes exposure to public internet.
+* Simplifies network security (no IP whitelisting).
+* Uses Microsoft’s backbone network for traffic.
+* Works with Azure Monitor logs to track connections.
+
+---
+

@@ -41,7 +41,7 @@ When you create a catalog, you can optionally give it its own external location:
 
 ```sql
 CREATE CATALOG raw_data
-  USING EXTERNAL LOCATION my_external_location;
+  USING MANAGED LOCATION my_external_location;
 ```
 
 Now, managed tables inside this catalog will go under this catalog-specific external location (instead of the metastore root).
@@ -52,8 +52,9 @@ This is useful for separating zones (raw, curated, gold) into their own ADLS con
 
 **3️⃣ External Tables vs Managed Tables**
 
-**Managed Table:** Unity Catalog controls the data lifecycle.
-Dropping the table deletes data.
+**Managed Table:** Unity Catalog controls the data lifecycle. 
+
+**Data Deletion Timeline:** While the data deletion is initiated immediately, the actual purging of the data files from cloud storage may not be instantaneous. Databricks documentation indicates that the files are typically deleted within a retention period, often around 7 days, though this can sometimes be influenced by Delta Lake's default log retention (e.g., 30 days). Running a VACUUM command can also accelerate the deletion of unreferenced data files.
 
 Data lives in either:
 The Metastore storage root, if no catalog location is set.
@@ -70,7 +71,7 @@ CREATE METASTORE main_metastore
 
 -- Catalog with its own location
 CREATE CATALOG raw_data
-  USING EXTERNAL LOCATION raw_external;
+  USING MANAGED LOCATION raw_external;
 
 -- Managed table in raw_data (goes to raw_external)
 USE CATALOG raw_data;
@@ -103,3 +104,10 @@ WITH (STORAGE CREDENTIAL `uc-data-storage`);
 ```sql
 CREATE CATALOG dev_ext MANAGED LOCATION 'abfss://data@adbvedanthnew.dfs.core.windows.net/data/catalog' COMMENT 'This is external storage catalog'
 ```
+
+### Visual Architecture of External Location, Storage Credential and Volume Access
+
+Both managed storage locations and storage locations where external tables and volumes are stored use external location securable objects to manage access from Databricks. External location objects reference a cloud storage path and the storage credential required to access it. Storage credentials are themselves Unity Catalog securable objects that register the credentials required to access a particular storage path. Together, these securables ensure that access to storage is controlled and tracked by Unity Catalog.
+
+<img src = 'https://docs.databricks.com/aws/en/assets/images/external-locations-overview-b859ea8737cef28752918431fd816730.png'>
+

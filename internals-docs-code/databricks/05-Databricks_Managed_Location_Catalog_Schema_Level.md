@@ -208,3 +208,93 @@ DESC EXTENDED DEV_EXT.BRONZE_EXT.RAW_SALE
 <img width="675" height="287" alt="image" src="https://github.com/user-attachments/assets/eb572613-c2e1-41f6-a47a-d0d1251e4a82" />
 
 
+## Summary
+
+---
+
+## 🔹 1. **Managed Table (no LOCATION specified)**
+
+```sql
+CREATE SCHEMA finance
+MANAGED LOCATION 'abfss://finance@companydatalake.dfs.core.windows.net/schemas/finance';
+
+CREATE TABLE finance.transactions (
+  id INT,
+  amount DECIMAL(10,2)
+);
+```
+
+* Since you didn’t give a `LOCATION` for the table:
+
+  * Unity Catalog treats this as a **managed table**.
+  * UC stores the data under the **schema’s managed location**.
+
+✅ Path =
+`abfss://finance@companydatalake.dfs.core.windows.net/schemas/finance/transactions/`
+
+So in your example, you are exactly right.
+
+---
+
+## 🔹 2. **External Table (explicit LOCATION specified)**
+
+```sql
+CREATE TABLE finance.transactions_ext (
+  id INT,
+  amount DECIMAL(10,2)
+)
+LOCATION 'abfss://raw@companydatalake.dfs.core.windows.net/landing/transactions/';
+```
+
+* Here you told UC exactly where the data lives.
+* This is an **external table**.
+* UC does not move or manage the files — it just registers metadata pointing at that path.
+
+✅ Path =
+`abfss://raw@companydatalake.dfs.core.windows.net/landing/transactions/`
+
+---
+
+## 🔹 What If Schema Has No Managed Location?
+
+If you do:
+
+```sql
+CREATE SCHEMA finance;
+```
+
+* No schema location defined.
+* A managed table like:
+
+  ```sql
+  CREATE TABLE finance.transactions (id INT, amount DECIMAL(10,2));
+  ```
+
+  will fall back to the **metastore’s root storage location** (the one you defined when setting up Unity Catalog).
+
+✅ Path example:
+`abfss://uc-metastore@companydatalake.dfs.core.windows.net/finance/transactions/`
+
+---
+
+## 🔹 Summary Table
+
+| Case                                                         | Table Type     | Storage Path                                                              |
+| ------------------------------------------------------------ | -------------- | ------------------------------------------------------------------------- |
+| Schema has `MANAGED LOCATION`, table has no `LOCATION`       | Managed table  | Inside schema’s managed location (e.g., `/schemas/finance/transactions/`) |
+| Schema has `MANAGED LOCATION`, table has explicit `LOCATION` | External table | Exact path you provided                                                   |
+| Schema has **no location**, table has no `LOCATION`          | Managed table  | Falls back to **metastore root storage**                                  |
+
+---
+
+✅ So in your example (`schema has managed location` + `table no LOCATION`) → **yes, data files are stored under schema’s storage location.**
+
+---
+
+<img src = 'https://docs.databricks.com/aws/en/assets/images/managed-storage-0fe299ce1b4c32afce5845652093c124.png'>
+
+## Real Case Study : Employee Data Sensitivity
+
+For example, let's say your organization has a company compliance policy that requires production data relating to human resources to reside in the bucket s3://mycompany-hr-prod. In Unity Catalog, you can achieve this requirement by setting a location on a catalog level, creating a catalog called, for example hr_prod, and assigning the location s3://mycompany-hr-prod/unity-catalog to it. This means that managed tables or volumes created in the hr_prod catalog (for example, using CREATE TABLE hr_prod.default.table …) store their data in s3://mycompany-hr-prod/unity-catalog. Optionally, you can choose to provide schema-level locations to organize data within the hr_prod catalog at a more granular level.
+
+If storage isolation is not required for some catalogs, you can optionally set a storage location at the metastore level. This location serves as a default location for managed tables and volumes in catalogs and schemas that don't have assigned storage. Typically, however, Databricks recommends that you assign separate managed storage locations for each catalog.
