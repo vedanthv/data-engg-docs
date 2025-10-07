@@ -31,9 +31,11 @@ jobs:
         run: python generate_nav.py  
 
       - name: Commit and push changes
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add mkdocs.yml nav_generated.yml || true
-          git diff --quiet && echo "No changes to commit" || git commit -m "🔄 Auto-update nav"
-          git push
+      - run: |
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git fetch origin main
+            git rebase origin/main || git merge --no-edit origin/main
+            git add mkdocs.yml nav_generated.yml || true
+            git diff --quiet && echo "No changes to commit" || git commit -m "🔄 Auto-update nav"
+            git push origin main
