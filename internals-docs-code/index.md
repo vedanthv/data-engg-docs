@@ -77,14 +77,7 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ### Databricks
 
-
-#### Retail
-
-
-##### Inventory Tracking
-
-1. [Business Requirement](scenarios/databricks/Retail/Inventory Tracking/00-Business_Requirement.md)
-2. [Technical Requirements](scenarios/databricks/Retail/Inventory Tracking/01-Technical_Requirements.md)
+1. [Retail Sku Inventory Tracking](scenarios/databricks/00-Retail_SKU_Inventory_Tracking.md)
 
 ### Spark
 
