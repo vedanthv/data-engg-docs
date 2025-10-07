@@ -75,6 +75,17 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 1. [Index](scenarios/index.md)
 
+### Databricks
+
+
+#### Retail
+
+
+##### Inventory Tracking
+
+1. [Business Requirement](scenarios/databricks/Retail/Inventory Tracking/00-Business_Requirement.md)
+2. [Technical Requirements](scenarios/databricks/Retail/Inventory Tracking/01-Technical_Requirements.md)
+
 ### Spark
 
 1. [Smj Spill To Disk Q1](scenarios/spark/01-SMJ_Spill_To_Disk_Q1.md)
@@ -151,7 +162,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 11. [Kafka Message Types](streaming/kafka/10-Kafka_Message_Types.md)
 12. [Kafka Configuring Producers Pt1](streaming/kafka/11-Kafka_Configuring_Producers_Pt1.md)
 13. [Kafka Configuring Producers Pt2](streaming/kafka/12-Kafka_Configuring_Producers_Pt2.md)
-14. [Index](streaming/kafka/index.md)
+14. [Kafka Serializers Avro Pt1](streaming/kafka/13-Kafka_Serializers_Avro_Pt1.md)
+15. [Kafka Serializers Avro Pt2](streaming/kafka/14-Kafka_Serializers_Avro_Pt2.md)
+16. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
