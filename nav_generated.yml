@@ -68,6 +68,10 @@ nav:
                   - Smj Spill To Disk Q2: scenarios/spark/02-SMJ_Spill_To_Disk_Q2.md
                   - Smj Output During Spill Q3: scenarios/spark/03-SMJ_Output_During_Spill_Q3.md
                   - Cross Vs Broadcast Join: scenarios/spark/04-Cross_vs_Broadcast_Join.md
+          - Databricks:
+              - Index: scenarios/databricks/index.md
+              - Topics:
+                  - Retail SKU Inventory Tracking: scenarios/databricks/00-Retail_SKU_Inventory_Tracking.md
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -134,3 +138,5 @@ nav:
                   - Kafka Message Types: streaming/kafka/10-Kafka_Message_Types.md
                   - Kafka Configuring Producers Pt1: streaming/kafka/11-Kafka_Configuring_Producers_Pt1.md
                   - Kafka Configuring Producers Pt2: streaming/kafka/12-Kafka_Configuring_Producers_Pt2.md
+                  - Kafka Serializers Avro Pt1 : internals-docs-code/streaming/kafka/13-Kafka_Serializers_Avro_Pt1.md
+                  - Kafka Serializers Avro Pt2 : internals-docs-code/streaming/kafka/13-Kafka_Serializers_Avro_Pt2.md
