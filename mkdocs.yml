@@ -213,7 +213,7 @@ nav:
                   - Kafka Configuring Producers Pt1: streaming/kafka/11-Kafka_Configuring_Producers_Pt1.md
                   - Kafka Configuring Producers Pt2: streaming/kafka/12-Kafka_Configuring_Producers_Pt2.md
                   - Kafka Serializers Avro Pt1 : streaming/kafka/13-Kafka_Serializers_Avro_Pt1.md
-                  - Kafka Serializers Avro Pt2 : streaming/kafka/13-Kafka_Serializers_Avro_Pt2.md
+                  - Kafka Serializers Avro Pt2 : streaming/kafka/14-Kafka_Serializers_Avro_Pt2.md
 # END AUTO NAV
 extra:
   navigation:
