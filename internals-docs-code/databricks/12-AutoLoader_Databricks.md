@@ -54,8 +54,6 @@ rescue → unexpected fields go into _rescued_data.
 
 Manual → you evolve schema explicitly using ALTER TABLE.
 
-<img width="550" height="226" alt="image" src="https://github.com/user-attachments/assets/37af247f-5ebc-4697-aeea-ced36607529a" />
-
 When we run readStream cell for first time, then run writeStream it fails
 
 <img width="762" height="271" alt="image" src="https://github.com/user-attachments/assets/93d2efcc-54b7-456f-9a23-e7f8035352d3" />
