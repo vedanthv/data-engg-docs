@@ -78,6 +78,7 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 ### Databricks
 
 1. [Retail Sku Inventory Tracking](scenarios/databricks/00-Retail_SKU_Inventory_Tracking.md)
+2. [Index](scenarios/databricks/index.md)
 
 ### Spark
 
