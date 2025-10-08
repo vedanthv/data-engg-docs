@@ -46,6 +46,7 @@ nav:
           - Concurrency Liquid Clustering: databricks/10-Concurrency_Liquid_Clustering.md
           - Copy Into Databricks: databricks/11-Copy_Into_Databricks.md
           - Autoloader Databricks: databricks/12-AutoLoader_Databricks.md
+          - Autoloader Schema Inference and Evolution: databricks/12.1-AutoLoader_Databricks_Schema_Inference.md
           - Intro Databricks Lakeflow Declarative Pipelines: databricks/13-Intro_Databricks_Lakeflow_Declarative_Pipelines.md
           - Dlt Batch Vs Streaming Workloads: databricks/14-DLT_Batch_Vs_Streaming_Workloads.md
           - Dlt Data Storage Checkpoints: databricks/15-DLT_Data_Storage_Checkpoints.md
