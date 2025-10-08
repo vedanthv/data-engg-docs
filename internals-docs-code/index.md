@@ -35,7 +35,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 21. [Introduction Azure Data Factory](azure/21-Introduction_Azure_Data_Factory.md)
 22. [Azure Data Factory Vs Synapse](azure/22-Azure_Data_Factory_vs_Synapse.md)
 23. [Azure Data Factory Architecture](azure/23-Azure_Data_Factory_Architecture.md)
-24. [Index](azure/index.md)
+24. [Adf Triggers Intro](azure/24-ADF_Triggers_Intro.md)
+25. [Index](azure/index.md)
 
 ## Data-formats
 
@@ -159,7 +160,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 13. [Kafka Configuring Producers Pt2](streaming/kafka/12-Kafka_Configuring_Producers_Pt2.md)
 14. [Kafka Serializers Avro Pt1](streaming/kafka/13-Kafka_Serializers_Avro_Pt1.md)
 15. [Kafka Serializers Avro Pt2](streaming/kafka/14-Kafka_Serializers_Avro_Pt2.md)
-16. [Index](streaming/kafka/index.md)
+16. [Kafka Partitions](streaming/kafka/15-Kafka_Partitions.md)
+17. [Kafka Headers](streaming/kafka/16-Kafka_Headers.md)
+18. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
