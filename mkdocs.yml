@@ -217,6 +217,9 @@ nav:
                   - Kafka Serializers Avro Pt2 : streaming/kafka/14-Kafka_Serializers_Avro_Pt2.md
                   - Kafka Partitions : streaming/kafka/15-Kafka_Partitions.md
                   - Kafka Headers : streaming/kafka/16-Kafka_Headers.md
+                  - Kafka Interceptors: streaming/kafka/17-Kafka_Interceptors.md
+                  - Kafka Quotas and Throttling : streaming/kafka/18-Kafka_Quotas_And_Throttling.md
+                  - Kafka Consumers Eager and Coorperative Rebalancing: streaming/kafka/19-Kafka_Consumer_Eager_And_Cooperative_Rebalance.md
 # END AUTO NAV
 extra:
   navigation:
