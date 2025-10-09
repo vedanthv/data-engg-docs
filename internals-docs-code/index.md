@@ -162,7 +162,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 15. [Kafka Serializers Avro Pt2](streaming/kafka/14-Kafka_Serializers_Avro_Pt2.md)
 16. [Kafka Partitions](streaming/kafka/15-Kafka_Partitions.md)
 17. [Kafka Headers](streaming/kafka/16-Kafka_Headers.md)
-18. [Index](streaming/kafka/index.md)
+18. [Kafka Interceptors](streaming/kafka/17-Kafka_Interceptors.md)
+19. [Kafka Quotas And Throttling](streaming/kafka/18-Kafka_Quotas_And_Throttling.md)
+20. [Kafka Consumer Eager And Cooperative Rebalance](streaming/kafka/19-Kafka_Consumer_Eager_And_Cooperative_Rebalance.md)
+21. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
