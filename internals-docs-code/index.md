@@ -165,7 +165,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 18. [Kafka Interceptors](streaming/kafka/17-Kafka_Interceptors.md)
 19. [Kafka Quotas And Throttling](streaming/kafka/18-Kafka_Quotas_And_Throttling.md)
 20. [Kafka Consumer Eager And Cooperative Rebalance](streaming/kafka/19-Kafka_Consumer_Eager_And_Cooperative_Rebalance.md)
-21. [Index](streaming/kafka/index.md)
+21. [Kafka Consumer Static Partitioning](streaming/kafka/20-Kafka_Consumer_Static_Partitioning.md)
+22. [Kafka Poll Loop](streaming/kafka/21-Kafka_Poll_Loop.md)
+23. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
