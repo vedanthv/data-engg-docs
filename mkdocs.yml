@@ -220,6 +220,8 @@ nav:
                   - Kafka Interceptors: streaming/kafka/17-Kafka_Interceptors.md
                   - Kafka Quotas and Throttling : streaming/kafka/18-Kafka_Quotas_And_Throttling.md
                   - Kafka Consumers Eager and Coorperative Rebalancing: streaming/kafka/19-Kafka_Consumer_Eager_And_Cooperative_Rebalance.md
+                  - Kafka Consumer Static Partitioning: streaming/kafka/20-Kafka_Consumer_Static_Partitioning.md
+                  - Kafka Poll Loop: streaming/kafka/21-Kafka_Poll_Loop.md
 # END AUTO NAV
 extra:
   navigation:
