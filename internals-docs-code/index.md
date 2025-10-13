@@ -36,7 +36,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 22. [Azure Data Factory Vs Synapse](azure/22-Azure_Data_Factory_vs_Synapse.md)
 23. [Azure Data Factory Architecture](azure/23-Azure_Data_Factory_Architecture.md)
 24. [Adf Triggers Intro](azure/24-ADF_Triggers_Intro.md)
-25. [Index](azure/index.md)
+25. [Adf Parameters](azure/25-ADF_Parameters.md)
+26. [Index](azure/index.md)
 
 ## Data-formats
 
@@ -167,7 +168,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 20. [Kafka Consumer Eager And Cooperative Rebalance](streaming/kafka/19-Kafka_Consumer_Eager_And_Cooperative_Rebalance.md)
 21. [Kafka Consumer Static Partitioning](streaming/kafka/20-Kafka_Consumer_Static_Partitioning.md)
 22. [Kafka Poll Loop](streaming/kafka/21-Kafka_Poll_Loop.md)
-23. [Index](streaming/kafka/index.md)
+23. [Kafka Configuring Consumers Pt1](streaming/kafka/22-Kafka_Configuring_Consumers_Pt1.md)
+24. [Kafka Configuring Consumers Pt2](streaming/kafka/23-Kafka_Configuring_Consumers_Pt2.md)
+25. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
