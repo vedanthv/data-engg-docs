@@ -99,6 +99,8 @@ nav:
           - Introduction Azure Data Factory: azure/21-Introduction_Azure_Data_Factory.md
           - Azure Data Factory Vs Synapse: azure/22-Azure_Data_Factory_vs_Synapse.md
           - Azure Data Factory Architecture: azure/23-Azure_Data_Factory_Architecture.md
+          - Azure Data Factory Triggers : azure/24-ADF_Triggers_Intro.md
+          - Azure Data Factory Parameters : azure/25-ADF_Parameters.md
   - Data Formats:
       - Index: data-formats/index.md
       - Topics:
@@ -222,6 +224,8 @@ nav:
                   - Kafka Consumers Eager and Coorperative Rebalancing: streaming/kafka/19-Kafka_Consumer_Eager_And_Cooperative_Rebalance.md
                   - Kafka Consumer Static Partitioning: streaming/kafka/20-Kafka_Consumer_Static_Partitioning.md
                   - Kafka Poll Loop: streaming/kafka/21-Kafka_Poll_Loop.md
+                  - Kafka Consumer Properties Part I : streaming/kafka/22-Kafka_Configuring_Consumers_Pt1.md
+                  - Kafka Consumer Properties Part II : streaming/kafka/23-Kafka_Configuring_Consumers_Pt2.md
 # END AUTO NAV
 extra:
   navigation:
