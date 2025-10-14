@@ -114,3 +114,94 @@ If we set it to ```none``` then consumer will fail when trying to restart from i
 
 By default its ```true``` but if we want to control when offsets are committed to minimize duplicates and avoid duplicating data.
 
+### 6. ```offsets.retention.minutes```
+
+This paragraph describes how **Kafka manages committed offsets** for consumer groups, and how a specific **broker configuration** controls how long those offsets are kept once the group becomes inactive.
+
+Let’s break it down step by step.
+
+---
+
+#### 1. **Context: Consumer Groups and Committed Offsets**
+
+In Kafka, a **consumer group** keeps track of what messages its consumers have already read using **committed offsets**.
+
+* A *committed offset* tells Kafka, “This group has successfully processed messages up to this point in the partition.”
+* Kafka stores these offsets internally in a special topic called `__consumer_offsets`.
+
+---
+
+#### 2. **When Consumers Are Active**
+
+As long as the consumer group is **active** (meaning at least one consumer is running and sending **heartbeats** to the group coordinator):
+
+* Kafka **retains** the group’s committed offsets.
+* This ensures that if a consumer crashes or a rebalance happens, Kafka can **resume** consumption from the last committed offset — no data is lost or reprocessed unnecessarily.
+
+---
+
+#### 3. **When the Group Becomes Inactive (Empty)**
+
+If all consumers in a group stop running (the group becomes **empty**):
+
+* Kafka starts a **retention timer** for that group’s offsets.
+* The duration of this timer is controlled by the broker configuration parameter:
+
+  ```
+  offsets.retention.minutes
+  ```
+
+  (By default, **7 days** — equivalent to 10080 minutes.)
+
+---
+
+#### 4. **Offset Expiration**
+
+If the consumer group remains inactive **beyond that retention period**, Kafka deletes its stored offsets.
+
+* After this happens, Kafka **forgets** that the group ever existed.
+* When the same group restarts later, it will behave like a **new consumer group** — starting from the position defined by its `auto.offset.reset` setting (usually `latest` or `earliest`).
+
+In other words:
+
+> Once the offsets expire, Kafka cannot resume consumption from where the group left off.
+
+---
+
+#### 5. **Version Differences**
+
+Kafka’s behavior around offset retention changed several times in older versions.
+
+* Before version **2.1.0**, Kafka’s logic for when offsets were deleted was slightly different, so older clusters may not behave exactly the same way.
+* In modern Kafka versions (2.1.0 and later), the behavior described above is the standard.
+
+---
+
+#### 6. **Example**
+
+Let’s say:
+
+* You have a consumer group named `trade-settlement-group`.
+* It processes messages daily but is inactive on weekends.
+* The broker’s offset retention is set to **7 days**.
+
+If your consumers stop on Friday and don’t restart until **the next Monday**, everything is fine — offsets are still retained.
+
+But if the consumers remain idle for **more than 7 days**, Kafka deletes their committed offsets.
+When the group restarts after that, it won’t remember its last position and will consume messages starting from the offset defined by `auto.offset.reset`.
+
+---
+
+#### 7. **Summary Table**
+
+| Situation                                              | Kafka Behavior                                           |
+| ------------------------------------------------------ | -------------------------------------------------------- |
+| Consumers in group are active                          | Offsets retained indefinitely                            |
+| Group becomes empty                                    | Retention countdown starts                               |
+| Group inactive longer than `offsets.retention.minutes` | Offsets deleted                                          |
+| Group restarts after deletion                          | Treated as a new group (starts from `auto.offset.reset`) |
+
+---
+
+In summary:
+Kafka keeps consumer offsets only while the group is active. Once all consumers stop and the retention period passes, those offsets are deleted. When the group returns, it starts over — as if it never existed before.

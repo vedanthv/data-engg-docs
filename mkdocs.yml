@@ -226,6 +226,19 @@ nav:
                   - Kafka Poll Loop: streaming/kafka/21-Kafka_Poll_Loop.md
                   - Kafka Consumer Properties Part I : streaming/kafka/22-Kafka_Configuring_Consumers_Pt1.md
                   - Kafka Consumer Properties Part II : streaming/kafka/23-Kafka_Configuring_Consumers_Pt2.md
+                  - Kafka Partition Assignment Strategies : streaming/kafka/24-Kafka_Partition_Assignment_Strategies.md
+
+  - Documentation Deep Dive:
+      - Topics:
+          - Databricks:
+              - Topics:
+                  - What is Lakehouse? : docs-deep-dive/databricks/00-What_Is_Lakehouse.md
+                  - Lakehouse vs Delta Lake vs Warehouse : docs-deep-dive/databricks/01-Lakehouse_vs_Delta_Lake_vs_Warehouse.md
+                  - All things Delta! : docs-deep-dive/databricks/02-All_Delta_Things_Databricks.md
+                  - High Level Databricks Architecture: docs-deep-dive/databricks/03-High_Level_Architecture.md
+                  - Databricks ACID Guarantees: docs-deep-dive/databricks/04-Databricks_ACID_Guarantees.md
+                  - Medallion Design Pattern: docs-deep-dive/databricks/05-Databricks_Medallion_Architecture.md
+                  - Databricks Single Source of Truth Architecture: docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md
 # END AUTO NAV
 extra:
   navigation:
