@@ -74,6 +74,19 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 26. [Databricks Cli Setup](databricks/24-Databricks_CLI_Setup.md)
 27. [Index](databricks/index.md)
 
+## Docs-deep-dive
+
+
+### Databricks
+
+1. [What Is Lakehouse](docs-deep-dive/databricks/00-What_Is_Lakehouse.md)
+2. [Lakehouse Vs Delta Lake Vs Warehouse](docs-deep-dive/databricks/01-Lakehouse_vs_Delta_Lake_vs_Warehouse.md)
+3. [All Delta Things Databricks](docs-deep-dive/databricks/02-All_Delta_Things_Databricks.md)
+4. [High Level Architecture](docs-deep-dive/databricks/03-High_Level_Architecture.md)
+5. [Databricks Acid Guarantees](docs-deep-dive/databricks/04-Databricks_ACID_Guarantees.md)
+6. [Databricks Medallion Architecture](docs-deep-dive/databricks/05-Databricks_Medallion_Architecture.md)
+7. [Databricks Single Source Of Truth Arch](docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md)
+
 ## Scenarios
 
 1. [Index](scenarios/index.md)
@@ -170,7 +183,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 22. [Kafka Poll Loop](streaming/kafka/21-Kafka_Poll_Loop.md)
 23. [Kafka Configuring Consumers Pt1](streaming/kafka/22-Kafka_Configuring_Consumers_Pt1.md)
 24. [Kafka Configuring Consumers Pt2](streaming/kafka/23-Kafka_Configuring_Consumers_Pt2.md)
-25. [Index](streaming/kafka/index.md)
+25. [Kafka Partition Assignment Strategies](streaming/kafka/24-Kafka_Partition_Assignment_Strategies.md)
+26. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
