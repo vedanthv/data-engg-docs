@@ -144,6 +144,11 @@ nav:
                   - Smj Spill To Disk Q2: scenarios/spark/02-SMJ_Spill_To_Disk_Q2.md
                   - Smj Output During Spill Q3: scenarios/spark/03-SMJ_Output_During_Spill_Q3.md
                   - Cross Vs Broadcast Join: scenarios/spark/04-Cross_vs_Broadcast_Join.md
+          - Databricks:
+              - Index: scenarios/databricks/index.md
+              - Topics:
+                  - AWS Reference Architecture and Integration with Databricks: scenarios/databricks/00-AWS_Reference_Arch_Databricks.md
+                  - AWS + Databricks Reference Architecture: scenarios/databricks/01-Reference_Architectures_Pt1.md
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -227,7 +232,8 @@ nav:
                   - Kafka Consumer Properties Part I : streaming/kafka/22-Kafka_Configuring_Consumers_Pt1.md
                   - Kafka Consumer Properties Part II : streaming/kafka/23-Kafka_Configuring_Consumers_Pt2.md
                   - Kafka Partition Assignment Strategies : streaming/kafka/24-Kafka_Partition_Assignment_Strategies.md
-
+                  - Kafka Commits and Offsets: streaming/kafka/25-Kafka_Commits_Offsets_Intro.md
+                  - Kafka Types of Commits: streaming/kafka/26-Kafka_Types_Of_Commits.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
@@ -239,6 +245,8 @@ nav:
                   - Databricks ACID Guarantees: docs-deep-dive/databricks/04-Databricks_ACID_Guarantees.md
                   - Medallion Design Pattern: docs-deep-dive/databricks/05-Databricks_Medallion_Architecture.md
                   - Databricks Single Source of Truth Architecture: docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md
+                  - Databricks Scope of Lakehouse Architecture: docs-deep-dive/databricks/07-Databricks_Scope_Of_Lakehouse_Arch.md
+                  - Databricks Architectural Guiding Principles: docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md
 # END AUTO NAV
 extra:
   navigation:
