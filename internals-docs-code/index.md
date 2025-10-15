@@ -86,6 +86,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 5. [Databricks Acid Guarantees](docs-deep-dive/databricks/04-Databricks_ACID_Guarantees.md)
 6. [Databricks Medallion Architecture](docs-deep-dive/databricks/05-Databricks_Medallion_Architecture.md)
 7. [Databricks Single Source Of Truth Arch](docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md)
+8. [Databricks Scope Of Lakehouse Arch](docs-deep-dive/databricks/07-Databricks_Scope_Of_Lakehouse_Arch.md)
+9. [Databricks Architecture Guiding Principles](docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md)
 
 ## Scenarios
 
@@ -93,8 +95,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 
 ### Databricks
 
-1. [Retail Sku Inventory Tracking](scenarios/databricks/00-Retail_SKU_Inventory_Tracking.md)
-2. [Index](scenarios/databricks/index.md)
+1. [Aws Reference Arch Databricks](scenarios/databricks/00-AWS_Reference_Arch_Databricks.md)
+2. [Reference Architectures Pt1](scenarios/databricks/01-Reference_Architectures_Pt1.md)
+3. [Index](scenarios/databricks/index.md)
 
 ### Spark
 
@@ -184,7 +187,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 23. [Kafka Configuring Consumers Pt1](streaming/kafka/22-Kafka_Configuring_Consumers_Pt1.md)
 24. [Kafka Configuring Consumers Pt2](streaming/kafka/23-Kafka_Configuring_Consumers_Pt2.md)
 25. [Kafka Partition Assignment Strategies](streaming/kafka/24-Kafka_Partition_Assignment_Strategies.md)
-26. [Index](streaming/kafka/index.md)
+26. [Kafka Commits Offsets Intro](streaming/kafka/25-Kafka_Commits_Offsets_Intro.md)
+27. [Kafka Types Of Commits](streaming/kafka/26-Kafka_Types_Of_Commits.md)
+28. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
