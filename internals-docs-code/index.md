@@ -189,7 +189,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 25. [Kafka Partition Assignment Strategies](streaming/kafka/24-Kafka_Partition_Assignment_Strategies.md)
 26. [Kafka Commits Offsets Intro](streaming/kafka/25-Kafka_Commits_Offsets_Intro.md)
 27. [Kafka Types Of Commits](streaming/kafka/26-Kafka_Types_Of_Commits.md)
-28. [Index](streaming/kafka/index.md)
+28. [Kafka Rebalance Listeners](streaming/kafka/27-Kafka_Rebalance_Listeners.md)
+29. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
