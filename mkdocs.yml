@@ -234,6 +234,7 @@ nav:
                   - Kafka Partition Assignment Strategies : streaming/kafka/24-Kafka_Partition_Assignment_Strategies.md
                   - Kafka Commits and Offsets: streaming/kafka/25-Kafka_Commits_Offsets_Intro.md
                   - Kafka Types of Commits: streaming/kafka/26-Kafka_Types_Of_Commits.md
+                  - Kafka Rebalance Listeners: streaming/kafka/27-Kafka_Rebalance_Listeners.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
@@ -247,6 +248,7 @@ nav:
                   - Databricks Single Source of Truth Architecture: docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md
                   - Databricks Scope of Lakehouse Architecture: docs-deep-dive/databricks/07-Databricks_Scope_Of_Lakehouse_Arch.md
                   - Databricks Architectural Guiding Principles: docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md
+                  
 # END AUTO NAV
 extra:
   navigation:
