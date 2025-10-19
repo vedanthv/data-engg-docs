@@ -88,10 +88,15 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 7. [Databricks Single Source Of Truth Arch](docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md)
 8. [Databricks Scope Of Lakehouse Arch](docs-deep-dive/databricks/07-Databricks_Scope_Of_Lakehouse_Arch.md)
 9. [Databricks Architecture Guiding Principles](docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md)
+10. [Databricks Objects Catalogs](docs-deep-dive/databricks/09-Databricks_Objects_Catalogs.md)
 
 ## Scenarios
 
 1. [Index](scenarios/index.md)
+
+### Adf
+
+1. [Architectures](scenarios/adf/architectures.md)
 
 ### Databricks
 
@@ -190,7 +195,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 26. [Kafka Commits Offsets Intro](streaming/kafka/25-Kafka_Commits_Offsets_Intro.md)
 27. [Kafka Types Of Commits](streaming/kafka/26-Kafka_Types_Of_Commits.md)
 28. [Kafka Rebalance Listeners](streaming/kafka/27-Kafka_Rebalance_Listeners.md)
-29. [Index](streaming/kafka/index.md)
+29. [Kafka Consuming Records With Spec Offset](streaming/kafka/28-Kafka_Consuming_Records_With_Spec_Offset.md)
+30. [Kafka Exiting Consumer Poll Loop](streaming/kafka/29-Kafka_Exiting_Consumer_Poll_Loop.md)
+31. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
