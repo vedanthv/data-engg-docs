@@ -197,7 +197,13 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 28. [Kafka Rebalance Listeners](streaming/kafka/27-Kafka_Rebalance_Listeners.md)
 29. [Kafka Consuming Records With Spec Offset](streaming/kafka/28-Kafka_Consuming_Records_With_Spec_Offset.md)
 30. [Kafka Exiting Consumer Poll Loop](streaming/kafka/29-Kafka_Exiting_Consumer_Poll_Loop.md)
-31. [Index](streaming/kafka/index.md)
+31. [Kafka Deserialisers](streaming/kafka/30-Kafka_Deserialisers.md)
+32. [Kafka Standalone Consumers](streaming/kafka/31-Kafka_Standalone_Consumers.md)
+33. [Kafka Internals Zookeeper](streaming/kafka/32-Kafka_Internals_Zookeeper.md)
+34. [Kafka Raft Consensus Protocol](streaming/kafka/33-Kafka_Raft_Consensus_Protocol.md)
+35. [Kafka Controller Quorum](streaming/kafka/34-Kafka_Controller_Quorum.md)
+36. [Kafka Replication Concepts](streaming/kafka/35-Kafka_Replication_Concepts.md)
+37. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
