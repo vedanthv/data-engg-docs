@@ -235,6 +235,14 @@ nav:
                   - Kafka Commits and Offsets: streaming/kafka/25-Kafka_Commits_Offsets_Intro.md
                   - Kafka Types of Commits: streaming/kafka/26-Kafka_Types_Of_Commits.md
                   - Kafka Rebalance Listeners: streaming/kafka/27-Kafka_Rebalance_Listeners.md
+                  - Kafka Consuming Records with Specified Offset: streaming/kafka/28-Kafka_Consuming_Records_With_Spec_Offset.md
+                  - Kafka Exiting Consumers and Poll Loop : streaming/kafka/29-Kafka_Exiting_Consumer_Poll_Loop.md
+                  - Kafka Deserializers : streaming/kafka/30-Kafka_Deserialisers.md
+                  - Kafka Standalone Consumers : streaming/kafka/31-Kafka_Standalone_Consumers.md
+                  - Kafka Internals of Zookeeper : streaming/kafka/32-Kafka_Internals_Zookeeper.md
+                  - Kafka Raft Consensus Protocol : streaming/kafka/33-Kafka_Raft_Consensus_Protocol.md
+                  - Kafka Controller Quorum Concepts : streaming/kafka/34-Kafka_Controller_Quorum.md
+                  - Kafka Replication Concepts: streaming/kafka/35-Kafka_Replication_Concepts.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
