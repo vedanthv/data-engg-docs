@@ -1,0 +1,12 @@
+{
+    "name": "SQLDatabase_Orders",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "ls_sql_database",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": []
+    }
+}

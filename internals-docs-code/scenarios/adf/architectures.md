@@ -15,3 +15,13 @@
 ### List files and count of files
 
 ![alt text](https://snipboard.io/BQvq39.jpg)
+
+### Incremental Data Loading with JSON Watermarking
+
+![alt text](https://snipboard.io/A1Ya2F.jpg)
+
+### Backdate Reprocess Pipeline
+
+Same as above but with a backdate optional parameter
+
+![alt text](https://snipboard.io/s5P3cK.jpg)

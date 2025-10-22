@@ -1,0 +1,19 @@
+{
+    "name": "cdc",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedserviceDL",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "cdc.json",
+                "fileSystem": "source"
+            }
+        },
+        "schema": {}
+    }
+}

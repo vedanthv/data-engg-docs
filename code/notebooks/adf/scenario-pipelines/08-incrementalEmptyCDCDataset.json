@@ -1,0 +1,21 @@
+{
+    "name": "incremental_empty_cdc",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedserviceDL",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "empty.json",
+                "fileSystem": "source"
+            }
+        },
+        "schema": {
+            "type": "object"
+        }
+    }
+}
