@@ -157,6 +157,8 @@ nav:
                   - Does sequence number remain the same after producer goes down?: scenarios/kafka/02-Does_Seq_No_Remain_Same_After_Producer_Goes_Down.md
                   - What is the scenario when relection happens and how is idempotency ensured?: scenarios/kafka/03-What_Happens_When_ReElection_Happens.md
                   - Give me a walkthrough of leader epochs and their role in log truncation: scenarios/kafka/04-Give_Walkthrough_Of_Leader_Epoch_Log_Truncation.md
+                  - What is the difference between dirty ratio and dirty background ratio? : scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md
+                  - Are Kafka consumers thread safe! : scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md
   - Spark:
       - Index: spark/index.md
       - Topics:
