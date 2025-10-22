@@ -46,7 +46,7 @@ The most common configuration for how long Kafka will retain messages is by time
 
 We need to size the log segments carefully, take example, if topic receives 100 MB data and log.segment.bytes is 1GB, it will take 10 days for the segment to close and none of the messages in the segment can be expired until the log segment is closed.
 
-If log.retention.bytes is set to 1 week, there will actually be upto 17 days of messages retained until closed log segment expires.
+If log.retention.ms is set to 1 week, there will actually be upto 17 days of messages retained until closed log segment expires.
 
 This is because we need to wait for 10 days of all messages, the log segment must be retained for 7 days before it expires as per time based policy. Until the last message in the segment expires the segment cant be deleted.
 

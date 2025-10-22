@@ -68,5 +68,3 @@ So `0` = **safe mode**: kernel checks available memory before giving it to Kafka
 * Keep `vm.overcommit_memory=0` so Kafka only uses real, available memory → avoids crashes.
 
 ---
-
-👉 Do you want me to also give you a **practical command + formula** for calculating how high `vm.max_map_count` should be for your Kafka cluster (based on partitions + segment size)?

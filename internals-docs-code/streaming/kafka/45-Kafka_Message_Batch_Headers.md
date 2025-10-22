@@ -252,6 +252,15 @@ When a producer sends a batch:
 
 All this happens seamlessly thanks to the information encoded in the batch header.
 
+As you can see, the batch header includes a lot of information. The records themselves also have system headers (not to be confused with headers that can be set by users). 
+
+Each record includes: Size of the record, in bytes Attributes—currently there are no record-level attributes, so this isn’t used The difference between the offset of the current record and the first offset in the batch The difference, in milliseconds, between the timestamp of this record and the first timestamp in the batch The user payload: key, value, and headers. 
+
+Note that there is very little overhead to each record, and most of the system information is at the batch level. Storing the first offset and timestamp of the batch in the header and only storing the difference in each record dramatically reduces the overhead of each record, making larger batches more efficient. 
+
+In addition to message batches that contain user data, Kafka also has control batches—indicating transactional commits, for instance. Those are handled by the consumer and not passed to the user application, and currently they include a version and a type indicator: 0 for an aborted transaction, 1 for a commit.
+
+
 ---
 
 ✅ **In short:**
