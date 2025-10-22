@@ -111,7 +111,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 3. [Does Seq No Remain Same After Producer Goes Down](scenarios/kafka/02-Does_Seq_No_Remain_Same_After_Producer_Goes_Down.md)
 4. [What Happens When Reelection Happens](scenarios/kafka/03-What_Happens_When_ReElection_Happens.md)
 5. [Give Walkthrough Of Leader Epoch Log Truncation](scenarios/kafka/04-Give_Walkthrough_Of_Leader_Epoch_Log_Truncation.md)
-6. [Index](scenarios/kafka/index.md)
+6. [Explain Diff Dirtyratio Dirtybackgroundratio](scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md)
+7. [Are Kafka Consumers Thread Safe](scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md)
+8. [Index](scenarios/kafka/index.md)
 
 ### Spark
 
