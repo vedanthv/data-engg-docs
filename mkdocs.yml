@@ -149,6 +149,14 @@ nav:
               - Topics:
                   - AWS Reference Architecture and Integration with Databricks: scenarios/databricks/00-AWS_Reference_Arch_Databricks.md
                   - AWS + Databricks Reference Architecture: scenarios/databricks/01-Reference_Architectures_Pt1.md
+          - Kafka:
+              - Index: scenarios/kafka/index.md
+              - Topics:
+                  - Why are closed segment files kept open by Kafka: scenarios/kafka/00-Why_Closed_Segments_Files_Open.md
+                  - How does producer guranteee exactly once semantics: scenarios/kafka/01-How_Does_Producer_Guarantee_Exactly_Once.md
+                  - Does sequence number remain the same after producer goes down?: scenarios/kafka/02-Does_Seq_No_Remain_Same_After_Producer_Goes_Down.md
+                  - What is the scenario when relection happens and how is idempotency ensured?: scenarios/kafka/03-What_Happens_When_ReElection_Happens.md
+                  - Give me a walkthrough of leader epochs and their role in log truncation: scenarios/kafka/04-Give_Walkthrough_Of_Leader_Epoch_Log_Truncation.md
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -243,6 +251,16 @@ nav:
                   - Kafka Raft Consensus Protocol : streaming/kafka/33-Kafka_Raft_Consensus_Protocol.md
                   - Kafka Controller Quorum Concepts : streaming/kafka/34-Kafka_Controller_Quorum.md
                   - Kafka Replication Concepts: streaming/kafka/35-Kafka_Replication_Concepts.md
+                  - Kafka Insync and Out Of Sync Replicas : streaming/kafka/36-Kafka_InSync_OutOfSync_Replicas.md
+                  - Kafka Request Processing Introduction : streaming/kafka/37-Kafka_Request_Processing_Pt1.md
+                  - Kafka Request Processing - Producer Requests : streaming/kafka/38-Kafka_Request_Processing_Pt2_Produce_Requests.md
+                  - Kafka Request Processing - Fetch Requests Part 1 : streaming/kafka/39-Kafka_Fetch_Requests_Pt1.md
+                  - Kafka Request Processing - Fetch Requests Part 2 : streaming/kafka/40-Kafka_Fetch_Requests_Pt2.md
+                  - Kafka Physical Storage - Introduction : streaming/kafka/41-Kafka_Physical_Storage_Introduction.md
+                  - Kafka Tiered Storage Concepts : streaming/kafka/42-Kafka_Tiered_Storage.md
+                  - Kafka Partition Allocation Process : streaming/kafka/43-Kafka_Partition_Allocation.md
+                  - Kafka File Formats Introduction : streaming/kafka/44-Kafka_File_Formats_Intro.md
+                  - Kafka Message Batch Headers : streaming/kafka/45-Kafka_Message_Batch_Headers.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
