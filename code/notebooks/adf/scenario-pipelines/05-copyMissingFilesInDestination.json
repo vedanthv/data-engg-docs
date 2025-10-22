@@ -1,0 +1,132 @@
+{
+    "name": "copyMissingFilesInDestination",
+    "properties": {
+        "activities": [
+            {
+                "name": "Get Metadata Source",
+                "type": "GetMetadata",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_param_folder",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "folder": "github_data",
+                            "container": "interview"
+                        }
+                    },
+                    "fieldList": [
+                        "childItems"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "enablePartitionDiscovery": false
+                    },
+                    "formatSettings": {
+                        "type": "DelimitedTextReadSettings"
+                    }
+                }
+            },
+            {
+                "name": "Get Metadata Sink",
+                "type": "GetMetadata",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_param_folder",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "folder": "files",
+                            "container": "destination"
+                        }
+                    },
+                    "fieldList": [
+                        "childItems"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "enablePartitionDiscovery": false
+                    },
+                    "formatSettings": {
+                        "type": "DelimitedTextReadSettings"
+                    }
+                }
+            },
+            {
+                "name": "Filter1",
+                "type": "Filter",
+                "dependsOn": [
+                    {
+                        "activity": "Get Metadata Sink",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "Get Metadata Source",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@activity('Get Metadata Source').output.childItems",
+                        "type": "Expression"
+                    },
+                    "condition": {
+                        "value": "@contains(activity('Get Metadata Sink').output.childItems,item().name)",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "Set variable1",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "Filter1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "sink_files",
+                    "value": {
+                        "value": "@string(activity('Filter1').output)",
+                        "type": "Expression"
+                    }
+                }
+            }
+        ],
+        "variables": {
+            "missing_files": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    }
+}

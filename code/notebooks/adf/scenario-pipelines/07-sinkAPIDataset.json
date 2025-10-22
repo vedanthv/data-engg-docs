@@ -1,0 +1,38 @@
+{
+    "name": "ds_api_sink",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedserviceDL",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "p_folder": {
+                "type": "string"
+            },
+            "p_file": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().p_file",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().p_folder",
+                    "type": "Expression"
+                },
+                "fileSystem": "interview"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": []
+    }
+}

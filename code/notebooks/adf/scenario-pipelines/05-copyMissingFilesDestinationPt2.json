@@ -1,0 +1,266 @@
+{
+    "name": "copyMissingFilesInDestination_Second_Version",
+    "properties": {
+        "activities": [
+            {
+                "name": "Get Metadata Source",
+                "type": "GetMetadata",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_param_folder",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "folder": "github_data",
+                            "container": "interview"
+                        }
+                    },
+                    "fieldList": [
+                        "childItems"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "enablePartitionDiscovery": false
+                    },
+                    "formatSettings": {
+                        "type": "DelimitedTextReadSettings"
+                    }
+                }
+            },
+            {
+                "name": "Get Metadata Sink",
+                "type": "GetMetadata",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_param_folder",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "folder": "files",
+                            "container": "destination"
+                        }
+                    },
+                    "fieldList": [
+                        "childItems"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "enablePartitionDiscovery": false
+                    },
+                    "formatSettings": {
+                        "type": "DelimitedTextReadSettings"
+                    }
+                }
+            },
+            {
+                "name": "SourceFilesLoop",
+                "type": "ForEach",
+                "dependsOn": [
+                    {
+                        "activity": "Get Metadata Source",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "Sink Files Var",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@activity('Get Metadata Source').output.childItems",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "checkIfLoaded",
+                            "type": "IfCondition",
+                            "dependsOn": [],
+                            "userProperties": [],
+                            "typeProperties": {
+                                "expression": {
+                                    "value": "@contains(variables('sink_files'),item().name)",
+                                    "type": "Expression"
+                                },
+                                "ifFalseActivities": [
+                                    {
+                                        "name": "Copy data1",
+                                        "type": "Copy",
+                                        "dependsOn": [],
+                                        "policy": {
+                                            "timeout": "0.12:00:00",
+                                            "retry": 0,
+                                            "retryIntervalInSeconds": 30,
+                                            "secureOutput": false,
+                                            "secureInput": false
+                                        },
+                                        "userProperties": [],
+                                        "typeProperties": {
+                                            "source": {
+                                                "type": "DelimitedTextSource",
+                                                "storeSettings": {
+                                                    "type": "AzureBlobFSReadSettings",
+                                                    "recursive": true,
+                                                    "enablePartitionDiscovery": false
+                                                },
+                                                "formatSettings": {
+                                                    "type": "DelimitedTextReadSettings"
+                                                }
+                                            },
+                                            "sink": {
+                                                "type": "DelimitedTextSink",
+                                                "storeSettings": {
+                                                    "type": "AzureBlobFSWriteSettings"
+                                                },
+                                                "formatSettings": {
+                                                    "type": "DelimitedTextWriteSettings",
+                                                    "quoteAllText": true,
+                                                    "fileExtension": ".txt"
+                                                }
+                                            },
+                                            "enableStaging": false,
+                                            "translator": {
+                                                "type": "TabularTranslator",
+                                                "typeConversion": true,
+                                                "typeConversionSettings": {
+                                                    "allowDataTruncation": true,
+                                                    "treatBooleanAsNumber": false
+                                                }
+                                            }
+                                        },
+                                        "inputs": [
+                                            {
+                                                "referenceName": "p_folder_file_container",
+                                                "type": "DatasetReference",
+                                                "parameters": {
+                                                    "p_folder": "github_data",
+                                                    "p_file": {
+                                                        "value": "@item().name",
+                                                        "type": "Expression"
+                                                    },
+                                                    "p_container": "interview"
+                                                }
+                                            }
+                                        ],
+                                        "outputs": [
+                                            {
+                                                "referenceName": "p_folder_file_container",
+                                                "type": "DatasetReference",
+                                                "parameters": {
+                                                    "p_folder": "files",
+                                                    "p_file": {
+                                                        "value": "@item().name",
+                                                        "type": "Expression"
+                                                    },
+                                                    "p_container": "destination"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "ifTrueActivities": [
+                                    {
+                                        "name": "Wait1",
+                                        "type": "Wait",
+                                        "dependsOn": [],
+                                        "userProperties": [],
+                                        "typeProperties": {
+                                            "waitTimeInSeconds": 1
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "CollectFileNames",
+                "type": "ForEach",
+                "dependsOn": [
+                    {
+                        "activity": "Get Metadata Sink",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@activity('Get Metadata Sink').output.childItems",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "Append variable1",
+                            "type": "AppendVariable",
+                            "dependsOn": [],
+                            "userProperties": [],
+                            "typeProperties": {
+                                "variableName": "sink_files",
+                                "value": {
+                                    "value": "@item().name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "Sink Files Var",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "CollectFileNames",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "sink_files_output",
+                    "value": {
+                        "value": "@string(variables('sink_files'))",
+                        "type": "Expression"
+                    }
+                }
+            }
+        ],
+        "variables": {
+            "sink_files": {
+                "type": "Array"
+            },
+            "sink_files_output": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    }
+}

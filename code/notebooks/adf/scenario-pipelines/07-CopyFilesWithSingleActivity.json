@@ -1,0 +1,114 @@
+{
+    "name": "multiple_files_single_copy_activity",
+    "properties": {
+        "activities": [
+            {
+                "name": "SourceLoop",
+                "type": "ForEach",
+                "dependsOn": [],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@pipeline().parameters.files_list",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "Copy data",
+                            "type": "Copy",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "source": {
+                                    "type": "DelimitedTextSource",
+                                    "storeSettings": {
+                                        "type": "HttpReadSettings",
+                                        "requestMethod": "GET"
+                                    },
+                                    "formatSettings": {
+                                        "type": "DelimitedTextReadSettings"
+                                    }
+                                },
+                                "sink": {
+                                    "type": "DelimitedTextSink",
+                                    "storeSettings": {
+                                        "type": "AzureBlobFSWriteSettings"
+                                    },
+                                    "formatSettings": {
+                                        "type": "DelimitedTextWriteSettings",
+                                        "quoteAllText": true,
+                                        "fileExtension": ".txt"
+                                    }
+                                },
+                                "enableStaging": false,
+                                "translator": {
+                                    "type": "TabularTranslator",
+                                    "typeConversion": true,
+                                    "typeConversionSettings": {
+                                        "allowDataTruncation": true,
+                                        "treatBooleanAsNumber": false
+                                    }
+                                }
+                            },
+                            "inputs": [
+                                {
+                                    "referenceName": "ds_api",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "p_file_name": {
+                                            "value": "@item().name",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ],
+                            "outputs": [
+                                {
+                                    "referenceName": "ds_api_sink",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "p_folder": "github_data",
+                                        "p_file": {
+                                            "value": "@item().name",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "parameters": {
+            "files_list": {
+                "type": "array",
+                "defaultValue": [
+                    {
+                        "name": "AdventureWorks_Products.csv"
+                    },
+                    {
+                        "name": "AdventureWorks_Returns.csv"
+                    },
+                    {
+                        "name": "AdventureWorks_Sales_2016.csv"
+                    },
+                    {
+                        "name": "AdventureWorks_Sales_2017.csv"
+                    },
+                    {
+                        "name": "AdventureWorks_Territories.csv"
+                    }
+                ]
+            }
+        },
+        "annotations": []
+    }
+}

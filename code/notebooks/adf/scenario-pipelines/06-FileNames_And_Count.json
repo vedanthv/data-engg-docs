@@ -1,0 +1,134 @@
+{
+    "name": "FileListAndCount",
+    "properties": {
+        "activities": [
+            {
+                "name": "Get Metadata",
+                "type": "GetMetadata",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "BulkCopy",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "p_container": "interview",
+                            "p_folder": "github_bulk_copy"
+                        }
+                    },
+                    "fieldList": [
+                        "childItems"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "enablePartitionDiscovery": false
+                    },
+                    "formatSettings": {
+                        "type": "DelimitedTextReadSettings"
+                    }
+                }
+            },
+            {
+                "name": "ForEach1",
+                "type": "ForEach",
+                "dependsOn": [
+                    {
+                        "activity": "Get Metadata",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@activity('Get Metadata').output.childItems",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "Append variable1",
+                            "type": "AppendVariable",
+                            "dependsOn": [],
+                            "userProperties": [],
+                            "typeProperties": {
+                                "variableName": "file_names",
+                                "value": {
+                                    "value": "@item().name",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "No Of Files",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "ForEach1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "no_of_files",
+                    "value": {
+                        "value": "@length('file_names')",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "File Name Display",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "ForEach1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "file_names_display",
+                    "value": {
+                        "value": "@string(variables('file_names'))",
+                        "type": "Expression"
+                    }
+                }
+            }
+        ],
+        "variables": {
+            "file_names": {
+                "type": "Array"
+            },
+            "no_of_files": {
+                "type": "Integer"
+            },
+            "file_names_display": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    }
+}
