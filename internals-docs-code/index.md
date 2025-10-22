@@ -104,6 +104,15 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 2. [Reference Architectures Pt1](scenarios/databricks/01-Reference_Architectures_Pt1.md)
 3. [Index](scenarios/databricks/index.md)
 
+### Kafka
+
+1. [Why Closed Segments Files Open](scenarios/kafka/00-Why_Closed_Segments_Files_Open.md)
+2. [How Does Producer Guarantee Exactly Once](scenarios/kafka/01-How_Does_Producer_Guarantee_Exactly_Once.md)
+3. [Does Seq No Remain Same After Producer Goes Down](scenarios/kafka/02-Does_Seq_No_Remain_Same_After_Producer_Goes_Down.md)
+4. [What Happens When Reelection Happens](scenarios/kafka/03-What_Happens_When_ReElection_Happens.md)
+5. [Give Walkthrough Of Leader Epoch Log Truncation](scenarios/kafka/04-Give_Walkthrough_Of_Leader_Epoch_Log_Truncation.md)
+6. [Index](scenarios/kafka/index.md)
+
 ### Spark
 
 1. [Smj Spill To Disk Q1](scenarios/spark/01-SMJ_Spill_To_Disk_Q1.md)
@@ -203,7 +212,17 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 34. [Kafka Raft Consensus Protocol](streaming/kafka/33-Kafka_Raft_Consensus_Protocol.md)
 35. [Kafka Controller Quorum](streaming/kafka/34-Kafka_Controller_Quorum.md)
 36. [Kafka Replication Concepts](streaming/kafka/35-Kafka_Replication_Concepts.md)
-37. [Index](streaming/kafka/index.md)
+37. [Kafka Insync Outofsync Replicas](streaming/kafka/36-Kafka_InSync_OutOfSync_Replicas.md)
+38. [Kafka Request Processing Pt1](streaming/kafka/37-Kafka_Request_Processing_Pt1.md)
+39. [Kafka Request Processing Pt2 Produce Requests](streaming/kafka/38-Kafka_Request_Processing_Pt2_Produce_Requests.md)
+40. [Kafka Fetch Requests Pt1](streaming/kafka/39-Kafka_Fetch_Requests_Pt1.md)
+41. [Kafka Fetch Requests Pt2](streaming/kafka/40-Kafka_Fetch_Requests_Pt2.md)
+42. [Kafka Physical Storage Introduction](streaming/kafka/41-Kafka_Physical_Storage_Introduction.md)
+43. [Kafka Tiered Storage](streaming/kafka/42-Kafka_Tiered_Storage.md)
+44. [Kafka Partition Allocation](streaming/kafka/43-Kafka_Partition_Allocation.md)
+45. [Kafka File Formats Intro](streaming/kafka/44-Kafka_File_Formats_Intro.md)
+46. [Kafka Message Batch Headers](streaming/kafka/45-Kafka_Message_Batch_Headers.md)
+47. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
