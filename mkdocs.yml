@@ -159,6 +159,7 @@ nav:
                   - Give me a walkthrough of leader epochs and their role in log truncation: scenarios/kafka/04-Give_Walkthrough_Of_Leader_Epoch_Log_Truncation.md
                   - What is the difference between dirty ratio and dirty background ratio? : scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md
                   - Are Kafka consumers thread safe! : scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md
+                  - Is retention.ms property defined at topic or partition level? : scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -263,6 +264,9 @@ nav:
                   - Kafka Partition Allocation Process : streaming/kafka/43-Kafka_Partition_Allocation.md
                   - Kafka File Formats Introduction : streaming/kafka/44-Kafka_File_Formats_Intro.md
                   - Kafka Message Batch Headers : streaming/kafka/45-Kafka_Message_Batch_Headers.md
+                  - Kafka Indexes : streaming/kafka/46-Kafka_Indexes.md
+                  - Kafka Compaction Concepts : streaming/kafka/47-Kafka_Compaction.md
+                  - Kafka Tombstoning Process : streaming/kafka/48-Kafka_Tombstoning_Records.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
@@ -276,6 +280,8 @@ nav:
                   - Databricks Single Source of Truth Architecture: docs-deep-dive/databricks/06-Databricks_Single_Source_Of_Truth_Arch.md
                   - Databricks Scope of Lakehouse Architecture: docs-deep-dive/databricks/07-Databricks_Scope_Of_Lakehouse_Arch.md
                   - Databricks Architectural Guiding Principles: docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md
+                  - Databricks Objects - Volumes and Tables: docs-deep-dive/databricks/10-Databricks_Objects_Volumes_Tables.md
+                  - Databricks Objects - Views: docs-deep-dive/databricks/11-Databricks_Views.md
                   
 # END AUTO NAV
 extra:
