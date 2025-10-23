@@ -89,6 +89,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 8. [Databricks Scope Of Lakehouse Arch](docs-deep-dive/databricks/07-Databricks_Scope_Of_Lakehouse_Arch.md)
 9. [Databricks Architecture Guiding Principles](docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md)
 10. [Databricks Objects Catalogs](docs-deep-dive/databricks/09-Databricks_Objects_Catalogs.md)
+11. [Databricks Objects Volumes Tables](docs-deep-dive/databricks/10-Databricks_Objects_Volumes_Tables.md)
+12. [Databricks Views](docs-deep-dive/databricks/11-Databricks_Views.md)
 
 ## Scenarios
 
@@ -113,7 +115,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 5. [Give Walkthrough Of Leader Epoch Log Truncation](scenarios/kafka/04-Give_Walkthrough_Of_Leader_Epoch_Log_Truncation.md)
 6. [Explain Diff Dirtyratio Dirtybackgroundratio](scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md)
 7. [Are Kafka Consumers Thread Safe](scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md)
-8. [Index](scenarios/kafka/index.md)
+8. [Is Retention Ms Defined Partition Level](scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md)
+9. [Index](scenarios/kafka/index.md)
 
 ### Spark
 
@@ -224,7 +227,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 44. [Kafka Partition Allocation](streaming/kafka/43-Kafka_Partition_Allocation.md)
 45. [Kafka File Formats Intro](streaming/kafka/44-Kafka_File_Formats_Intro.md)
 46. [Kafka Message Batch Headers](streaming/kafka/45-Kafka_Message_Batch_Headers.md)
-47. [Index](streaming/kafka/index.md)
+47. [Kafka Indexes](streaming/kafka/46-Kafka_Indexes.md)
+48. [Kafka Compaction](streaming/kafka/47-Kafka_Compaction.md)
+49. [Kafka Tombstoning Records](streaming/kafka/48-Kafka_Tombstoning_Records.md)
+50. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
