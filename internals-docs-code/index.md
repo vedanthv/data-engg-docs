@@ -91,6 +91,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 10. [Databricks Objects Catalogs](docs-deep-dive/databricks/09-Databricks_Objects_Catalogs.md)
 11. [Databricks Objects Volumes Tables](docs-deep-dive/databricks/10-Databricks_Objects_Volumes_Tables.md)
 12. [Databricks Views](docs-deep-dive/databricks/11-Databricks_Views.md)
+13. [Databricks Governed Tags](docs-deep-dive/databricks/12-Databricks_Governed_Tags.md)
+14. [Databricks Connecting To Cloud Object Storage Intro](docs-deep-dive/databricks/13-Databricks_Connecting_To_Cloud_Object_Storage_Intro.md)
+15. [Databricks Managed Storage Location Hierarchy](docs-deep-dive/databricks/14-Databricks_Managed_Storage_Location_Hierarchy.md)
 
 ## Scenarios
 
@@ -116,7 +119,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 6. [Explain Diff Dirtyratio Dirtybackgroundratio](scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md)
 7. [Are Kafka Consumers Thread Safe](scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md)
 8. [Is Retention Ms Defined Partition Level](scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md)
-9. [Index](scenarios/kafka/index.md)
+9. [Difference Btwn Sticky Cooperative Sticky Assignor](scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md)
+10. [Index](scenarios/kafka/index.md)
 
 ### Spark
 
@@ -230,7 +234,12 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 47. [Kafka Indexes](streaming/kafka/46-Kafka_Indexes.md)
 48. [Kafka Compaction](streaming/kafka/47-Kafka_Compaction.md)
 49. [Kafka Tombstoning Records](streaming/kafka/48-Kafka_Tombstoning_Records.md)
-50. [Index](streaming/kafka/index.md)
+50. [Kafka Reliability Guarantees](streaming/kafka/49-Kafka_Reliability_Guarantees.md)
+51. [Kafka Replication Procedures](streaming/kafka/50-Kafka_Replication_Procedures.md)
+52. [Kafka Broker Config Replication Factor](streaming/kafka/51-Kafka_Broker_Config_Replication_Factor.md)
+53. [Kafka Broker Configuration Unclean Leader Election](streaming/kafka/52-Kafka_Broker_Configuration_Unclean_Leader_Election.md)
+54. [Kafka Log Truncation On Out Of Sync Leader](streaming/kafka/53-Kafka_Log_Truncation_On_Out_Of_Sync_Leader.md)
+55. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
