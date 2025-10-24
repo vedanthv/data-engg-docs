@@ -11,3 +11,13 @@ It is important to give consumers enough time to see the tombstone message, beca
 It’s worth remembering that Kafka’s admin client also includes a deleteRecords method. This method deletes all records before a specified offset, and it uses a completely different mechanism. When this method is called, Kafka will move the low-water mark, its record of the first offset of a partition, to the specified offset.
 
 This will prevent consumers from consuming the records below the new lowwater mark and effectively makes these records inaccessible until they get deleted by a cleaner thread. This method can be used on topics with a retention policy and on compacted topics.
+
+## When are topics compacted?
+
+In the same way that the delete policy never deletes the current active segments, the compact policy never compacts the current segment. Messages are eligible for compaction only on inactive segments. By default, Kafka will start compacting when 50% of the topic contains dirty records. 
+
+The goal is not to compact too often (since compaction can impact the read/write performance on a topic) but also not to leave too many dirty records around (since they consume disk space). Wasting 50% of the disk space used by a topic on dirty records and then compacting them in one go seems like a reasonable trade-off, and it can be tuned by the administrator.
+
+In addition, administrators can control the timing of compaction with two configuration parameters: min.compaction.lag.ms can be used to guarantee the minimum length of time that must pass after a message is written before it could be compacted. max.compaction.lag.ms can be used to guarantee the maximum delay between the time a message is written and the time the message becomes eligible for compaction. 
+
+This configuration is often used in situations where there is a business reason to guarantee compaction within a certain period; for example, GDPR requires that certain information will be deleted within 30 days after a request to delete has been made.
