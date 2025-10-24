@@ -40,7 +40,7 @@ Use cases for volumes include:
 
 ## Why use use external volumes?
 
-E- xternal volumes allow you to add Unity Catalog data governance to existing cloud object storage directories. Some use cases for external volumes include the following:
+External volumes allow you to add Unity Catalog data governance to existing cloud object storage directories. Some use cases for external volumes include the following:
 
 - Adding governance where data already resides, without requiring data copy.
 - Governing files produced by other systems that must be ingested or accessed by Databricks.
