@@ -160,6 +160,7 @@ nav:
                   - What is the difference between dirty ratio and dirty background ratio? : scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md
                   - Are Kafka consumers thread safe! : scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md
                   - Is retention.ms property defined at topic or partition level? : scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md
+                  - What is the difference between Sticky and Cooperative Sticky Assignor : scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -267,6 +268,11 @@ nav:
                   - Kafka Indexes : streaming/kafka/46-Kafka_Indexes.md
                   - Kafka Compaction Concepts : streaming/kafka/47-Kafka_Compaction.md
                   - Kafka Tombstoning Process : streaming/kafka/48-Kafka_Tombstoning_Records.md
+                  - Kafka Reliability Guarantees : streaming/kafka/49-Kafka_Reliability_Guarantees.md
+                  - Kafka Replication Procedures : streaming/kafka/50-Kafka_Replication_Procedures.md
+                  - Kafka Broker Configuration - Replication Factor : streamning/kafka/51-Kafka_Broker_Config_Replication_Factor.md
+                  - Kafka Broker Configuration - Unclean Leader Election : streaming/kafka/52-Kafka_Broker_Configuration_Unclean_Leader_Election.md
+                  - Kafka Log Truncation and Out Of Sync Leaders : streaming/kafka/53-Kafka_Log_Truncation_On_Out_Of_Sync_Leader.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
@@ -282,6 +288,9 @@ nav:
                   - Databricks Architectural Guiding Principles: docs-deep-dive/databricks/08-Databricks_Architecture_Guiding_Principles.md
                   - Databricks Objects - Volumes and Tables: docs-deep-dive/databricks/10-Databricks_Objects_Volumes_Tables.md
                   - Databricks Objects - Views: docs-deep-dive/databricks/11-Databricks_Views.md
+                  - Databricks Governed Tags: docs-deep-dive/databricks/12-Databricks_Governed_Tags.md
+                  - Databricks Connecting to Cloud Object Storage : docs-deep-dive/databricks/13-Databricks_Connecting_To_Cloud_Object_Storage_Intro.md
+                  - Databricks Managed Storage Location Hierarchy : docs-deep-dive/databricks/14-Databricks_Managed_Storage_Location_Hierarchy.md
                   
 # END AUTO NAV
 extra:
