@@ -160,7 +160,8 @@ nav:
                   - What is the difference between dirty ratio and dirty background ratio? : scenarios/kafka/05-Explain_Diff_dirtyRatio_dirtyBackgroundRatio.md
                   - Are Kafka consumers thread safe! : scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md
                   - Is retention.ms property defined at topic or partition level? : scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md
-                  - What is the difference between Sticky and Cooperative Sticky Assignor : scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md
+                  - What is the difference between Sticky and Cooperative Sticky Assigner? : scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md
+                  - How does Kafka ensure Partial Idempotence? : scenarios/kafka/09-How_Does_Kafka_Ensure_Partial_Idempotence.md
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -273,6 +274,8 @@ nav:
                   - Kafka Broker Configuration - Replication Factor : streamning/kafka/51-Kafka_Broker_Config_Replication_Factor.md
                   - Kafka Broker Configuration - Unclean Leader Election : streaming/kafka/52-Kafka_Broker_Configuration_Unclean_Leader_Election.md
                   - Kafka Log Truncation and Out Of Sync Leaders : streaming/kafka/53-Kafka_Log_Truncation_On_Out_Of_Sync_Leader.md
+                  - Kafka Keeping Replicas In Sync : streaming/kafka/54-Kafka_Keeping_Replicas_In_Sync.md
+                  - Kafka Producer Failure Scenarios : streaming/kafka/55-Kafka_Using_Producers_Reliable_System_Scenarios.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
