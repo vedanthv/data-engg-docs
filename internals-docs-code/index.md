@@ -120,7 +120,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 7. [Are Kafka Consumers Thread Safe](scenarios/kafka/06-Are_Kafka_Consumers_Thread_Safe.md)
 8. [Is Retention Ms Defined Partition Level](scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md)
 9. [Difference Btwn Sticky Cooperative Sticky Assignor](scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md)
-10. [Index](scenarios/kafka/index.md)
+10. [How Does Kafka Ensure Partial Idempotence](scenarios/kafka/09-How_Does_Kafka_Ensure_Partial_Idempotence.md)
+11. [Index](scenarios/kafka/index.md)
 
 ### Spark
 
@@ -239,7 +240,9 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 52. [Kafka Broker Config Replication Factor](streaming/kafka/51-Kafka_Broker_Config_Replication_Factor.md)
 53. [Kafka Broker Configuration Unclean Leader Election](streaming/kafka/52-Kafka_Broker_Configuration_Unclean_Leader_Election.md)
 54. [Kafka Log Truncation On Out Of Sync Leader](streaming/kafka/53-Kafka_Log_Truncation_On_Out_Of_Sync_Leader.md)
-55. [Index](streaming/kafka/index.md)
+55. [Kafka Keeping Replicas In Sync](streaming/kafka/54-Kafka_Keeping_Replicas_In_Sync.md)
+56. [Kafka Using Producers Reliable System Scenarios](streaming/kafka/55-Kafka_Using_Producers_Reliable_System_Scenarios.md)
+57. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
