@@ -94,6 +94,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 13. [Databricks Governed Tags](docs-deep-dive/databricks/12-Databricks_Governed_Tags.md)
 14. [Databricks Connecting To Cloud Object Storage Intro](docs-deep-dive/databricks/13-Databricks_Connecting_To_Cloud_Object_Storage_Intro.md)
 15. [Databricks Managed Storage Location Hierarchy](docs-deep-dive/databricks/14-Databricks_Managed_Storage_Location_Hierarchy.md)
+16. [Databricks Service Credentials](docs-deep-dive/databricks/15-Databricks_Service_Credentials.md)
+17. [Databricks Connecting To Managed Ingestion Sources Intro](docs-deep-dive/databricks/16-Databricks_Connecting_To_Managed_Ingestion_Sources_Intro.md)
+18. [Databricks Query Federation](docs-deep-dive/databricks/17-Databricks_Query_Federation.md)
+19. [Image](docs-deep-dive/databricks/image.png)
 
 ## Scenarios
 
@@ -121,7 +125,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 8. [Is Retention Ms Defined Partition Level](scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md)
 9. [Difference Btwn Sticky Cooperative Sticky Assignor](scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md)
 10. [How Does Kafka Ensure Partial Idempotence](scenarios/kafka/09-How_Does_Kafka_Ensure_Partial_Idempotence.md)
-11. [Index](scenarios/kafka/index.md)
+11. [How Does Kafka Know Which Messages Are Processed Not Just Read](scenarios/kafka/10-How_Does_Kafka_Know_Which_Messages_Are_Processed_Not_Just_Read.md)
+12. [Index](scenarios/kafka/index.md)
 
 ### Spark
 
@@ -172,7 +177,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 37. [Spark Adaptive Query Execution](spark/38-Spark_Adaptive_Query_Execution.md)
 38. [Spark Dynamic Resource Allocation](spark/39-Spark_Dynamic_Resource_Allocation.md)
 39. [Spark Dynamic Partition Pruning](spark/40-Spark_Dynamic_Partition_Pruning.md)
-40. [Index](spark/index.md)
+40. [Spark Executor Tuning](spark/41-Spark_Executor_Tuning.md)
+41. [Index](spark/index.md)
 
 ## Streaming
 
@@ -242,7 +248,15 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 54. [Kafka Log Truncation On Out Of Sync Leader](streaming/kafka/53-Kafka_Log_Truncation_On_Out_Of_Sync_Leader.md)
 55. [Kafka Keeping Replicas In Sync](streaming/kafka/54-Kafka_Keeping_Replicas_In_Sync.md)
 56. [Kafka Using Producers Reliable System Scenarios](streaming/kafka/55-Kafka_Using_Producers_Reliable_System_Scenarios.md)
-57. [Index](streaming/kafka/index.md)
+57. [Kafka Producer Retries Additional Error Handling](streaming/kafka/56-Kafka_Producer_Retries_Additional_Error_Handling.md)
+58. [Kafka Using Consumers In Reliable System Intro](streaming/kafka/57-Kafka_Using_Consumers_In_Reliable_System_Intro.md)
+59. [Kafka Important Consumer Properties Intro](streaming/kafka/58-Kafka_Important_Consumer_Properties_Intro.md)
+60. [Kafka Consumer Properties Pt2](streaming/kafka/59-Kafka_Consumer_Properties_Pt2.md)
+61. [Kafka Explicitly Commiting Offsets Pt1](streaming/kafka/60-Kafka_Explicitly_Commiting_Offsets_Pt1.md)
+62. [Kafka Explicitly Commiting Offsets Pt2](streaming/kafka/61-Kafka_Explicitly_Commiting_Offsets_Pt2.md)
+63. [Kafka Validating Configuration](streaming/kafka/62-Kafka_Validating_Configuration.md)
+64. [Kafka Monitoring In Production](streaming/kafka/63-Kafka_Monitoring_In_Production.md)
+65. [Index](streaming/kafka/index.md)
 <!-- TOC END -->
 
 
