@@ -162,6 +162,8 @@ nav:
                   - Is retention.ms property defined at topic or partition level? : scenarios/kafka/07-Is_Retention_ms_Defined_Partition_Level.md
                   - What is the difference between Sticky and Cooperative Sticky Assigner? : scenarios/kafka/08-Difference_Btwn_Sticky_Cooperative_Sticky_Assignor.md
                   - How does Kafka ensure Partial Idempotence? : scenarios/kafka/09-How_Does_Kafka_Ensure_Partial_Idempotence.md
+                  - How does Kafka Know which executors are processed and which are not? : scenarios/kafka/10-How_Does_Kafka_Know_Which_Messages_Are_Processed_Not_Just_Read.md
+              
   - Spark:
       - Index: spark/index.md
       - Topics:
@@ -204,6 +206,7 @@ nav:
           - Spark Adaptive Query Execution: spark/38-Spark_Adaptive_Query_Execution.md
           - Spark Dynamic Resource Allocation: spark/39-Spark_Dynamic_Resource_Allocation.md
           - Spark Dynamic Partition Pruning: spark/40-Spark_Dynamic_Partition_Pruning.md
+          - Spark Executor Tuning : spark/41-Spark_Executor_Tuning.md
   - Streaming:
       - Index: streaming/index.md
       - Topics:
@@ -276,6 +279,14 @@ nav:
                   - Kafka Log Truncation and Out Of Sync Leaders : streaming/kafka/53-Kafka_Log_Truncation_On_Out_Of_Sync_Leader.md
                   - Kafka Keeping Replicas In Sync : streaming/kafka/54-Kafka_Keeping_Replicas_In_Sync.md
                   - Kafka Producer Failure Scenarios : streaming/kafka/55-Kafka_Using_Producers_Reliable_System_Scenarios.md
+                  - Kafka Producer Retries and Error Handling : streaming/kafka/56-Kafka_Producer_Retries_Additional_Error_Handling.md
+                  - Kafka Using Consumers in Reliable System : streaming/kafka/57-Kafka_Using_Consumers_In_Reliable_System_Intro.md
+                  - Kafka Important Consumer Properties : streaming/kafka/58-Kafka_Important_Consumer_Properties_Intro.md
+                  - Kafka Consumer Properties Part II : streaming/kafka/59-Kafka_Consumer_Properties_Pt2.md
+                  - Kafka Explicitly Committing Offsets Part 1 : streaming/kafka/60-Kafka_Explicitly_Commiting_Offsets_Pt1.md
+                  - Kafka Excplicitly Committing Offsets Part II : streaming/kafka/61-Kafka_Explicitly_Commiting_Offsets_Pt2.md
+                  - Kafka Validating Configuration : streaming/kafka/62-Kafka_Validating_Configuration.md
+                  - Kafka Monitoring in Production : streaming/kafka/63-Kafka_Monitoring_In_Production.md
   - Documentation Deep Dive:
       - Topics:
           - Databricks:
@@ -294,6 +305,9 @@ nav:
                   - Databricks Governed Tags: docs-deep-dive/databricks/12-Databricks_Governed_Tags.md
                   - Databricks Connecting to Cloud Object Storage : docs-deep-dive/databricks/13-Databricks_Connecting_To_Cloud_Object_Storage_Intro.md
                   - Databricks Managed Storage Location Hierarchy : docs-deep-dive/databricks/14-Databricks_Managed_Storage_Location_Hierarchy.md
+                  - Databricks Service Credentials: docs-deep-dive/databricks/15-Databricks_Service_Credentials.md
+                  - Databricks Connecting to Managed Ingestion Sources: docs-deep-dive/databricks/16-Databricks_Connecting_To_Managed_Ingestion_Sources_Intro.md
+                  - Databricks Query Federation: docs-deep-dive/databricks/17-Databricks_Query_Federation.md
                   
 # END AUTO NAV
 extra:
