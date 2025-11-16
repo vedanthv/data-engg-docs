@@ -191,6 +191,18 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 4. [Redpanda Architure In Depth Pt1](streaming/architecture/03-Redpanda_Architure_In_Depth_Pt1.md)
 5. [Index](streaming/architecture/index.md)
 
+### Flink
+
+1. [Introduction To Flink](streaming/flink/00-Introduction_To_Flink.md)
+2. [Jobmanager In Flink](streaming/flink/01-JobManager_In_Flink.md)
+3. [Taskmanager In Flink](streaming/flink/02-TaskManager_In_Flink.md)
+4. [Slots Vs Cores Flink Tm](streaming/flink/03-Slots_vs_Cores_Flink_TM.md)
+5. [Operating Chaining Flink](streaming/flink/04-Operating_Chaining_Flink.md)
+6. [Stateful Streaming Flink Pt1](streaming/flink/05-Stateful_Streaming_Flink_Pt1.md)
+7. [Processing Vs Event Time Flink](streaming/flink/06-Processing_vs_Event_Time_Flink.md)
+8. [Checkpoints Savepoints Flink](streaming/flink/07-Checkpoints_Savepoints_Flink.md)
+9. [Stateful Upgrades Flink](streaming/flink/08-Stateful_Upgrades_Flink.md)
+
 ### Kafka
 
 2. [Kafka Kraft Setup](streaming/kafka/01-Kafka_KRaft_Setup.md)
