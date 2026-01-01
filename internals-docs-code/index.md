@@ -9,6 +9,14 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 <!-- TOC START -->
 # 📑 Data Engineering Knowledge Base
 
+## Airflow
+
+1. [What is Airflow?](airflow/00-What_Is_Airflow.md)
+2. [Airflow vs Databricks Jobs](airflow/01-Airflow_vs_Databricks_Jobs.md)
+3. [Building Blocks of Airflow](airflow/02-Building_Blocks_Airflow.md)
+4. [Airflow Architecture - Metadata DB](airflow/03-Airflow_Arch_Metadata_DB.md)
+5. [Airflow Lifecycle of DAG Run](airflow/04-Lifecycle_Of_DAG_Run.md)
+6. [Airflow Scheduler Deepdive](airflow/05-Airflow Scheduler Deepdive.md)
 
 ## Azure
 
