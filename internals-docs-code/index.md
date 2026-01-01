@@ -18,6 +18,7 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 4. [Airflow Arch Metadata Db](airflow/03-Airflow_Arch_Metadata_DB.md)
 5. [Lifecycle Of Dag Run](airflow/04-Lifecycle_Of_DAG_Run.md)
 6. [Airflow Scheduler Deepdive](airflow/05-Airflow_Scheduler_DeepDive.md)
+7. [Index](airflow/index.md)
 
 ## Azure
 
