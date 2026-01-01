@@ -72,6 +72,15 @@ plugins:
 
 # BEGIN AUTO NAV
 nav:
+  - Airflow:
+    - Index: airflow/index.md
+    - Topics:
+        - What is Airflow?: airflow/00-What_Is_Airflow.md
+        - Airflow vs Databricks Jobs: airflow/01-Airflow_vs_Databricks_Jobs.md
+        - Building Blocks of Airflow: airflow/02-Building_Blocks_Airflow.md
+        - Airflow Architecture - Metadata DB: airflow/03-Airflow_Arch_Metadata_DB.md
+        - Airflow Lifecycle of DAG Run: airflow/04-Lifecycle_Of_DAG_Run.md
+        - Airflow Scheduler Deepdive: airflow/05-Airflow Scheduler Deepdive.md
   - Home: index.md
   - Azure:
       - Index: azure/index.md
