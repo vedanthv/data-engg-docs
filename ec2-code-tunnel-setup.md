@@ -1,6 +1,8 @@
----
-
 # VS Code Tunnel Setup
+
+## Creating EC2
+
+Create an EC2 t2.medium Ubuntu instance with 50GB storage.
 
 ## 1. Connect to EC2
 
@@ -73,7 +75,5 @@ Permission errors saving files
 ```bash
 sudo chown -R ubuntu:ubuntu <project-folder>
 ```
-
----
 
 If the tunnel stops repeat the same steps.
