@@ -81,6 +81,12 @@ nav:
         - Airflow Architecture - Metadata DB: airflow/03-Airflow_Arch_Metadata_DB.md
         - Airflow Lifecycle of DAG Run: airflow/04-Lifecycle_Of_DAG_Run.md
         - Airflow Scheduler Deepdive: airflow/05-Airflow Scheduler Deepdive.md
+  - AWS:
+    - Index: aws/index.md
+    - Topics:
+        - AWS S3 Part I: aws/00-AWS_S3_Pt1.md
+        - AWS S3 Part II: aws/00-AWS_S3_Pt2.md
+        - AWS S3 Part III: aws/00-AWS_S3_Pt3.md
   - Home: index.md
   - Azure:
       - Index: azure/index.md
