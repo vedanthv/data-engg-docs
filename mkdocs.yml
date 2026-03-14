@@ -84,9 +84,12 @@ nav:
   - AWS:
     - Index: aws/index.md
     - Topics:
-        - AWS S3 Part I: aws/00-AWS_S3_Pt1.md
-        - AWS S3 Part II: aws/00-AWS_S3_Pt2.md
-        - AWS S3 Part III: aws/00-AWS_S3_Pt3.md
+        - S3 Part I: aws/00-AWS_S3_Pt1.md
+        - S3 Part II: aws/00-AWS_S3_Pt2.md
+        - S3 Part III: aws/00-AWS_S3_Pt3.md
+        - S3 Part IV: aws/00-AWS_S3_Pt4.md
+        - S3 Part V: aws/00-AWS_S3_Pt5.md
+        - S3 Part VI: aws/00-AWS_S3_Pt6.md
   - Home: index.md
   - Azure:
       - Index: azure/index.md
