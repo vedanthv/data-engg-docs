@@ -25,7 +25,11 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 1. [Aws S3 Pt1](aws/00-AWS_S3_Pt1.md)
 2. [Aws S3 Pt2](aws/00-AWS_S3_Pt2.md)
 3. [Aws S3 Pt3](aws/00-AWS_S3_Pt3.md)
-4. [Index](aws/index.md)
+4. [Aws S3 Pt4](aws/00-AWS_S3_Pt4.md)
+5. [Aws S3 Pt5](aws/00-AWS_S3_Pt5.md)
+6. [Aws S3 Pt6](aws/00-AWS_S3_Pt6.md)
+7. [Aws S3 Pt7](aws/00-AWS_S3_Pt7.md)
+8. [Index](aws/index.md)
 
 ## Azure
 
