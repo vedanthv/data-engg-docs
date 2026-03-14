@@ -20,6 +20,13 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 6. [Airflow Scheduler Deepdive](airflow/05-Airflow_Scheduler_DeepDive.md)
 7. [Index](airflow/index.md)
 
+## Aws
+
+1. [Aws S3 Pt1](aws/00-AWS_S3_Pt1.md)
+2. [Aws S3 Pt2](aws/00-AWS_S3_Pt2.md)
+3. [Aws S3 Pt3](aws/00-AWS_S3_Pt3.md)
+4. [Index](aws/index.md)
+
 ## Azure
 
 1. [Azure Integration Databricks](azure/00-Azure_Integration_Databricks.md)
