@@ -155,7 +155,8 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 2. [Smj Spill To Disk Q2](scenarios/spark/02-SMJ_Spill_To_Disk_Q2.md)
 3. [Smj Output During Spill Q3](scenarios/spark/03-SMJ_Output_During_Spill_Q3.md)
 4. [Cross Vs Broadcast Join](scenarios/spark/04-Cross_vs_Broadcast_Join.md)
-5. [Index](scenarios/spark/index.md)
+5. [How Udf Executes](scenarios/spark/05-how_udf_executes.md)
+6. [Index](scenarios/spark/index.md)
 
 ## Spark
 
@@ -199,7 +200,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 38. [Spark Dynamic Resource Allocation](spark/39-Spark_Dynamic_Resource_Allocation.md)
 39. [Spark Dynamic Partition Pruning](spark/40-Spark_Dynamic_Partition_Pruning.md)
 40. [Spark Executor Tuning](spark/41-Spark_Executor_Tuning.md)
-41. [Index](spark/index.md)
+41. [Spark Parquet File Format](spark/42-Spark_Parquet_File_Format.md)
+42. [Spark Parquet Optimization](spark/43-Spark_Parquet_Optimization.md)
+43. [Spark Parquet Footer](spark/44-Spark_Parquet_Footer.md)
+44. [Index](spark/index.md)
 
 ## Streaming
 
