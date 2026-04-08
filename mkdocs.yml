@@ -162,6 +162,10 @@ nav:
                   - Smj Spill To Disk Q2: scenarios/spark/02-SMJ_Spill_To_Disk_Q2.md
                   - Smj Output During Spill Q3: scenarios/spark/03-SMJ_Output_During_Spill_Q3.md
                   - Cross Vs Broadcast Join: scenarios/spark/04-Cross_vs_Broadcast_Join.md
+                  - How UDF Executes in Spark: scenarios/spark/05-how_udf_executes.md
+                  - Why Repartition before bucketing: scenarios/spark/06-why_repartitioning_before_bucketing.md
+                  - Bucketing vs Repartitioning: scenarios/spark/07-bucketing_vs_reparitioning.md
+                  - Z Ordering vs Buckering: scenarios/spark/08-z_ordering_vs_bucketing.md
           - Databricks:
               - Index: scenarios/databricks/index.md
               - Topics:
@@ -225,6 +229,9 @@ nav:
           - Spark Dynamic Resource Allocation: spark/39-Spark_Dynamic_Resource_Allocation.md
           - Spark Dynamic Partition Pruning: spark/40-Spark_Dynamic_Partition_Pruning.md
           - Spark Executor Tuning : spark/41-Spark_Executor_Tuning.md
+          - Spark Parquet File Format: spark/42-Spark_Parquet_File_Format.md
+          - Spark Parquet Optimization: spark/43-Spark_Parquet_Optimization.md
+          - Spark Parquet Footer: spark/44-Spark_Parquet_Footer.md
   - Streaming:
       - Index: streaming/index.md
       - Topics:
