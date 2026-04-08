@@ -156,7 +156,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 3. [Smj Output During Spill Q3](scenarios/spark/03-SMJ_Output_During_Spill_Q3.md)
 4. [Cross Vs Broadcast Join](scenarios/spark/04-Cross_vs_Broadcast_Join.md)
 5. [How Udf Executes](scenarios/spark/05-how_udf_executes.md)
-6. [Index](scenarios/spark/index.md)
+6. [Why Repartitioning Before Bucketing](scenarios/spark/06-why_repartitioning_before_bucketing.md)
+7. [Bucketing Vs Reparitioning](scenarios/spark/07-bucketing_vs_reparitioning.md)
+8. [Z Ordering Vs Bucketing](scenarios/spark/08-z_ordering_vs_bucketing.md)
+9. [Index](scenarios/spark/index.md)
 
 ## Spark
 
