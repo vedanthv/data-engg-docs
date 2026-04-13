@@ -8,7 +8,7 @@ Let’s go step-by-step: first, we’ll clarify **who controls offsets**, and th
 
 ## 🧩 1. Who maintains offsets — broker or producer?
 
-### ✅ **Offsets are maintained by the broker**.
+###  **Offsets are maintained by the broker**.
 
 Let’s unpack that clearly.
 
@@ -115,7 +115,7 @@ Thus, retries no longer create duplicates.
 
 ---
 
-#### ✅ Key guarantees from idempotent producer
+####  Key guarantees from idempotent producer
 
 * Each (PID, partition, sequence) tuple is **unique and ordered**.
 * The broker uses this metadata to detect and ignore duplicate writes.
@@ -208,7 +208,7 @@ Together, these provide **exactly-once semantics (EOS)** end-to-end.
 
 ---
 
-### ✅ Exactly-once delivery flow (step-by-step)
+###  Exactly-once delivery flow (step-by-step)
 
 | Step | Action                                 | Who handles it         | Guarantee                               |
 | ---- | -------------------------------------- | ---------------------- | --------------------------------------- |
@@ -243,7 +243,7 @@ Together, these provide **exactly-once semantics (EOS)** end-to-end.
 
 ---
 
-✅ **In simple terms:**
+ **In simple terms:**
 
 * Offsets are always assigned and managed by the **broker**.
 * Producers achieve **exactly-once semantics** using a combination of:
