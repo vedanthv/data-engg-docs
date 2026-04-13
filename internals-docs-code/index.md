@@ -159,7 +159,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 6. [Why Repartitioning Before Bucketing](scenarios/spark/06-why_repartitioning_before_bucketing.md)
 7. [Bucketing Vs Reparitioning](scenarios/spark/07-bucketing_vs_reparitioning.md)
 8. [Z Ordering Vs Bucketing](scenarios/spark/08-z_ordering_vs_bucketing.md)
-9. [Index](scenarios/spark/index.md)
+9. [Groupbykey Vs Reduce By Key](scenarios/spark/09-groupbykey_vs_reduce_by_key.md)
+10. [Map And Reduce Phases](scenarios/spark/10-map_and_reduce_phases.md)
+11. [Coalesce Vs Repartition](scenarios/spark/11-coalesce_vs_repartition.md)
+12. [Index](scenarios/spark/index.md)
 
 ## Spark
 
