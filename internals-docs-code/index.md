@@ -162,7 +162,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 9. [Groupbykey Vs Reduce By Key](scenarios/spark/09-groupbykey_vs_reduce_by_key.md)
 10. [Map And Reduce Phases](scenarios/spark/10-map_and_reduce_phases.md)
 11. [Coalesce Vs Repartition](scenarios/spark/11-coalesce_vs_repartition.md)
-12. [Index](scenarios/spark/index.md)
+12. [Rdd Pt1](scenarios/spark/12-rdd_pt1.md)
+13. [Rdd Execution](scenarios/spark/13-rdd_execution.md)
+14. [Catalyst Optmizer](scenarios/spark/14-catalyst_optmizer.md)
+15. [Index](scenarios/spark/index.md)
 
 ## Spark
 
