@@ -166,6 +166,12 @@ nav:
                   - Why Repartition before bucketing: scenarios/spark/06-why_repartitioning_before_bucketing.md
                   - Bucketing vs Repartitioning: scenarios/spark/07-bucketing_vs_reparitioning.md
                   - Z Ordering vs Buckering: scenarios/spark/08-z_ordering_vs_bucketing.md
+                  - Group By vs ReduceByKey: scenarios/spark/09-groupbykey_vs_reduce_by_key.md
+                  - Map and Reduce Phases: scenarios/spark/10-map_and_reduce_phases.md
+                  - Coalesce vs Repartition: scenarios/spark/11-coalesce_vs_repartition.md
+                  - RDD Part I : scenarios/spark/12-rdd_pt1.md
+                  - RDD Execution: scenarios/spark/13-rdd_execution.md
+                  - Catalyst Optimizer: scenarios/spark/14-catalyst_optimizer.md
           - Databricks:
               - Index: scenarios/databricks/index.md
               - Topics:
