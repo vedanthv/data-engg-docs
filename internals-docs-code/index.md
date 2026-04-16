@@ -165,7 +165,10 @@ The main goal of this repo is to strengthen my own understanding, but I also hop
 12. [Rdd Pt1](scenarios/spark/12-rdd_pt1.md)
 13. [Rdd Execution](scenarios/spark/13-rdd_execution.md)
 14. [Catalyst Optmizer](scenarios/spark/14-catalyst_optmizer.md)
-15. [Index](scenarios/spark/index.md)
+15. [Dag Stage Task Example](scenarios/spark/15-dag_stage_task_example.md)
+16. [Dataset Distribution Executors](scenarios/spark/16-dataset_distribution_executors.md)
+17. [Image](scenarios/spark/image.png)
+18. [Index](scenarios/spark/index.md)
 
 ## Spark
 
